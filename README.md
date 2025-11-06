@@ -4,10 +4,6 @@
 
 DocKeep is a modern Android application for storing and organizing personal documents locally on your device. Built with Kotlin and XML, it provides a clean, user-friendly interface with Material Design components and smooth animations.
 
-<a href="https://f-droid.org/packages/com.dockeep.app/">
-    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-    alt="Get it on F-Droid" height="80">
-</a>
 
 ## Features
 
