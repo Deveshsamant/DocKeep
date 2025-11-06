@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/android:windowBackground"
+    tools:context="com.dockeep.app.PersonDocumentsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:elevation="4dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:title="@string/family_friends"
+            app:titleTextColor="?attr/colorOnSurface"
+            app:navigationIcon="?attr/homeAsUpIndicator" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="@dimen/spacing_xsmall"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_document"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/spacing_small"
+        android:contentDescription="@string/create_document"
+        android:text="@string/create"
+        app:icon="@drawable/ic_add"
+        app:iconTint="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="@dimen/button_corner_radius" />
+
+    <!-- Delete FAB button in bottom left corner -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/spacing_small"
+        android:contentDescription="@string/delete"
+        app:srcCompat="@drawable/bin"
+        app:tint="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorError"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/emptyStateAnimation"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/spacing_small"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/empty_state_animation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:gravity="center"
+            android:text="@string/no_documents_yet"
+            android:textSize="@dimen/text_size_regular"
+            android:textColor="?attr/colorOnBackground" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

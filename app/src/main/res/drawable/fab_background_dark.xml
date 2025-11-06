@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item android:top="2dp" android:left="1dp" android:right="1dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/dark_on_surface_disabled" />
+        </shape>
+    </item>
+    <!-- Main circle -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/dark_surface" />
+        </shape>
+    </item>
+</layer-list>

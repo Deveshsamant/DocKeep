@@ -1,0 +1,566 @@
+<resources>
+    <string name="app_name">DocKeep</string>
+    <string name="create_document">Create new document</string>
+    <string name="enter_document_name">Enter document name</string>
+    <string name="document_name_required">Document name is required</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="no_documents_yet">No documents yet — tap + to add your first document</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_explanation">DocKeep needs access to your camera and storage to let you take and save documents locally on your device.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="search_hint">Search documents...</string>
+    <string name="grid_view">Grid View</string>
+    <string name="list_view">List View</string>
+    <string name="share">Share</string>
+    <string name="download">Download</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="share_all">Share All</string>
+    <string name="download_all">Download All</string>
+    <string name="view_full">View Full</string>
+    <string name="set_as_thumbnail">Set as Thumbnail</string>
+    <string name="images_count">%d images</string>
+    <string name="last_updated">Last updated · %s</string>
+    <string name="document_created_success">Document created successfully</string>
+    <string name="document_saved_success">Document saved successfully</string>
+    <string name="document_deleted_success">Document deleted successfully</string>
+    <string name="error_creating_document">Error creating document</string>
+    <string name="error_saving_document">Error saving document</string>
+    <string name="error_deleting_document">Error deleting document</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="delete_document_confirmation">Are you sure you want to delete this document?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_images">Add images</string>
+    <string name="select_from_gallery">Select from Gallery</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="select_multiple_images_from_your_device">Select multiple images from your device</string>
+    <string name="capture_a_new_photo_with_your_camera">Capture a new photo with your camera</string>
+    <string name="theme_toggle">Theme</string>
+    <string name="light_theme">Light Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="more">More</string>
+    <string name="create">Create</string>
+    <string name="placeholder_default_letter">D</string>
+    <string name="date_unavailable">Date Unavailable</string>
+    <string name="document_title_placeholder">DOCUMENT TITLE</string>
+    <string name="document_initial_placeholder">A</string>
+    <string name="about_developer">About Developer</string>
+    <string name="developer_name">Devesh Samant</string>
+    <string name="developer_title">Computer Science Student</string>
+    <string name="developer_description">Passionate about technology and innovation</string>
+    <string name="view_portfolio">View Portfolio</string>
+    <string name="connect_with_me">Connect with me</string>
+    <string name="family_friends">Family &amp; Friends</string>
+    <string name="add_person">Add Person</string>
+    <string name="person_name_hint">Enter person\'s name</string>
+    <string name="person_name_required">Person name is required</string>
+    <string name="add_documents">Add Documents</string>
+    <string name="no_people_added">No people added yet</string>
+    <string name="view_documents">View Documents</string>
+    <string-array name="document_names">
+        <item>Aadhaar Card</item>
+        <item>PAN Card</item>
+        <item>Voter ID</item>
+        <item>Passport</item>
+        <item>Driving License</item>
+        <item>Ration Card</item>
+        <item>Birth Certificate</item>
+        <item>Death Certificate</item>
+        <item>Marriage Certificate</item>
+        <item>Divorce Certificate</item>
+        <item>Caste Certificate</item>
+        <item>Domicile Certificate</item>
+        <item>Income Certificate</item>
+        <item>Residence Proof</item>
+        <item>Electricity Bill</item>
+        <item>Water Bill</item>
+        <item>Gas Bill</item>
+        <item>Mobile Bill</item>
+        <item>Landline Bill</item>
+        <item>Property Tax Receipt</item>
+        <item>Property Sale Deed</item>
+        <item>Property Registration Document</item>
+        <item>Land Ownership Paper</item>
+        <item>House Lease Agreement</item>
+        <item>Rent Agreement</item>
+        <item>Mutation Certificate</item>
+        <item>Property Tax Assessment</item>
+        <item>Building Plan Approval</item>
+        <item>Occupancy Certificate</item>
+        <item>House Insurance Policy</item>
+        <item>Vehicle RC Book</item>
+        <item>Vehicle Insurance Policy</item>
+        <item>Pollution Certificate</item>
+        <item>Vehicle Purchase Invoice</item>
+        <item>Vehicle Loan Agreement</item>
+        <item>Vehicle Service History</item>
+        <item>Vehicle Warranty Card</item>
+        <item>Vehicle Fitness Certificate</item>
+        <item>Driving Test Result</item>
+        <item>Vehicle Road Tax Receipt</item>
+        <item>Health Insurance Policy</item>
+        <item>Life Insurance Policy</item>
+        <item>Term Insurance Policy</item>
+        <item>Mediclaim Policy</item>
+        <item>Insurance Premium Receipt</item>
+        <item>Nominee Details Sheet</item>
+        <item>LIC Policy Bond</item>
+        <item>ULIP Policy Document</item>
+        <item>Policy Renewal Receipt</item>
+        <item>Claim Settlement Letter</item>
+        <item>Bank Passbook</item>
+        <item>Cheque Book</item>
+        <item>ATM/Debit Card Copy</item>
+        <item>Credit Card Copy</item>
+        <item>Bank Statement</item>
+        <item>Loan Agreement</item>
+        <item>Fixed Deposit Receipt</item>
+        <item>Recurring Deposit Passbook</item>
+        <item>Mutual Fund Statement</item>
+        <item>Share Certificate</item>
+        <item>Demat Account Proof</item>
+        <item>Stock Portfolio Snapshot</item>
+        <item>UPI Transaction History</item>
+        <item>Wallet Transaction Receipt</item>
+        <item>Investment Portfolio Summary</item>
+        <item>Income Tax Return (ITR)</item>
+        <item>Form 16</item>
+        <item>Form 26AS</item>
+        <item>Form 15G / 15H</item>
+        <item>Tax Payment Challan</item>
+        <item>TDS Certificate</item>
+        <item>GST Registration Certificate</item>
+        <item>GST Return Filing Proof</item>
+        <item>Business PAN Copy</item>
+        <item>CA Audit Report</item>
+        <item>Tax Notice Copy</item>
+        <item>School Marksheet (10th)</item>
+        <item>School Marksheet (12th)</item>
+        <item>Graduation Degree</item>
+        <item>Post-Graduation Degree</item>
+        <item>Diploma Certificate</item>
+        <item>Transfer Certificate</item>
+        <item>Migration Certificate</item>
+        <item>Character Certificate</item>
+        <item>Bonafide Certificate</item>
+        <item>Internship Certificate</item>
+        <item>College ID Card</item>
+        <item>Entrance Exam Admit Card</item>
+        <item>Entrance Exam Result</item>
+        <item>Scholarship Letter</item>
+        <item>Education Loan Agreement</item>
+        <item>Coaching Fee Receipt</item>
+        <item>Study Material Receipts</item>
+        <item>Attendance Record</item>
+        <item>Tuition Fee Receipt</item>
+        <item>Exam Form Submission Proof</item>
+        <item>Appointment Letter</item>
+        <item>Offer Letter</item>
+        <item>Salary Slip</item>
+        <item>Increment Letter</item>
+        <item>Experience Letter</item>
+        <item>Relieving Letter</item>
+        <item>Promotion Letter</item>
+        <item>HR Policy Document</item>
+        <item>PF Statement</item>
+        <item>ESIC Card</item>
+        <item>Professional Tax Receipt</item>
+        <item>Office ID Card</item>
+        <item>Training Certificate</item>
+        <item>Bonus Receipt</item>
+        <item>Attendance Sheet</item>
+        <item>Work From Home Policy</item>
+        <item>Project Completion Certificate</item>
+        <item>Employment Contract</item>
+        <item>Internship Offer Letter</item>
+        <item>COVID Vaccination Certificate</item>
+        <item>Medical Report</item>
+        <item>Prescription</item>
+        <item>Blood Test Report</item>
+        <item>X-Ray / MRI Scan Report</item>
+        <item>Hospital Bill</item>
+        <item>Surgery Report</item>
+        <item>Health Card</item>
+        <item>Medical Insurance Card</item>
+        <item>Doctor Prescription Slip</item>
+        <item>Discharge Summary</item>
+        <item>Diagnostic Report</item>
+        <item>Pathology Report</item>
+        <item>OPD Prescription</item>
+        <item>Dental Report</item>
+        <item>Eye Test Report</item>
+        <item>Blood Donation Certificate</item>
+        <item>Health Checkup Summary</item>
+        <item>Medical Fitness Certificate</item>
+        <item>Hospital Admission Form</item>
+        <item>Vehicle Loan Documents</item>
+        <item>Home Loan Documents</item>
+        <item>Education Loan Proof</item>
+        <item>Personal Loan Proof</item>
+        <item>Loan Repayment Schedule</item>
+        <item>EMI Receipt</item>
+        <item>NOC from Bank</item>
+        <item>Loan Closure Letter</item>
+        <item>Loan Sanction Letter</item>
+        <item>Loan Account Statement</item>
+        <item>Collateral Document</item>
+        <item>Guarantor Form</item>
+        <item>Mortgage Deed</item>
+        <item>Hypothecation Cancellation</item>
+        <item>Gold Loan Receipt</item>
+        <item>Shareholder Certificate</item>
+        <item>Dividend Statement</item>
+        <item>IPO Application</item>
+        <item>Mutual Fund SIP Statement</item>
+        <item>KYC Acknowledgment</item>
+        <item>Broker Contract Note</item>
+        <item>Demat Holding Statement</item>
+        <item>Trading Account Summary</item>
+        <item>Annual Report Copy</item>
+        <item>Stock Transaction Receipt</item>
+        <item>Bond Certificate</item>
+        <item>National Savings Certificate (NSC)</item>
+        <item>Post Office Passbook</item>
+        <item>Sukanya Samriddhi Account Proof</item>
+        <item>PPF Passbook</item>
+        <item>EPF Passbook</item>
+        <item>NPS Account Statement</item>
+        <item>Senior Citizen Savings Scheme Proof</item>
+        <item>Fixed Deposit Advice</item>
+        <item>Recurring Deposit Receipt</item>
+        <item>Election Voter Slip</item>
+        <item>Voter ID Application Form</item>
+        <item>Polling Booth Slip</item>
+        <item>Party Membership Card</item>
+        <item>Election Campaign Permission Copy</item>
+        <item>Local Election ID</item>
+        <item>Voting Acknowledgment</item>
+        <item>Electoral Roll Slip</item>
+        <item>Nomination Paper</item>
+        <item>Candidature Approval Letter</item>
+        <item>Visa</item>
+        <item>Flight Tickets</item>
+        <item>Travel Insurance</item>
+        <item>Hotel Booking</item>
+        <item>Tour Plan</item>
+        <item>Boarding Pass</item>
+        <item>Foreign Currency Receipt</item>
+        <item>Travel Permit</item>
+        <item>International Driving Permit</item>
+        <item>Train Ticket</item>
+        <item>Bus Ticket</item>
+        <item>Travel Voucher</item>
+        <item>Car Rental Agreement</item>
+        <item>Toll Receipt</item>
+        <item>Travel Expense Bill</item>
+        <item>Travel Claim Form</item>
+        <item>Office Travel Authorization</item>
+        <item>Journey Completion Proof</item>
+        <item>Trip Photos Backup</item>
+        <item>Court Order</item>
+        <item>FIR Copy</item>
+        <item>Police Report</item>
+        <item>Legal Notice</item>
+        <item>Affidavit</item>
+        <item>Power of Attorney</item>
+        <item>Agreement Copy</item>
+        <item>Sale Agreement</item>
+        <item>Notarized Document</item>
+        <item>Case File Copy</item>
+        <item>Court Summon</item>
+        <item>Bail Order</item>
+        <item>Judgement Copy</item>
+        <item>Property Dispute Papers</item>
+        <item>Advocate Letter</item>
+        <item>Evidence Copy</item>
+        <item>Witness Affidavit</item>
+        <item>Lease Agreement</item>
+        <item>Consent Letter</item>
+        <item>RTI Application Copy</item>
+        <item>RTI Response Letter</item>
+        <item>Legal Heir Certificate</item>
+        <item>Arbitration Agreement</item>
+        <item>Court Fee Receipt</item>
+        <item>Sub-Registrar Acknowledgement</item>
+        <item>Will Document</item>
+        <item>Property Inheritance Proof</item>
+        <item>Gift Deed</item>
+        <item>Mortgage Release Letter</item>
+        <item>Police Verification Report</item>
+        <item>Digital Signature Certificate</item>
+        <item>Aadhaar XML File</item>
+        <item>DigiLocker Backup</item>
+        <item>Password Sheet</item>
+        <item>App Login Credentials</item>
+        <item>Email Backup File</item>
+        <item>Google Account Recovery Codes</item>
+        <item>iCloud Recovery Key</item>
+        <item>UPI QR Backup</item>
+        <item>NetBanking Credentials Sheet</item>
+        <item>2FA Recovery Codes</item>
+        <item>Digital Invoice</item>
+        <item>Screenshot Receipts</item>
+        <item>Subscription Proof</item>
+        <item>Antivirus License Key</item>
+        <item>Software Purchase Bill</item>
+        <item>License File</item>
+        <item>Software Activation Key</item>
+        <item>Device Warranty Card</item>
+        <item>Purchase Invoice</item>
+        <item>AMC Contract</item>
+        <item>Service Report</item>
+        <item>Repair Bill</item>
+        <item>Replacement Invoice</item>
+        <item>Electronic Gadget Purchase Bill</item>
+        <item>Earphone / Mobile Bill</item>
+        <item>Laptop Invoice</item>
+        <item>Printer Invoice</item>
+        <item>Hard Drive Warranty</item>
+        <item>Power Bank Bill</item>
+        <item>Smartwatch Bill</item>
+        <item>Keyboard / Mouse Invoice</item>
+        <item>Bluetooth Speaker Bill</item>
+        <item>Monitor Purchase Bill</item>
+        <item>Router Bill</item>
+        <item>Web Hosting Invoice</item>
+        <item>Domain Renewal Bill</item>
+        <item>SSL Certificate Proof</item>
+        <item>Digital Marketing Invoice</item>
+        <item>Software Renewal Receipt</item>
+        <item>App Subscription Bill</item>
+        <item>Cloud Storage Invoice</item>
+        <item>OTT Subscription Bill</item>
+        <item>Canva / Figma Subscription Proof</item>
+        <item>Netflix / Hotstar Invoice</item>
+        <item>Amazon Prime Bill</item>
+        <item>Spotify / YouTube Premium Bill</item>
+        <item>Steam Purchase Invoice</item>
+        <item>Game Subscription Bill</item>
+        <item>ChatGPT Plus Receipt</item>
+        <item>Adobe Subscription Proof</item>
+        <item>Office 365 License</item>
+        <item>Dropbox Subscription Proof</item>
+        <item>E-Book Purchase Receipt</item>
+        <item>Investment Proof</item>
+        <item>Stock Demat Summary</item>
+        <item>FD Renewal Advice</item>
+        <item>RD Closure Receipt</item>
+        <item>Bank Locker Agreement</item>
+        <item>Safe Deposit Bill</item>
+        <item>Bank Correspondence Letter</item>
+        <item>PAN Correction Form</item>
+        <item>Aadhaar Update Slip</item>
+        <item>Mobile Number Link Proof</item>
+        <item>eKYC Acknowledgment</item>
+        <item>Signature Proof</item>
+        <item>Thumb Impression Sheet</item>
+        <item>Old Photo ID Copy</item>
+        <item>NOC from Employer</item>
+        <item>Salary Account Details Sheet</item>
+        <item>Hospital ID Card</item>
+        <item>Therapy Reports</item>
+        <item>Pharmacy Receipts</item>
+        <item>Ambulance Receipts</item>
+        <item>Vaccination Record</item>
+        <item>Baby Health Record</item>
+        <item>Medical Leave Certificate</item>
+        <item>Health Camp Certificate</item>
+        <item>Disability Pension Paper</item>
+        <item>Health Insurance Renewal Receipt</item>
+        <item>Passport Renewal Form</item>
+        <item>Travel NOC from Employer</item>
+        <item>Visa Application Receipt</item>
+        <item>Hotel Voucher</item>
+        <item>International SIM Card</item>
+        <item>Embassy Appointment Slip</item>
+        <item>Invitation Letter for Visa</item>
+        <item>Visa Rejection Letter</item>
+        <item>Immigration Stamps Copy</item>
+        <item>Travel Credit Card Statement</item>
+        <item>FIR Copy (Duplicate)</item>
+        <item>Police Clearance Certificate</item>
+        <item>Arbitration Award</item>
+        <item>Legal Opinion Copy</item>
+        <item>RTI Appeal Form</item>
+        <item>Will Witness Copy</item>
+        <item>Court Judgement</item>
+        <item>Court Fees Receipt</item>
+        <item>Notary Certificate</item>
+        <item>Affidavit of Loss</item>
+        <item>Power of Attorney (Registered)</item>
+        <item>Legal Consultation Invoice</item>
+        <item>Advocate ID Copy</item>
+        <item>RTI Receipt</item>
+        <item>RTI Appeal</item>
+        <item>Disability Certificate</item>
+        <item>Senior Citizen Card</item>
+        <item>Widow Pension Proof</item>
+        <item>BPL Card</item>
+        <item>Labour Card</item>
+        <item>Ujjwala Gas Connection Proof</item>
+        <item>PM Kisan Samman Nidhi Proof</item>
+        <item>PMAY Application Form</item>
+        <item>Jan Dhan Account Proof</item>
+        <item>Ayushman Bharat Card</item>
+        <item>Pension Yojana Proof</item>
+        <item>Food Security Card</item>
+        <item>Employment Guarantee Card (MGNREGA)</item>
+        <item>PM Jeevan Jyoti Bima Yojana</item>
+        <item>PM Suraksha Bima Yojana</item>
+        <item>Kisan Credit Card (KCC)</item>
+        <item>Gas Subsidy Receipt</item>
+        <item>E-Shram Card</item>
+        <item>Old Age Pension Proof</item>
+        <item>Antyodaya Card</item>
+        <item>Widow Pension Proof</item>
+        <item>Disability Pension Proof</item>
+        <item>Ration Subsidy Receipt</item>
+        <item>Income Proof for Scheme</item>
+        <item>Beneficiary Application Form</item>
+        <item>Water Tax Receipt</item>
+        <item>Property Maintenance Bill</item>
+        <item>Society Maintenance Bill</item>
+        <item>Apartment Registration Document</item>
+        <item>Builder Agreement</item>
+        <item>Possession Letter</item>
+        <item>Allotment Letter</item>
+        <item>Car Parking Allotment Letter</item>
+        <item>Flat Registration Certificate</item>
+        <item>House NOC</item>
+        <item>Builder Warranty</item>
+        <item>Property Possession Certificate</item>
+        <item>Society Membership Form</item>
+        <item>Maintenance Bill Receipts</item>
+        <item>Vehicle Service Receipt</item>
+        <item>AC Service Bill</item>
+        <item>Furniture Purchase Invoice</item>
+        <item>Electronic Appliance Bill</item>
+        <item>Mobile Recharge Receipt</item>
+        <item>OTT Renewal Proof</item>
+        <item>Movie Ticket</item>
+        <item>Event Pass</item>
+        <item>Club Membership Card</item>
+        <item>Gym Membership Proof</item>
+        <item>Gym Fee Receipt</item>
+        <item>Yoga Class Certificate</item>
+        <item>Library Card</item>
+        <item>Volunteer Certificate</item>
+        <item>NGO Membership Proof</item>
+        <item>Seminar Certificate</item>
+        <item>Internship Completion Certificate</item>
+        <item>Conference Pass</item>
+        <item>Exhibition Pass</item>
+        <item>Training Workshop Proof</item>
+        <item>Donation Certificate</item>
+        <item>Blood Donation Proof</item>
+        <item>Organ Donation Proof</item>
+        <item>Family Photo Album Backup</item>
+        <item>Personal Notes Backup</item>
+        <item>Resume PDF</item>
+        <item>Cover Letter Template</item>
+        <item>Portfolio Images Folder</item>
+        <item>Awards Certificate</item>
+        <item>Recommendation Letter</item>
+        <item>Appreciation Certificate</item>
+        <item>Personal Diary Backup</item>
+        <item>Fitness Tracker Report</item>
+        <item>Diet Chart</item>
+        <item>Medical Expense Reimbursement</item>
+        <item>Hospital Claim Receipt</item>
+        <item>Vaccine Passport</item>
+        <item>Emergency Contact Sheet</item>
+        <item>Fire Insurance Policy</item>
+        <item>Life Insurance Renewal Receipt</item>
+        <item>Term Insurance Renewal Receipt</item>
+        <item>Personal Accident Insurance Policy</item>
+        <item>Travel Insurance Policy</item>
+        <item>Pet Insurance Policy</item>
+        <item>Business Insurance Policy</item>
+        <item>Health ID (ABHA) Card</item>
+        <item>PPF Account Statement</item>
+        <item>Sukanya Samriddhi Yojana Proof</item>
+        <item>NPS Investment Receipt</item>
+        <item>Kisan Vikas Patra Proof</item>
+        <item>Post Office RD Receipt</item>
+        <item>Postal Life Insurance Proof</item>
+        <item>Post Office Savings Account Passbook</item>
+        <item>Stamp Collection Photos</item>
+        <item>Old Currency Notes Photo</item>
+        <item>Art Ownership Certificate</item>
+        <item>Jewellery Purchase Bill</item>
+        <item>Jewellery Valuation Certificate</item>
+        <item>Gold Certificate</item>
+        <item>Hallmark Proof</item>
+        <item>Silver Purchase Receipt</item>
+        <item>Watch Purchase Bill</item>
+        <item>Handbag Invoice</item>
+        <item>Perfume Bill</item>
+        <item>Sunglasses Invoice</item>
+        <item>Clothing Store Bill</item>
+        <item>Shoe Purchase Bill</item>
+        <item>Gift Voucher</item>
+        <item>Gift Receipt</item>
+        <item>Festival Purchase Invoice</item>
+        <item>Electronics Exchange Proof</item>
+        <item>Cashback Proof Screenshot</item>
+        <item>Cashback Reward Summary</item>
+        <item>Bank Cashback Notification</item>
+        <item>Reward Points Statement</item>
+        <item>Credit Card Reward Summary</item>
+        <item>Loan Closure NOC</item>
+        <item>EMI Schedule</item>
+        <item>Credit Report (CIBIL)</item>
+        <item>CIBIL Login Screenshot</item>
+        <item>Bank Complaint Acknowledgment</item>
+        <item>Grievance Closure Letter</item>
+        <item>Consumer Forum Complaint Copy</item>
+        <item>Consumer Forum Judgment Copy</item>
+        <item>RTI for Consumer Matter</item>
+        <item>Product Complaint Form</item>
+        <item>Warranty Claim Receipt</item>
+        <item>Replacement Invoice</item>
+        <item>Amazon Order Invoice</item>
+        <item>Flipkart Order Invoice</item>
+        <item>Myntra Order Invoice</item>
+        <item>Ajio Order Invoice</item>
+        <item>Swiggy Bill</item>
+        <item>Zomato Bill</item>
+        <item>Paytm Order Invoice</item>
+        <item>E-Commerce Wallet Statement</item>
+        <item>Google Pay History</item>
+        <item>PhonePe History</item>
+        <item>UPI App Screenshot</item>
+        <item>Bank App Screenshot</item>
+        <item>Wallet Balance Screenshot</item>
+        <item>Cashback History</item>
+        <item>Amazon Prime Renewal Proof</item>
+        <item>Netflix Renewal Proof</item>
+        <item>Spotify Renewal Proof</item>
+        <item>YouTube Premium Proof</item>
+        <item>ChatGPT Subscription Proof</item>
+        <item>Adobe Creative Cloud Proof</item>
+        <item>Canva Renewal Proof</item>
+        <item>Figma Renewal Proof</item>
+        <item>OTT Password Sheet</item>
+        <item>Investment Goals Document</item>
+        <item>Savings Tracker Sheet</item>
+        <item>Monthly Budget Planner</item>
+        <item>Tax Deduction Summary</item>
+        <item>Expense Tracker Sheet</item>
+        <item>Financial Planner File</item>
+        <item>Bank Reconciliation Sheet</item>
+        <item>Monthly Bills Record</item>
+        <item>Document Backup List</item>
+        <item>Digital Asset Backup List</item>
+        <item>Emergency Info Sheet</item>
+        <item>Important Numbers Sheet</item>
+        <item>Family Tree Chart</item>
+        <item>Personal Notes Summary</item>
+        <item>DocKeep App Settings Backup</item>
+    </string-array>
+</resources>

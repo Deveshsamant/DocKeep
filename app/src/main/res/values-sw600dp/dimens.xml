@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Professional spacing system (8-point grid) for tablets -->
+    <dimen name="spacing_xxxsmall">4dp</dimen>
+    <dimen name="spacing_xxsmall">8dp</dimen>
+    <dimen name="spacing_xsmall">12dp</dimen>
+    <dimen name="spacing_small">16dp</dimen>
+    <dimen name="spacing_medium">24dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">40dp</dimen>
+    <dimen name="spacing_xxlarge">48dp</dimen>
+    <dimen name="spacing_xxxlarge">56dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
+    
+    <!-- Professional card dimensions for tablets -->
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="card_elevation_hover">16dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="card_stroke_width">2dp</dimen>
+    
+    <!-- Professional text sizes for tablets -->
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_regular">18sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
+    <dimen name="text_size_title">28sp</dimen>
+    <dimen name="text_size_headline">32sp</dimen>
+    <dimen name="text_size_display">36sp</dimen>
+    
+    <!-- Professional icon sizes for tablets -->
+    <dimen name="icon_size_small">20dp</dimen>
+    <dimen name="icon_size_medium">28dp</dimen>
+    <dimen name="icon_size_large">36dp</dimen>
+    <dimen name="icon_size_xlarge">56dp</dimen>
+    
+    <!-- Professional button dimensions for tablets -->
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="button_corner_radius">16dp</dimen>
+    <dimen name="button_min_width">140dp</dimen>
+    <dimen name="button_padding_horizontal">20dp</dimen>
+    
+    <!-- Touch target minimum size for tablets -->
+    <dimen name="touch_target_min_size">56dp</dimen>
+    
+    <!-- Professional placeholder circle for tablets -->
+    <dimen name="placeholder_circle_size">80dp</dimen>
+</resources>

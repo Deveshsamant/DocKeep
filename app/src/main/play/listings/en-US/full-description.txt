@@ -1,0 +1,32 @@
+DocKeep is a modern Android application for storing and organizing personal documents locally on your device. Built with Kotlin and XML, it provides a clean, user-friendly interface with Material Design components and smooth animations.
+
+Features:
+- Local Storage: All documents are stored locally on your device
+- Document Organization: Create and organize documents in a clean card-based interface
+- Image Management: Add multiple images to each document from camera or gallery
+- Sharing: Share individual images or entire documents with other apps
+- Export: Export documents as ZIP files
+- Dark/Light Theme: Toggle between light and dark themes
+- Search: Quickly find documents by name
+- Responsive Design: Works on both phones and tablets
+
+The app organizes files in the following structure:
+Pictures/Dockeep/
+├── DocumentName1/
+│   ├── image001.jpg
+│   ├── image002.jpg
+│   └── thumbnail.jpg
+├── DocumentName2/
+│   ├── image001.jpg
+│   └── thumbnail.jpg
+└── Exports/
+    ├── DocumentName1_20231030_1200.zip
+    └── DocumentName2_20231030_1205.zip
+
+Permissions:
+The app requires the following permissions:
+- CAMERA: To capture new images
+- READ_EXTERNAL_STORAGE: To access existing images in gallery
+- WRITE_EXTERNAL_STORAGE: To save documents (Android 10 and below)
+- READ_MEDIA_IMAGES: To access images (Android 13+)
+- MANAGE_EXTERNAL_STORAGE: For broader storage access (Android 11+)

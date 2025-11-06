@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_large"
+    android:background="@drawable/enhanced_dialog_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Download Options"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:textAllCaps="false"
+        android:letterSpacing="0.02" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pdfOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:strokeWidth="@dimen/card_stroke_width"
+        app:strokeColor="?attr/colorPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:stateListAnimator="@animator/enhanced_card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_large"
+            android:background="@drawable/enhanced_card_background_selector"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_large"
+                android:layout_height="@dimen/icon_size_large"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/pdf"
+                android:contentDescription="PDF Export" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/spacing_large">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generate PDF"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create a PDF document with all images"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="?attr/colorOnSurfaceSecondary" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_medium"
+                android:layout_height="@dimen/icon_size_medium"
+                android:src="@drawable/enhanced_arrow_right"
+                android:contentDescription="Navigate" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/galleryOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_large"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:strokeWidth="@dimen/card_stroke_width"
+        app:strokeColor="?attr/colorPrimary"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:stateListAnimator="@animator/enhanced_card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_large"
+            android:background="@drawable/enhanced_card_background_selector"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_large"
+                android:layout_height="@dimen/icon_size_large"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/gallary"
+                android:contentDescription="Gallery Export" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/spacing_large">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save to Gallery"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save all images to your device gallery"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="?attr/colorOnSurfaceSecondary" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_medium"
+                android:layout_height="@dimen/icon_size_medium"
+                android:src="@drawable/enhanced_arrow_right"
+                android:contentDescription="Navigate" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:text="Cancel"
+        android:textColor="?attr/colorPrimary"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/spacing_medium" />
+
+</LinearLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow layers for 3D effect -->
+    <item android:top="2dp" android:left="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/shadow_color_3" />
+            <corners android:radius="@dimen/button_corner_radius" />
+        </shape>
+    </item>
+    <!-- Badge background -->
+    <item android:bottom="2dp" android:right="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorAccent" />
+            <corners android:radius="@dimen/button_corner_radius" />
+        </shape>
+    </item>
+</layer-list>

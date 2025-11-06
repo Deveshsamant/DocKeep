@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/android:windowBackground"
+    tools:context="com.dockeep.app.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:elevation="4dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:title=""
+            app:titleTextColor="?attr/colorOnSurface">
+            
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/app_name"
+                android:textSize="@dimen/text_size_headline"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:letterSpacing="0.05"
+                android:shadowColor="?attr/colorPrimaryVariant"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4" />
+
+            <ImageButton
+                android:id="@+id/menuButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/spacing_xsmall"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/more"
+                android:src="@drawable/ic_menu"
+                android:padding="@dimen/spacing_xxsmall" />
+
+            <ImageButton
+                android:id="@+id/searchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/spacing_medium"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/search_hint"
+                android:src="@drawable/ic_search"
+                android:padding="@dimen/spacing_xxsmall" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:hint="@string/search_hint"
+            android:visibility="gone"
+            app:startIconDrawable="@drawable/ic_search"
+            app:boxStrokeColor="?attr/colorPrimary"
+            app:hintTextColor="?attr/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textColor="?attr/colorOnSurface" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="@dimen/spacing_xsmall"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_document"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/spacing_small"
+        android:contentDescription="@string/create_document"
+        android:text="@string/create"
+        app:icon="@drawable/ic_add"
+        app:iconTint="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="@dimen/button_corner_radius" />
+
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/emptyStateAnimation"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/spacing_small"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/empty_state_animation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:gravity="center"
+            android:text="@string/no_documents_yet"
+            android:textSize="@dimen/text_size_regular"
+            android:textColor="?attr/colorOnBackground" />
+
+    </LinearLayout>
+
+    <!-- Sidebar layout -->
+    <LinearLayout
+        android:id="@+id/sidebarLayout"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="?attr/colorSurface"
+        android:elevation="16dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="@dimen/spacing_medium">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:text="@string/app_name"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface" />
+
+        <LinearLayout
+            android:id="@+id/themeOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/themeIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/light"
+                android:contentDescription="@string/theme_toggle" />
+
+            <TextView
+                android:id="@+id/themeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:text="@string/theme_toggle"
+                android:textSize="@dimen/text_size_regular"
+                android:textColor="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/familyFriendsOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/friendfamily"
+                android:contentDescription="@string/family_friends" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:text="@string/family_friends"
+                android:textSize="@dimen/text_size_regular"
+                android:textColor="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/aboutDeveloperOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/devloper"
+                android:contentDescription="@string/about_developer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:text="@string/about_developer"
+                android:textSize="@dimen/text_size_regular"
+                android:textColor="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/exportOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/export_icon"
+                android:contentDescription="Export" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:text="Export"
+                android:textSize="@dimen/text_size_regular"
+                android:textColor="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/importOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android.focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/import_icon"
+                android:contentDescription="Import" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:text="Import Documents"
+                android:textSize="@dimen/text_size_regular"
+                android:textColor="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+        <!-- Spacer to push user name to bottom -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- User Name Display at Bottom -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:background="?attr/colorOnSurfaceSecondary" />
+
+        <LinearLayout
+            android:id="@+id/userNameDisplayContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/userNameIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_person"
+                android:contentDescription="User"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/userNameDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:text="User"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Overlay for sidebar -->
+    <View
+        android:id="@+id/sidebarOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

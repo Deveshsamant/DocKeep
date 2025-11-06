@@ -1,0 +1,9 @@
+Initial release of DocKeep - A document management app for Android.
+
+Features:
+- Create and organize documents in a card-based interface
+- Add multiple images to each document from camera or gallery
+- Local storage with proper file organization
+- Light/dark theme toggle
+- Search functionality
+- Share and export documents

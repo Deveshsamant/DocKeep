@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/dialog_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_document_name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-medium" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorPrimary"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_document_name"
+            app:boxStrokeColor="?attr/colorPrimary"
+            app:hintTextColor="?attr/colorPrimary"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_margin="8dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/documentNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:completionThreshold="1"
+                android:textColor="?attr/colorOnSurface"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:background="@null" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quick Select:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-medium" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap on a document type below to quickly select it"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurfaceSecondary"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="sans-serif" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:scrollbars="none"
+        android:background="@drawable/chip_group_background"
+        android:padding="12dp">
+        
+        <!-- Replaced ChipGroup with larger buttons -->
+        <LinearLayout
+            android:id="@+id/suggestionsButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+            
+    </HorizontalScrollView>
+        
+    <TextView
+        android:id="@+id/noSuggestionsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No matching documents found. You can create a new document with this name."
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurfaceSecondary"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:fontFamily="sans-serif" />
+
+</LinearLayout>

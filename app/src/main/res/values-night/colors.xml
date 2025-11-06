@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Theme Colors -->
+    <color name="dark_primary">#BB86FC</color>
+    <color name="dark_primary_variant">#3700B3</color>
+    <color name="dark_on_primary">#000000</color>
+    <color name="dark_secondary">#03DAC6</color>
+    <color name="dark_secondary_variant">#018786</color>
+    <color name="dark_on_secondary">#000000</color>
+    <color name="dark_accent">#03DAC6</color>
+    <color name="dark_background">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_on_surface">#FFFFFF</color>
+    <color name="dark_on_background">#FFFFFF</color>
+    <color name="dark_on_surface_secondary">#B3FFFFFF</color>
+    <color name="dark_on_surface_disabled">#61FFFFFF</color>
+    
+    <!-- Shadow colors for 3D effects (darker for dark theme) -->
+    <color name="shadow_color_1">#1AFFFFFF</color>
+    <color name="shadow_color_2">#26FFFFFF</color>
+    <color name="shadow_color_3">#33FFFFFF</color>
+    
+    <!-- Gradient colors (darker for dark theme) -->
+    <color name="gradient_start_color">#80FFFFFF</color>
+    
+    <!-- Chip colors for dark theme -->
+    <color name="chip_background_selected">#1EFFFFFF</color>
+    <color name="chip_background_unselected">#1EFFFFFF</color>
+    <color name="chip_text_selected">#BB86FC</color>
+    <color name="chip_text_unselected">#B3FFFFFF</color>
+    <color name="chip_stroke_selected">#BB86FC</color>
+    <color name="chip_stroke_unselected">#61FFFFFF</color>
+    <color name="chip_ripple_color">#BB86FC</color>
+    
+    <!-- Placeholder colors for dark theme -->
+    <color name="placeholder_A_dark">#FFD600</color>
+    <color name="placeholder_text_A_dark">#000000</color>
+    <color name="placeholder_B_dark">#64DD17</color>
+    <color name="placeholder_text_B_dark">#000000</color>
+    <color name="placeholder_C_dark">#2979FF</color>
+    <color name="placeholder_text_C_dark">#FFFFFF</color>
+    <color name="placeholder_D_dark">#AA00FF</color>
+    <color name="placeholder_text_D_dark">#FFFFFF</color>
+    <color name="placeholder_E_dark">#FF6D00</color>
+    <color name="placeholder_text_E_dark">#000000</color>
+    <color name="placeholder_F_dark">#FF1744</color>
+    <color name="placeholder_text_F_dark">#FFFFFF</color>
+    <color name="placeholder_G_dark">#00E5FF</color>
+    <color name="placeholder_text_G_dark">#000000</color>
+    <color name="placeholder_H_dark">#64DD17</color>
+    <color name="placeholder_text_H_dark">#000000</color>
+    <color name="placeholder_I_dark">#9E9E9E</color>
+    <color name="placeholder_text_I_dark">#000000</color>
+    <color name="placeholder_J_dark">#6D4C41</color>
+    <color name="placeholder_text_J_dark">#FFFFFF</color>
+    <color name="placeholder_K_dark">#546E7A</color>
+    <color name="placeholder_text_K_dark">#FFFFFF</color>
+    <color name="placeholder_L_dark">#C6FF00</color>
+    <color name="placeholder_text_L_dark">#000000</color>
+    <color name="placeholder_M_dark">#FF3D00</color>
+    <color name="placeholder_text_M_dark">#FFFFFF</color>
+    <color name="placeholder_N_dark">#512DA8</color>
+    <color name="placeholder_text_N_dark">#FFFFFF</color>
+    <color name="placeholder_O_dark">#00BFA5</color>
+    <color name="placeholder_text_O_dark">#000000</color>
+    <color name="placeholder_P_dark">#D50000</color>
+    <color name="placeholder_text_P_dark">#FFFFFF</color>
+    <color name="placeholder_Q_dark">#304FFE</color>
+    <color name="placeholder_text_Q_dark">#FFFFFF</color>
+    <color name="placeholder_R_dark">#00B0FF</color>
+    <color name="placeholder_text_R_dark">#000000</color>
+    <color name="placeholder_S_dark">#76FF03</color>
+    <color name="placeholder_text_S_dark">#000000</color>
+    <color name="placeholder_T_dark">#FFD600</color>
+    <color name="placeholder_text_T_dark">#000000</color>
+    <color name="placeholder_U_dark">#FF6D00</color>
+    <color name="placeholder_text_U_dark">#000000</color>
+    <color name="placeholder_V_dark">#00E5FF</color>
+    <color name="placeholder_text_V_dark">#000000</color>
+    <color name="placeholder_W_dark">#AA00FF</color>
+    <color name="placeholder_text_W_dark">#FFFFFF</color>
+    <color name="placeholder_X_dark">#546E7A</color>
+    <color name="placeholder_text_X_dark">#FFFFFF</color>
+    <color name="placeholder_Y_dark">#FFEA00</color>
+    <color name="placeholder_text_Y_dark">#000000</color>
+    <color name="placeholder_Z_dark">#6D4C41</color>
+    <color name="placeholder_text_Z_dark">#FFFFFF</color>
+    
+    <!-- Social Media Icon Colors for Dark Theme -->
+    <color name="social_media_fab_background">@color/dark_surface</color>
+    <color name="social_media_fab_tint">@color/dark_on_surface</color>
+    
+    <!-- Surface dark color -->
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="text_primary_dark">#FFFFFF</color>
+</resources>

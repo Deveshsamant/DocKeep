@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardMaxElevation="@dimen/card_elevation_hover"
+    app:strokeWidth="@dimen/card_stroke_width"
+    app:strokeColor="?attr/colorOnSurfaceDisabled">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_small">
+
+        <!-- Container for placeholder with enhanced styling -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageContainerCard"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="6dp"
+            app:cardMaxElevation="10dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <FrameLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Placeholder circle with first letter -->
+                <TextView
+                    android:id="@+id/placeholderCircle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="A"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Document title under placeholder -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="DOCUMENT TITLE"
+            android:textSize="@dimen/text_size_regular"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorOnSurface"
+            android:gravity="center"
+            android:paddingStart="@dimen/spacing_xsmall"
+            android:paddingEnd="@dimen/spacing_xsmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageContainerCard"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

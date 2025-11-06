@@ -1,0 +1,8 @@
+<resources>
+    <attr name="colorOnSurfaceSecondary" format="color" />
+    <attr name="colorOnSurfaceDisabled" format="color" />
+    <attr name="colorSurfaceVariant" format="color" />
+    <attr name="shadowColor1" format="color" />
+    <attr name="shadowColor2" format="color" />
+    <attr name="shadowColor3" format="color" />
+</resources>

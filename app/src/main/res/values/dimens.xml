@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Professional spacing system (8-point grid) -->
+    <dimen name="spacing_xxxsmall">2dp</dimen>
+    <dimen name="spacing_xxsmall">4dp</dimen>
+    <dimen name="spacing_xsmall">8dp</dimen>
+    <dimen name="spacing_small">12dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+    <dimen name="spacing_xxlarge">40dp</dimen>
+    <dimen name="spacing_xxxlarge">48dp</dimen>
+    <dimen name="spacing_huge">56dp</dimen>
+    
+    <!-- Professional card dimensions -->
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_elevation">6dp</dimen>
+    <dimen name="card_elevation_hover">12dp</dimen>
+    <dimen name="card_margin">12dp</dimen>
+    <dimen name="card_stroke_width">1dp</dimen>
+    
+    <!-- Professional text sizes -->
+    <dimen name="text_size_micro">10sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_regular">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_xlarge">20sp</dimen>
+    <dimen name="text_size_title">22sp</dimen>
+    <dimen name="text_size_headline">28sp</dimen>
+    <dimen name="text_size_display">32sp</dimen>
+    
+    <!-- Professional icon sizes -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_xlarge">48dp</dimen>
+    
+    <!-- Professional button dimensions -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_corner_radius">12dp</dimen>
+    <dimen name="button_min_width">120dp</dimen>
+    <dimen name="button_padding_horizontal">16dp</dimen>
+    
+    <!-- Touch target minimum size -->
+    <dimen name="touch_target_min_size">48dp</dimen>
+    
+    <!-- Professional placeholder circle -->
+    <dimen name="placeholder_circle_size">72dp</dimen>
+    
+    <!-- Person item dimensions -->
+    <dimen name="avatar_size">48dp</dimen>
+    <dimen name="avatar_radius">24dp</dimen>
+</resources>

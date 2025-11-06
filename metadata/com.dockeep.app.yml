@@ -1,0 +1,39 @@
+Categories:
+  - Office
+  - Graphics
+License: MIT
+AuthorName: Devesh Samant
+SourceCode: https://codeberg.org/yourusername/dockeep
+IssueTracker: https://codeberg.org/yourusername/dockeep/issues
+
+Summary: A document management app for Android
+Description: |-
+  DocKeep is a modern Android application for storing and organizing personal 
+  documents locally on your device. Built with Kotlin and XML, it provides a 
+  clean, user-friendly interface with Material Design components and smooth animations.
+
+  Features:
+  - Local Storage: All documents are stored locally on your device
+  - Document Organization: Create and organize documents in a clean card-based interface
+  - Image Management: Add multiple images to each document from camera or gallery
+  - Sharing: Share individual images or entire documents with other apps
+  - Export: Export documents as ZIP files
+  - Dark/Light Theme: Toggle between light and dark themes
+  - Search: Quickly find documents by name
+  - Responsive Design: Works on both phones and tablets
+
+RepoType: git
+Repo: https://codeberg.org/yourusername/dockeep.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: 'v1.0'
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%s
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1

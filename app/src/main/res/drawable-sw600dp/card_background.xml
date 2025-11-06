@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow layers for 3D effect -->
+    <item android:top="6dp" android:left="6dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#10000000" />
+            <corners android:radius="@dimen/card_corner_radius" />
+        </shape>
+    </item>
+    <item android:top="5dp" android:left="5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#15000000" />
+            <corners android:radius="@dimen/card_corner_radius" />
+        </shape>
+    </item>
+    <item android:top="4dp" android:left="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#20000000" />
+            <corners android:radius="@dimen/card_corner_radius" />
+        </shape>
+    </item>
+    <item android:top="3dp" android:left="3dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#25000000" />
+            <corners android:radius="@dimen/card_corner_radius" />
+        </shape>
+    </item>
+    <!-- Card background with subtle gradient -->
+    <item android:bottom="3dp" android:right="3dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="?attr/colorSurface"
+                android:endColor="?attr/colorSurfaceVariant"
+                android:angle="270"
+                android:type="linear" />
+            <corners android:radius="@dimen/card_corner_radius" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorPrimary">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorSurface" />
+            <corners android:radius="@dimen/card_corner_radius" />
+        </shape>
+    </item>
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <layer-list>
+                    <!-- Enhanced shadow layers for 3D effect -->
+                    <item>
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor1" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="2dp">
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor2" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="3dp">
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor3" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <!-- Enhanced card background with gradient and pressed state -->
+                    <item android:top="3dp" android:left="3dp" android:right="3dp" android:bottom="4dp">
+                        <shape android:shape="rectangle">
+                            <gradient
+                                android:startColor="?attr/colorSurface"
+                                android:endColor="?attr/colorSurfaceVariant"
+                                android:angle="270"
+                                android:type="linear" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                </layer-list>
+            </item>
+            <item android:state_focused="true">
+                <layer-list>
+                    <!-- Enhanced shadow layers for focused state -->
+                    <item>
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor1" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="2dp">
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor2" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="3dp">
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor3" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <!-- Enhanced card background with gradient for focused state -->
+                    <item android:top="3dp" android:left="3dp" android:right="3dp" android:bottom="4dp">
+                        <shape android:shape="rectangle">
+                            <gradient
+                                android:startColor="?attr/colorSurface"
+                                android:centerColor="?attr/colorSurfaceVariant"
+                                android:endColor="?attr/colorSurface"
+                                android:angle="270"
+                                android:type="linear" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                </layer-list>
+            </item>
+            <item>
+                <layer-list>
+                    <!-- Enhanced shadow layers for 3D effect -->
+                    <item>
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor1" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="2dp">
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor2" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="3dp">
+                        <shape android:shape="rectangle">
+                            <solid android:color="?attr/shadowColor3" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                    <!-- Enhanced card background with subtle gradient -->
+                    <item android:top="3dp" android:left="3dp" android:right="3dp" android:bottom="4dp">
+                        <shape android:shape="rectangle">
+                            <gradient
+                                android:startColor="?attr/colorSurface"
+                                android:endColor="?attr/colorSurfaceVariant"
+                                android:angle="270"
+                                android:type="linear" />
+                            <corners android:radius="@dimen/card_corner_radius" />
+                        </shape>
+                    </item>
+                </layer-list>
+            </item>
+        </selector>
+    </item>
+</ripple>

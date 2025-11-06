@@ -1,0 +1,62 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Dark theme -->
+    <style name="Theme.DocKeep" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryVariant">@color/dark_primary_variant</item>
+        <item name="colorOnPrimary">@color/dark_on_primary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dark_secondary</item>
+        <item name="colorSecondaryVariant">@color/dark_secondary_variant</item>
+        <item name="colorOnSecondary">@color/dark_on_secondary</item>
+        <!-- Accent color -->
+        <item name="colorAccent">@color/dark_accent</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Background color -->
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_on_surface</item>
+        <item name="colorOnBackground">@color/dark_on_background</item>
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/dark_on_background</item>
+        <item name="android:textColorSecondary">@color/dark_on_surface_secondary</item>
+        <item name="android:textColorTertiary">@color/dark_on_surface_disabled</item>
+        <!-- Additional styling -->
+        <item name="colorOnSurfaceSecondary">@color/color_on_surface_secondary</item>
+        <item name="colorOnSurfaceDisabled">@color/dark_on_surface_disabled</item>
+        <item name="colorSurfaceVariant">@color/dark_surface</item>
+        
+        <!-- Enhanced 3D effects -->
+        <item name="materialCardViewStyle">@style/Widget.DocKeep.CardView</item>
+        <item name="materialButtonStyle">@style/Widget.DocKeep.Button</item>
+    </style>
+    
+    <style name="Widget.DocKeep.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="android:stateListAnimator">@animator/card_elevation</item>
+    </style>
+    
+    <style name="Widget.DocKeep.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="elevation">@dimen/card_elevation</item>
+        <item name="android:stateListAnimator">@animator/button_elevation</item>
+    </style>
+    
+    <style name="Widget.DocKeep.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="elevation">8dp</item>
+        <item name="hoveredFocusedTranslationZ">6dp</item>
+        <item name="pressedTranslationZ">12dp</item>
+        <item name="fabSize">normal</item>
+        <item name="android:foreground">@drawable/fab_ripple</item>
+        <item name="android:stateListAnimator">@animator/fab_press</item>
+    </style>
+    
+    <style name="Widget.DocKeep.PortfolioButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="elevation">8dp</item>
+        <item name="android:stateListAnimator">@animator/button_elevation</item>
+    </style>
+</resources>

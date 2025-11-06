@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Removed tag_item_touch_helper since we're using long-press drag -->
+</resources>

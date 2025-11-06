@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- For Android 11+ scoped storage -->
+    <!-- 
+         F-Droid note: This permission is needed for accessing images in shared storage
+         on Android 11+. The app only accesses image files in the Pictures/Dockeep directory
+         and does not access other user data. This is the minimum permission set required
+         for the app's core functionality of document management with images.
+    -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DocKeep"
+        tools:targetApi="31">
+        
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        
+        <activity
+            android:name=".DocumentDetailActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".ImageViewerActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".DeveloperDetailsActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".FamilyFriendsActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".PersonDocumentsActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+            
+        <!-- FileProvider for sharing files -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>
