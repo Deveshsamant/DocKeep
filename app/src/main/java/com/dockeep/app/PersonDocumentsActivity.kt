@@ -5,14 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.dockAsLedgerSheet
 import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
@@ -157,26 +160,47 @@ class PersonDocumentsActivity : AppCompatActivity() {
         }
     }
 
-    /** Renames the shelf. The tile colour follows the new name. */
+    /**
+     * Renames the shelf. The tile colour follows the new name.
+     *
+     * Shares the add-person sheet, relabelled: the layout carries its own
+     * accent action bar, so driving it with AlertDialog's buttons would put
+     * two sets of controls on one sheet.
+     */
     private fun showRenamePersonDialog() {
         val current = person ?: return
         val dialogLayout = layoutInflater.inflate(R.layout.dialog_create_person, null)
-        val field = dialogLayout.findViewById<android.widget.EditText>(R.id.personNameEditText)
+        val field = dialogLayout.findViewById<EditText>(R.id.personNameEditText)
         field.setText(current.name)
         field.setSelection(field.text.length)
 
+        dialogLayout.findViewById<TextView>(R.id.sheetKicker)
+            .setText(R.string.ledger_rename_person)
+        dialogLayout.findViewById<TextView>(R.id.sheetTitle)
+            .setText(R.string.ledger_sheet_new_name)
+        dialogLayout.findViewById<TextView>(R.id.sheetAddPersonLabel)
+            .setText(R.string.ledger_save)
+
         val dialog = AlertDialog.Builder(this)
             .setView(dialogLayout)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                val newName = field.text.toString().trim()
-                if (newName.isEmpty()) {
-                    Toast.makeText(this, R.string.person_name_required, Toast.LENGTH_SHORT).show()
-                } else {
-                    personViewModel.updatePerson(current.copy(name = newName))
-                }
-            }
-            .setNegativeButton(R.string.cancel, null)
             .create()
+            .dockAsLedgerSheet()
+
+        fun submit() {
+            val newName = field.text.toString().trim()
+            if (newName.isEmpty()) {
+                Toast.makeText(this, R.string.person_name_required, Toast.LENGTH_SHORT).show()
+                return
+            }
+            personViewModel.updatePerson(current.copy(name = newName))
+            dialog.dismiss()
+        }
+
+        dialogLayout.findViewById<View>(R.id.sheetAddPerson).setOnClickListener { submit() }
+        field.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) { submit(); true } else false
+        }
+
         dialog.show()
     }
 
@@ -337,17 +361,26 @@ class PersonDocumentsActivity : AppCompatActivity() {
         }
 
         builder.setView(dialogLayout)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                val docName = documentNameEditText.text.toString().trim()
-                when {
-                    docName.isEmpty() -> Toast.makeText(this, R.string.document_name_required, Toast.LENGTH_SHORT).show()
-                    documents.any { it.name.equals(docName, ignoreCase = true) } -> Toast.makeText(this, "Document with this name already exists", Toast.LENGTH_SHORT).show()
-                    else -> createDocument(docName)
+
+        val dialog = builder.create().dockAsLedgerSheet()
+
+        fun submit() {
+            val docName = documentNameEditText.text.toString().trim()
+            when {
+                docName.isEmpty() ->
+                    Toast.makeText(this, R.string.document_name_required, Toast.LENGTH_SHORT).show()
+                documents.any { it.name.equals(docName, ignoreCase = true) } ->
+                    Toast.makeText(this, R.string.document_name_exists, Toast.LENGTH_SHORT).show()
+                else -> {
+                    createDocument(docName)
+                    dialog.dismiss()
                 }
             }
-            .setNegativeButton(R.string.cancel, null)
+        }
 
-        val dialog = builder.create()
+        dialogLayout.findViewById<View>(R.id.sheetCreate).setOnClickListener { submit() }
+        dialogLayout.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
+
         dialog.show()
         
         documentNameEditText.addTextChangedListener(object : TextWatcher {

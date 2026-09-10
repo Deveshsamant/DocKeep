@@ -34,6 +34,16 @@ object Edge {
         WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
 
     /**
+     * The keyboard, which has to be handled here too.
+     *
+     * Taking the window out of decor-fitting is what turns off the automatic
+     * resize for the IME, so a screen with a text field will happily let the
+     * keyboard bury it. Every screen that takes its bars as padding therefore
+     * has to take the keyboard as padding as well.
+     */
+    private val IME = WindowInsetsCompat.Type.ime()
+
+    /**
      * Lays [root] out edge to edge, taking the system bars as padding.
      *
      * Pass [bottomBars] for a screen whose foot is a full-bleed container: each
@@ -57,14 +67,25 @@ object Edge {
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
             val bars = insets.getInsets(TYPES)
+            val keyboard = insets.getInsets(IME).bottom
+
+            // With the keyboard up it covers the navigation bar, so the bar
+            // inset is spent and the whole screen — foot bars included — lifts
+            // to sit on top of the keyboard instead.
             view.setPadding(
                 bars.left,
                 bars.top,
                 bars.right,
-                if (bottomBars.isEmpty()) bars.bottom else 0
+                when {
+                    keyboard > 0 -> keyboard
+                    bottomBars.isEmpty() -> bars.bottom
+                    else -> 0
+                }
             )
             bottomBars.forEachIndexed { i, bar ->
-                bar.updateBottomPadding(basePadding[i] + bars.bottom)
+                bar.updateBottomPadding(
+                    basePadding[i] + if (keyboard > 0) 0 else bars.bottom
+                )
             }
             insets
         }
@@ -118,4 +139,7 @@ object Edge {
 
     /** Kept for callers that only need the raw values. */
     fun barsOf(insets: WindowInsetsCompat): Insets = insets.getInsets(TYPES)
+
+    /** The keyboard's height, or 0 when it is down. */
+    fun imeOf(insets: WindowInsetsCompat): Int = insets.getInsets(IME).bottom
 }

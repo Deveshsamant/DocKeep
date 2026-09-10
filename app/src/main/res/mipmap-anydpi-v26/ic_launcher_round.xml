@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Adaptive launcher icon.
+
+    The launcher masks this to its own shape and only the inner 72dp of the
+    108dp canvas is guaranteed to survive, so the artwork cannot simply fill
+    the frame: its wordmark sits near the bottom edge and a circular mask would
+    cut through it. It is held at the largest scale that keeps the wordmark
+    inside a circle.
+
+    The background is the same artwork, enlarged past the canvas and blurred,
+    so the area around it continues the artwork's own blue-to-purple sweep. A
+    flat colour could only ever match one side of that gradient, which is what
+    made the icon look like it had a border stuck around it.
+-->
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background android:drawable="@drawable/ic_launcher_background"/>
-    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+    <background android:drawable="@mipmap/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
 </adaptive-icon>

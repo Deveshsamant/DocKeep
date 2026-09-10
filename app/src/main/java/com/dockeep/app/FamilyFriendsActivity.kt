@@ -2,12 +2,14 @@ package com.dockeep.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.dockAsLedgerSheet
 import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
@@ -23,7 +25,6 @@ import android.widget.TextView
 import com.dockeep.app.ui.LedgerGridDecoration
 import com.dockeep.app.ui.LedgerNav
 import com.dockeep.app.viewmodel.DocumentViewModel
-import com.google.android.material.textfield.TextInputEditText
 import android.widget.Toast
 
 class FamilyFriendsActivity : AppCompatActivity() {
@@ -39,9 +40,6 @@ class FamilyFriendsActivity : AppCompatActivity() {
     private lateinit var emptyStateLayout: View
     private lateinit var backButton: View
     private lateinit var peopleSubtitle: TextView
-    private lateinit var unassignedSection: View
-    private lateinit var unassignedRow: View
-    private lateinit var unassignedCount: TextView
     private lateinit var navDocs: View
     private lateinit var navPeople: View
     private lateinit var navYou: View
@@ -81,9 +79,6 @@ class FamilyFriendsActivity : AppCompatActivity() {
         emptyStateLayout = findViewById(R.id.emptyStateLayout)
         backButton = findViewById(R.id.backButton)
         peopleSubtitle = findViewById(R.id.peopleSubtitle)
-        unassignedSection = findViewById(R.id.unassignedSection)
-        unassignedRow = findViewById(R.id.unassignedRow)
-        unassignedCount = findViewById(R.id.unassignedCount)
         navDocs = findViewById(R.id.navDocs)
         navPeople = findViewById(R.id.navPeople)
         navYou = findViewById(R.id.navYou)
@@ -147,9 +142,6 @@ class FamilyFriendsActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
-        // Tapping Unassigned opens the main user's shelf, which is where
-        // documents with no person live.
-        unassignedRow.setOnClickListener { finish() }
     }
 
     /**
@@ -170,13 +162,10 @@ class FamilyFriendsActivity : AppCompatActivity() {
                 docs.filter { it.personId != null }.groupBy { it.personId!! }
             )
 
-            val unfiled = docs.count { it.personId == null }
-            if (unfiled == 0) {
-                unassignedSection.visibility = View.GONE
-            } else {
-                unassignedSection.visibility = View.VISIBLE
-                unassignedCount.text = getString(R.string.ledger_documents_to_file, unfiled)
-            }
+            // The Unassigned row used to sit here. Its Assign action only ever
+            // called finish(), so it advertised something the app could not
+            // do; filing a document under someone is done from the document
+            // itself.
         }
     }
 
@@ -261,26 +250,50 @@ class FamilyFriendsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * The add-person sheet.
+     *
+     * The layout was redesigned into a Ledger sheet — kicker, title, one
+     * field, and its own accent action bar — but this method was still driving
+     * the old Material dialog. Three things were wrong at once: the field was
+     * looked up as a TextInputEditText when the layout now holds a plain
+     * EditText, which threw ClassCastException the moment the sheet opened;
+     * the sheet was never docked, so it floated as a centred card; and the
+     * confirm/cancel buttons came from AlertDialog, which draws nothing
+     * usable against CustomDialogTheme's transparent window.
+     */
     private fun showAddPersonDialog() {
-        val builder = AlertDialog.Builder(this, R.style.CustomDialogTheme)
-        val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.dialog_create_person, null)
-        val personNameEditText = dialogLayout.findViewById<TextInputEditText>(R.id.personNameEditText)
+        val dialogLayout = layoutInflater.inflate(R.layout.dialog_create_person, null)
+        val personNameEditText = dialogLayout.findViewById<EditText>(R.id.personNameEditText)
 
-        builder.setView(dialogLayout)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                val personName = personNameEditText.text.toString().trim()
-                if (personName.isNotEmpty()) {
-                    createPerson(personName)
-                } else {
-                    Toast.makeText(this, R.string.person_name_required, Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton(R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogLayout)
+            .create()
+            .dockAsLedgerSheet()
 
-        val dialog = builder.create()
+        fun submit() {
+            val personName = personNameEditText.text.toString().trim()
+            if (personName.isEmpty()) {
+                Toast.makeText(this, R.string.person_name_required, Toast.LENGTH_SHORT).show()
+                return
+            }
+            createPerson(personName)
+            dialog.dismiss()
+        }
+
+        dialogLayout.findViewById<View>(R.id.sheetAddPerson).setOnClickListener { submit() }
+
+        // The field declares imeOptions="actionDone"; without this the key
+        // does nothing and the only way on is the button.
+        personNameEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                submit()
+                true
+            } else {
+                false
+            }
+        }
+
         dialog.show()
     }
 

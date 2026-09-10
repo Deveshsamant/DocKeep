@@ -583,7 +583,10 @@
     <!-- Primary actions -->
     <string name="ledger_new_document">New document</string>
     <string name="ledger_add_scans">Add scans</string>
+    <string name="document_name_exists">A document with this name already exists</string>
     <string name="ledger_add_person">Add person</string>
+    <string name="ledger_rename_person">Rename</string>
+    <string name="ledger_sheet_new_name">What should it be called?</string>
     <string name="ledger_scan_first">Scan my first document</string>
 
     <!-- Settings drawer -->

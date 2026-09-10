@@ -661,6 +661,10 @@ class DocumentDetailActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
             .dockAsLedgerSheet()
+
+        // The X in the sheet header. It was drawn in every one of these
+        // layouts but wired in only some, so on this sheet it did nothing.
+        dialogView.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
         
         // Apply fade-in animation when the dialog is shown
         dialog.setOnShowListener {
@@ -1210,6 +1214,10 @@ class DocumentDetailActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
             .dockAsLedgerSheet()
+
+        // The X in the sheet header. It was drawn in every one of these
+        // layouts but wired in only some, so on this sheet it did nothing.
+        dialogView.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
         
         // Apply fade-in animation when the dialog is shown
         dialog.setOnShowListener {
@@ -1304,6 +1312,10 @@ class DocumentDetailActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
             .dockAsLedgerSheet()
+
+        // The X in the sheet header. It was drawn in every one of these
+        // layouts but wired in only some, so on this sheet it did nothing.
+        dialogView.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
         
         // Set click listeners for the options
         galleryOption.setOnClickListener {

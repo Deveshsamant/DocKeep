@@ -4,10 +4,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
+import android.view.WindowManager
 
 /**
  * Docks a dialog to the bottom edge as a Ledger sheet.
@@ -30,31 +28,19 @@ fun <T : Dialog> T.dockAsLedgerSheet(): T {
         )
 
         // A dialog carries its own window, so the activity's edge-to-edge
-        // handling does not reach it. Take the navigation bar here instead:
-        // the sheet's own background then runs to the very bottom of the
-        // screen — which is the whole point of a docked sheet — while its
-        // contents stay clear of the bar.
+        // handling does not reach it — and it must not. Taking a docked sheet
+        // out of decor fitting and padding it by the insets made it grow by
+        // the keyboard's height instead of sitting on top of it, leaving the
+        // sheet stranded at the top of the screen over a blank gap.
         //
-        // Whether a dialog window is edge to edge by default varies by
-        // release. Asking for it explicitly and then reading the inset works
-        // out the same either way: where the window already fits the system
-        // bars, the inset arrives as zero and nothing moves.
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        val content = window.decorView.findViewById<View>(android.R.id.content)
-        content?.let { view ->
-            val basePadding = view.paddingBottom
-            ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
-                val bars = Edge.barsOf(insets)
-                v.setPadding(
-                    v.paddingLeft,
-                    v.paddingTop,
-                    v.paddingRight,
-                    basePadding + bars.bottom
-                )
-                insets
-            }
-            ViewCompat.requestApplyInsets(view)
-        }
+        // Letting the framework fit this window does the right thing on its
+        // own: the sheet rests above the navigation bar, and above the
+        // keyboard when one is up. The only thing given up is the background
+        // bleeding behind the navigation bar, which is not worth a sheet that
+        // misplaces itself the moment a field is focused.
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        )
     }
     return this
 }

@@ -55,6 +55,7 @@ import com.dockeep.app.database.DocumentImage
 import com.dockeep.app.database.Person
 import com.dockeep.app.utils.ColorUtils
 import com.dockeep.app.ui.dockAsLedgerSheet
+import com.dockeep.app.utils.ExportNotes
 import com.dockeep.app.utils.FileUtils
 import com.dockeep.app.utils.AppLock
 import com.dockeep.app.utils.AppUpdates
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val PREFS_NAME = "app_prefs"
         private const val THEME_PREF = "is_dark_theme"
+
     }
     
     private lateinit var viewModel: DocumentViewModel
@@ -1716,54 +1718,6 @@ class MainActivity : AppCompatActivity() {
         )
         documentNameEditText.setAdapter(autocompleteAdapter)
 
-        // Add suggestion buttons (show first 15 for better UI)
-        suggestionsButtonContainer.removeAllViews()
-        commonDocumentNames.take(15).forEach { documentName ->
-            val button = com.google.android.material.button.MaterialButton(this).apply {
-                text = documentName
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    setMargins(0, 0, 2, 0)
-                }
-
-                // Ledger chip: 2px rule, square, no fill, tracked micro-caps.
-                cornerRadius = 0
-                strokeWidth = (2 * resources.displayMetrics.density).toInt()
-                setStrokeColorResource(R.color.ledger_rule)
-                setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                elevation = 0f
-                stateListAnimator = null
-                insetTop = 0
-                insetBottom = 0
-                minHeight = 0
-                minWidth = 0
-                isAllCaps = true
-                letterSpacing = 0.1f
-                textSize = 10.5f
-                typeface = androidx.core.content.res.ResourcesCompat.getFont(
-                    this@MainActivity, R.font.archivo_semibold
-                )
-                setTextColor(
-                    ContextCompat.getColor(this@MainActivity, R.color.ledger_text)
-                )
-                
-                // Check if document already exists
-                val isDocumentExists = documents.any { it.name.equals(documentName, ignoreCase = true) }
-                if (isDocumentExists) {
-                    isEnabled = false
-                    alpha = 0.5f
-                } else {
-                    setOnClickListener {
-                        documentNameEditText.setText(documentName)
-                        documentNameEditText.setSelection(documentName.length)
-                    }
-                }
-            }
-            
-            suggestionsButtonContainer.addView(button)
-        }
 
         builder.setView(dialogLayout)
 
@@ -1789,6 +1743,50 @@ class MainActivity : AppCompatActivity() {
         val fileUnderChips =
             dialogLayout.findViewById<com.google.android.material.chip.ChipGroup>(R.id.fileUnderChips)
         var fileUnderPersonId: Long? = null
+
+        /**
+         * Whether [name] is already used *by the same owner*.
+         *
+         * The check used to look at every document in the vault, so a name
+         * taken on one person's shelf was refused on everybody else's: with
+         * an Aadhaar Card filed under Devesh, no one else could be given one
+         * at all. Two people holding documents of the same kind is the normal
+         * case for this app, not a collision.
+         */
+        fun nameTaken(name: String, owner: Long?): Boolean =
+            documents.any { it.name.equals(name, ignoreCase = true) && it.personId == owner }
+
+        /**
+         * The quick-name chips, rebuilt whenever the owner changes.
+         *
+         * They are plain Ledger chips rather than MaterialButtons: a
+         * MaterialButton's backgroundTint wins over setBackgroundColor, so the
+         * "transparent" chips were drawing the accent tint underneath and the
+         * disabled ones came out as washed-out pink blocks.
+         */
+        fun refreshSuggestions() {
+            suggestionsButtonContainer.removeAllViews()
+            commonDocumentNames.take(15).forEach { suggestion ->
+                val chip = layoutInflater.inflate(
+                    R.layout.item_ledger_tag, suggestionsButtonContainer, false
+                ) as TextView
+                chip.text = suggestion
+
+                if (nameTaken(suggestion, fileUnderPersonId)) {
+                    // Already on this shelf: shown, so the user can see it is
+                    // accounted for, but not offered again.
+                    chip.isEnabled = false
+                    chip.alpha = 0.32f
+                } else {
+                    chip.setOnClickListener {
+                        documentNameEditText.setText(suggestion)
+                        documentNameEditText.setSelection(suggestion.length)
+                    }
+                }
+                suggestionsButtonContainer.addView(chip)
+            }
+        }
+        refreshSuggestions()
 
         lifecycleScope.launch {
             val people = viewModel.getAllPeopleSync()
@@ -1817,6 +1815,8 @@ class MainActivity : AppCompatActivity() {
                     chips.forEach { it.isSelected = false }
                     chip.isSelected = true
                     fileUnderPersonId = if (index == 0) null else people[index - 1].id
+                    // What counts as taken depends on whose shelf it is.
+                    refreshSuggestions()
                 }
             }
         }
@@ -1846,7 +1846,7 @@ class MainActivity : AppCompatActivity() {
             when {
                 documentName.isEmpty() ->
                     Toast.makeText(this, R.string.document_name_required, Toast.LENGTH_SHORT).show()
-                documents.any { it.name.equals(documentName, ignoreCase = true) } ->
+                nameTaken(documentName, fileUnderPersonId) ->
                     Toast.makeText(this, R.string.ledger_document_exists, Toast.LENGTH_SHORT).show()
                 else -> {
                     createDocument(documentName, fileUnderPersonId)
@@ -2009,6 +2009,43 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Error handling ZIP file", e)
             Toast.makeText(this, "Error handling ZIP file: ${e.message}", Toast.LENGTH_LONG).show()
         }
+    }
+
+    /**
+     * Turns the files pulled out of an archive into a document's blocks.
+     *
+     * A note was exported as a text file, so it has to be read back as one:
+     * treating it as a scan would leave a block pointing at a .txt it could
+     * never display. Both import paths go through here so they cannot drift.
+     */
+    private suspend fun insertImportedBlocks(documentId: Long, paths: List<String>) {
+        // Notes carry their original position in the filename; scans arrive in
+        // the order the archive listed them.
+        val ordered = paths.sortedBy { ExportNotes.orderOf(File(it).name) ?: Int.MAX_VALUE }
+
+        for ((index, path) in ordered.withIndex()) {
+            val file = File(path)
+            val block = if (ExportNotes.isNote(file.name)) {
+                val body = runCatching { file.readText() }.getOrDefault("")
+                // The staged file has done its job; the note lives in the row.
+                runCatching { file.delete() }
+                DocumentImage(
+                    documentId = documentId,
+                    imagePath = "",
+                    order = index,
+                    blockType = DocumentImage.BLOCK_TEXT,
+                    text = body
+                )
+            } else {
+                DocumentImage(
+                    documentId = documentId,
+                    imagePath = path,
+                    order = index
+                )
+            }
+            viewModel.insertImageSync(block)
+        }
+        Log.d("MainActivity", "Imported ${ordered.size} blocks into document $documentId")
     }
 
     private fun processImportedZipFile(uri: Uri): Int {
@@ -2219,17 +2256,7 @@ class MainActivity : AppCompatActivity() {
                                 // Add images to the document if we have a valid document ID and there are images
                                 if (documentId != -1L && imagePaths.isNotEmpty()) {
                                     Log.d("MainActivity", "Adding ${imagePaths.size} images to document ID: $documentId")
-                                    runBlocking {
-                                        for ((index, imagePath) in imagePaths.withIndex()) {
-                                            val documentImage = DocumentImage(
-                                                documentId = documentId,
-                                                imagePath = imagePath,
-                                                order = index
-                                            )
-                                            viewModel.insertImageSync(documentImage)
-                                            Log.d("MainActivity", "Added image to document: $imagePath")
-                                        }
-                                    }
+                                    runBlocking { insertImportedBlocks(documentId, imagePaths) }
                                 }
                             } else {
                                 Log.d("MainActivity", "Skipping empty main user document: $documentName (no images to import)")
@@ -2287,17 +2314,7 @@ class MainActivity : AppCompatActivity() {
                                 // Add images to the document if we have a valid document ID and there are images
                                 if (documentId != -1L && imagePaths.isNotEmpty()) {
                                     Log.d("MainActivity", "Adding ${imagePaths.size} images to document ID: $documentId")
-                                    runBlocking {
-                                        for ((index, imagePath) in imagePaths.withIndex()) {
-                                            val documentImage = DocumentImage(
-                                                documentId = documentId,
-                                                imagePath = imagePath,
-                                                order = index
-                                            )
-                                            viewModel.insertImageSync(documentImage)
-                                            Log.d("MainActivity", "Added image to document: $imagePath")
-                                        }
-                                    }
+                                    runBlocking { insertImportedBlocks(documentId, imagePaths) }
                                 }
                             } else {
                                 Log.d("MainActivity", "Skipping empty person document: $documentName (no images to import)")
@@ -2338,6 +2355,10 @@ class MainActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
             .dockAsLedgerSheet()
+
+        // The X in the sheet header. It was drawn in every one of these
+        // layouts but wired in only some, so on this sheet it did nothing.
+        dialogView.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
         
         importAllOption.setOnClickListener {
             dialog.dismiss()
@@ -2549,6 +2570,10 @@ class MainActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
             .dockAsLedgerSheet()
+
+        // The X in the sheet header. It was drawn in every one of these
+        // layouts but wired in only some, so on this sheet it did nothing.
+        dialogView.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
         
         exportAllOption.setOnClickListener {
             dialog.dismiss()
@@ -2637,13 +2662,42 @@ class MainActivity : AppCompatActivity() {
         val mine = LinkedHashMap<String, List<String>>()
         val byPerson = LinkedHashMap<String, MutableMap<String, List<String>>>()
 
+        // Notes are written out as small text files beside the scans. The
+        // archive used to carry images only, so a vault exported as a backup
+        // and imported again came back with every note gone — silently.
+        val noteStaging = File(cacheDir, "export-notes").apply {
+            deleteRecursively()
+            mkdirs()
+        }
+        var noteSeq = 0
+
         for (document in documents) {
-            // Notes have no file behind them, and a scan whose file has gone
-            // would only produce an empty entry.
-            val paths = viewModel.getImagesForDocumentSync(document.id)
-                .filter { it.isImage }
-                .map { it.imagePath }
-                .filter { File(it).exists() }
+            val blocks = viewModel.getImagesForDocumentSync(document.id).sortedBy { it.order }
+
+            val paths = blocks.mapNotNull { block ->
+                when {
+                    // A scan whose file has gone would only produce an empty
+                    // entry, so it is dropped rather than exported broken.
+                    block.isImage ->
+                        block.imagePath.takeIf { File(it).exists() }
+
+                    // The order is baked into the name: it is the only thing
+                    // carrying a note back to its place in the document, and
+                    // it keeps the file readable if the user opens the zip.
+                    block.isText -> {
+                        val body = block.text.orEmpty()
+                        val staged = File(
+                            noteStaging,
+                            ExportNotes.fileNameFor(block.order, noteSeq++)
+                        )
+                        runCatching { staged.writeText(body) }
+                            .map { staged.absolutePath }
+                            .getOrNull()
+                    }
+
+                    else -> null
+                }
+            }
 
             val person = document.personId?.let { peopleById[it] }
             if (person == null) {
@@ -2662,13 +2716,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        return FileUtils.createHierarchicalZipFile(
+        val archive = FileUtils.createHierarchicalZipFile(
             applicationContext,
             userName,
             mine,
             byPerson.mapValues { it.value.toMap() }
         )
+        runCatching { noteStaging.deleteRecursively() }
+        return archive
     }
+
 
     /**
      * Makes a document's folder name unique within its shelf.

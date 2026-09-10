@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One tag box. Same 2px outline as every other chip in the design. -->
+<!--
+    One tag box. Same 2px outline as every other chip in the design.
+
+    The label uses the ledger_chip_text selector rather than a flat colour: a
+    selected chip fills with ledger_inverse_bg, so a fixed ledger_text label
+    went black on black and the chosen person disappeared entirely.
+-->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -15,5 +21,5 @@
     android:paddingEnd="10dp"
     android:paddingBottom="7dp"
     android:textAllCaps="true"
-    android:textColor="@color/ledger_text"
+    android:textColor="@color/ledger_chip_text"
     android:textSize="9.5sp" />
