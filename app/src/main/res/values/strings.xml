@@ -673,7 +673,9 @@ Nowhere else.</string>
 
     <!-- People -->
     <string name="ledger_people">People</string>
-    <string name="ledger_people_summary">%1$d people · %2$d documents filed</string>
+    <!-- The two halves are pluralised separately; "1 documents filed" was
+         the old wording. -->
+    <string name="ledger_people_summary">%1$s · %2$s</string>
     <string name="ledger_unassigned">Unassigned</string>
     <string name="ledger_no_person_set">No person set</string>
     <string name="ledger_documents_to_file">%1$d documents to file</string>
@@ -842,5 +844,15 @@ Nowhere else.</string>
     <string name="ledger_option_import_mine_sub">Files everything under your own name</string>
 
     <string name="ledger_export_warning">Anything you export leaves DocKeep\u2019s private folder. Delete it from Downloads when you are done.</string>
+
+    <plurals name="ledger_people_n">
+        <item quantity="one">%d person</item>
+        <item quantity="other">%d people</item>
+    </plurals>
+
+    <plurals name="ledger_filed_n">
+        <item quantity="one">%d document filed</item>
+        <item quantity="other">%d documents filed</item>
+    </plurals>
 
 </resources>

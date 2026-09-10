@@ -98,3 +98,7 @@ out/
 # The wrapper downloads its own Gradle distribution; a copy does not
 # belong in the repository.
 gradle-*-bin.zip
+
+# Working screenshot captures (drafts, not the published store assets —
+# those live in dist/publish/).
+Sc/

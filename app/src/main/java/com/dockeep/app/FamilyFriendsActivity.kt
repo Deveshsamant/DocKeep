@@ -150,12 +150,8 @@ class FamilyFriendsActivity : AppCompatActivity() {
      */
     private fun bindCounts() {
         documentViewModel.getAllDocuments().observe(this) { docs ->
-            val filed = docs.count { it.personId != null }
-            peopleSubtitle.text = getString(
-                R.string.ledger_people_summary,
-                people.size,
-                filed
-            )
+            lastDocuments = docs
+            refreshHeader()
 
             // Feed the cells their per-person document colours and counts.
             dragDropAdapter?.setDocumentsByPerson(
@@ -167,6 +163,26 @@ class FamilyFriendsActivity : AppCompatActivity() {
             // do; filing a document under someone is done from the document
             // itself.
         }
+    }
+
+    /** The last document list seen, so the header can be rebuilt from either source. */
+    private var lastDocuments: List<com.dockeep.app.database.Document> = emptyList()
+
+    /**
+     * Rewrites the header line.
+     *
+     * People and documents arrive on two independent LiveData streams, and the
+     * header needs both. It used to be written only from the document
+     * observer, so it printed whatever the people list happened to hold at
+     * that instant — reliably "0 people" on a screen showing several.
+     */
+    private fun refreshHeader() {
+        val filed = lastDocuments.count { it.personId != null }
+        peopleSubtitle.text = getString(
+            R.string.ledger_people_summary,
+            resources.getQuantityString(R.plurals.ledger_people_n, people.size, people.size),
+            resources.getQuantityString(R.plurals.ledger_filed_n, filed, filed)
+        )
     }
 
     private fun loadThemePreference() {
@@ -209,6 +225,8 @@ class FamilyFriendsActivity : AppCompatActivity() {
             people.clear()
             people.addAll(peopleList)
             updateUI()
+            // The header counts people, so it has to be rewritten here too.
+            refreshHeader()
         }
         bindCounts()
     }
