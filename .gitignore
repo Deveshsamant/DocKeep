@@ -43,10 +43,11 @@ misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
-# Keystore files
-# Uncomment the following lines if you do not want to check your keystore files in.
-#*.jks
-#*.keystore
+# Keystore files. Never commit these: the signing key and its password are
+# what prove a Play update came from you, and this repository is public.
+*.jks
+*.keystore
+*.p12
 keystore.properties
 
 # External native build folder generated in Android Studio 2.2 and later

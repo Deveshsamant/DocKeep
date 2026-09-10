@@ -26,6 +26,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +37,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.ui.LedgerGridDecoration
 import com.dockeep.app.ui.LedgerNav
 import androidx.lifecycle.ViewModelProvider
@@ -485,9 +487,21 @@ class MainActivity : AppCompatActivity() {
         updateTheme()
 
         setContentView(R.layout.activity_main)
+        // The drawer is a full-height panel of its own, so it reaches the
+        // bottom edge alongside the navigation bar and needs the inset too.
+        Edge.fit(
+            this,
+            findViewById(android.R.id.content),
+            findViewById(R.id.bottomNav),
+            findViewById(R.id.drawerColumn)
+        )
 
         // Initialize views
         initViews()
+
+        // After initViews: syncBackCallback reads searchInputLayout, which is
+        // lateinit and would otherwise be untouched at this point.
+        setUpBackHandling()
 
         // Must happen in onCreate; see biometricPrompt.
         setUpBiometricPrompt()
@@ -570,6 +584,7 @@ class MainActivity : AppCompatActivity() {
             loadDocuments()
         } else {
             searchInputLayout.visibility = View.VISIBLE
+            syncBackCallback()
             searchEditText.requestFocus()
         }
     }
@@ -592,6 +607,7 @@ class MainActivity : AppCompatActivity() {
         sidebarLayout.visibility = View.VISIBLE
         sidebarOverlay.visibility = View.VISIBLE
         isSidebarOpen = true
+        syncBackCallback()
 
         // Update user name display and profile photo when sidebar is opened
         updateUserNameDisplay()
@@ -601,12 +617,14 @@ class MainActivity : AppCompatActivity() {
         sidebarLayout.visibility = View.GONE
         sidebarOverlay.visibility = View.GONE
         isSidebarOpen = false
+        syncBackCallback()
     }
 
     private fun closeSearch() {
         searchInputLayout.visibility = View.GONE
         searchEditText.setText("")
         detachSearchObserver()
+        syncBackCallback()
     }
 
     /**
@@ -786,6 +804,7 @@ class MainActivity : AppCompatActivity() {
         val active = selected.isNotEmpty()
         selectionBar.visibility = if (active) View.VISIBLE else View.GONE
         fab.visibility = if (active) View.GONE else View.VISIBLE
+        syncBackCallback()
 
         if (active) {
             headerSubtitle.text = getString(R.string.ledger_selected, selected.size)
@@ -794,17 +813,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /** Back leaves selection before it leaves the screen. */
-    override fun onBackPressed() {
-        when {
-            dragDropAdapter?.isSelectionMode() == true -> dragDropAdapter?.clearSelection()
-            isSidebarOpen -> closeSidebar()
-            searchInputLayout.isVisible -> {
-                closeSearch()
-                loadDocuments()
+    /**
+     * Back leaves selection, then the drawer, then search, then the screen.
+     *
+     * Registered as a callback rather than overriding onBackPressed, which an
+     * app targeting API 36 no longer gets called: predictive back is on by
+     * default there, and it drives the dispatcher. The callback disables
+     * itself when there is nothing to unwind, so the system takes over and can
+     * draw the peek animation behind the screen.
+     */
+    private fun setUpBackHandling() {
+        val callback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                when {
+                    dragDropAdapter?.isSelectionMode() == true -> dragDropAdapter?.clearSelection()
+                    isSidebarOpen -> closeSidebar()
+                    searchInputLayout.isVisible -> {
+                        closeSearch()
+                        loadDocuments()
+                    }
+                }
+                syncBackCallback()
             }
-            else -> @Suppress("DEPRECATION") super.onBackPressed()
         }
+        onBackPressedDispatcher.addCallback(this, callback)
+        backCallback = callback
+        syncBackCallback()
+    }
+
+    private var backCallback: OnBackPressedCallback? = null
+
+    /**
+     * Only intercept back while there is something on this screen to close.
+     *
+     * Call after anything that opens or closes selection, the drawer or
+     * search; leaving it enabled would trap the user on Home.
+     */
+    fun syncBackCallback() {
+        backCallback?.isEnabled = dragDropAdapter?.isSelectionMode() == true ||
+            isSidebarOpen ||
+            searchInputLayout.isVisible
     }
 
     /** Shares every scan in every selected document as one attachment set. */

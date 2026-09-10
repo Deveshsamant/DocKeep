@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.OnboardingManager
 
 class OnboardingActivity : AppCompatActivity() {
@@ -33,6 +34,7 @@ class OnboardingActivity : AppCompatActivity() {
         }
         
         setContentView(R.layout.activity_onboarding)
+        Edge.fit(this, findViewById(android.R.id.content))
         
         // Check if this is the first launch of the app
         val firstLaunchPrefs = getApplicationContext().getSharedPreferences("app_first_launch", MODE_PRIVATE)

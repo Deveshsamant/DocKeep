@@ -18,6 +18,7 @@ import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -128,6 +129,7 @@ class ScanEditorActivity : AppCompatActivity() {
         applyStoredTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_editor)
+        Edge.fit(this, findViewById(android.R.id.content))
 
         imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH).orEmpty()
         if (imagePath.isEmpty() || !File(imagePath).exists()) {

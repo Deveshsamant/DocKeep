@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -56,6 +57,7 @@ class FamilyFriendsActivity : AppCompatActivity() {
         
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_family_friends)
+        Edge.fit(this, findViewById(android.R.id.content), findViewById(R.id.bottomNav))
 
         // Initialize views
         initViews()

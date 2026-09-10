@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
 import android.view.LayoutInflater
@@ -79,6 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+        Edge.fit(this, findViewById(android.R.id.content), findViewById(R.id.bottomNav))
         
         // Initialize views
         initViews()

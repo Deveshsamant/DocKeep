@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
@@ -72,6 +73,7 @@ class PersonDocumentsActivity : AppCompatActivity() {
         
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_person_documents)
+        Edge.fit(this, findViewById(android.R.id.content))
 
         personId = intent.getLongExtra("person_id", -1)
         if (personId == -1L) {

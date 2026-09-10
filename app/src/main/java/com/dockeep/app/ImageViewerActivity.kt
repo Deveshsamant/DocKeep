@@ -3,7 +3,6 @@ package com.dockeep.app
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.dockeep.app.adapter.ImageViewerAdapter
 import com.dockeep.app.database.DocumentImage
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.ui.dockAsLedgerSheet
 import com.dockeep.app.utils.AppLock
 import com.dockeep.app.utils.FileUtils
@@ -86,10 +86,15 @@ class ImageViewerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
-        // Hide status bar for fullscreen experience
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        // The scan runs behind the system bars and only the chrome is inset,
+        // so a page is still read against the whole screen. FLAG_FULLSCREEN
+        // used to do this; it is deprecated, and an app targeting API 35 or
+        // higher is edge to edge whether it asks or not.
+        Edge.fitChrome(
+            this,
+            findViewById(android.R.id.content),
+            findViewById(R.id.topBar),
+            findViewById(R.id.viewerActions)
         )
 
         @Suppress("UNCHECKED_CAST")

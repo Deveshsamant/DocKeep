@@ -23,6 +23,7 @@ import android.text.InputType
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.ui.Edge
 import com.dockeep.app.utils.AppLock
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -185,6 +186,7 @@ class DocumentDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_detail)
+        Edge.fit(this, findViewById(android.R.id.content))
 
         // Get document ID from intent
         documentId = intent.getLongExtra("document_id", -1)
