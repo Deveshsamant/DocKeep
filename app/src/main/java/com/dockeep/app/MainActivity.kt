@@ -57,6 +57,7 @@ import com.dockeep.app.utils.ColorUtils
 import com.dockeep.app.ui.dockAsLedgerSheet
 import com.dockeep.app.utils.FileUtils
 import com.dockeep.app.utils.AppLock
+import com.dockeep.app.utils.AppUpdates
 import com.dockeep.app.utils.OnboardingManager
 import com.dockeep.app.viewmodel.DocumentViewModel
 import com.google.android.material.button.MaterialButton
@@ -109,6 +110,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var lockSwitch: androidx.appcompat.widget.SwitchCompat
     private lateinit var feedbackOption: LinearLayout
     private lateinit var versionText: TextView
+
+    private lateinit var appUpdates: AppUpdates
+
+    /** The update sheet, held so a second resume cannot stack another. */
+    private var updateSheet: AlertDialog? = null
 
     /** Hides the grid behind the unlock prompt so it cannot be read past it. */
     private lateinit var lockCurtain: View
@@ -506,6 +512,10 @@ class MainActivity : AppCompatActivity() {
         // Must happen in onCreate; see biometricPrompt.
         setUpBiometricPrompt()
 
+        // Also onCreate: AppUpdates registers a result contract, which has to
+        // be in place before the activity starts.
+        appUpdates = AppUpdates(this) { showUpdateReadySheet() }
+
         // Setup ViewModels
         setupViewModels()
 
@@ -672,6 +682,39 @@ class MainActivity : AppCompatActivity() {
             // unhandled intent would take the whole app down.
             Toast.makeText(this, R.string.ledger_no_browser, Toast.LENGTH_LONG).show()
         }
+    }
+
+    /**
+     * Offers the restart that finishes an update Play already downloaded.
+     *
+     * Raised from a resume as well as from the install listener, so it has to
+     * tolerate being called when it is already on screen.
+     */
+    private fun showUpdateReadySheet() {
+        if (isFinishing || isDestroyed) return
+        if (updateSheet?.isShowing == true) return
+
+        // Not over the unlock curtain. Nothing in the sheet is private, but
+        // stacking it in front of the biometric prompt buries the one control
+        // that gets the user into the app.
+        if (lockCurtain.visibility == View.VISIBLE) return
+
+        val view = layoutInflater.inflate(R.layout.dialog_update_ready, null)
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
+            .dockAsLedgerSheet()
+
+        view.findViewById<View>(R.id.sheetClose).setOnClickListener { dialog.dismiss() }
+        view.findViewById<View>(R.id.updateLater).setOnClickListener { dialog.dismiss() }
+        view.findViewById<View>(R.id.updateRestart).setOnClickListener {
+            dialog.dismiss()
+            appUpdates.install()
+        }
+
+        dialog.setOnDismissListener { updateSheet = null }
+        updateSheet = dialog
+        dialog.show()
     }
 
     private fun setUpBiometricPrompt() {

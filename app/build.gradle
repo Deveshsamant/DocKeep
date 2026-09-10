@@ -110,6 +110,12 @@ dependencies {
 
     // Biometric / device-credential lock for the vault.
     implementation 'androidx.biometric:biometric:1.1.0'
+
+    // In-app updates. Play installs updates silently and tells nobody, so
+    // without this a user on an old build has no way to learn a new one
+    // exists. It has to ship in 1.0.0: the check runs in the version already
+    // installed, so any release that omits it can never prompt.
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
     
     // Testing
     testImplementation 'junit:junit:4.13.2'

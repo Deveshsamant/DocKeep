@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Update-ready sheet.
+
+    Play downloads updates silently and tells nobody, so this is the only
+    moment the user learns a new version exists. It appears after the download
+    has already finished, which is why the ask is only to restart — there is
+    nothing left to wait for.
+
+    Same shape as every other Ledger sheet: kicker, title, body, and a split
+    action bar with the accent on the affirmative half.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ledger_sheet_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_update_kicker"
+                android:textAppearance="@style/TextAppearance.Ledger.KickerAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/ledger_update_title"
+                android:textAppearance="@style/TextAppearance.Ledger.Title" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/sheetClose"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/ledger_box_outline"
+            android:contentDescription="@string/ledger_close"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close"
+            app:tint="@color/ledger_text" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:lineSpacingMultiplier="1.4"
+        android:text="@string/ledger_update_body"
+        android:textAppearance="@style/TextAppearance.Ledger.Body"
+        android:textColor="@color/ledger_text_secondary"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/ledger_rule"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/updateLater"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_cell"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.14"
+            android:paddingStart="20dp"
+            android:text="@string/ledger_update_later"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar"
+            android:textColor="@color/ledger_neutral_700" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/updateRestart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_action_bar"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.14"
+            android:paddingStart="20dp"
+            android:text="@string/ledger_update_restart"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar"
+            android:textColor="@color/ledger_on_accent" />
+
+    </LinearLayout>
+
+</LinearLayout>

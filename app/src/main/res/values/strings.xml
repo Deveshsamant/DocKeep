@@ -802,6 +802,13 @@ Nowhere else.</string>
     <string name="ledger_pdf_saved">PDF saved to Documents/DocKeep</string>
     <string name="ledger_pdf_save_failed">Could not save the PDF</string>
 
+    <!-- In-app update -->
+    <string name="ledger_update_kicker">Update</string>
+    <string name="ledger_update_title">A new version is ready</string>
+    <string name="ledger_update_body">DocKeep finished downloading an update in the background. Restarting takes a moment, and everything in your vault stays exactly where it is.</string>
+    <string name="ledger_update_restart">Restart now</string>
+    <string name="ledger_update_later">Later</string>
+
     <!-- Feedback -->
     <string name="ledger_feedback">Report an issue</string>
     <string name="ledger_issues_url">https://github.com/Deveshsamant/DocKeep/issues/new</string>
