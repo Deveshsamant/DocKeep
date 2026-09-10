@@ -87,3 +87,13 @@ out/
 
 # macOS
 .DS_Store
+# local tooling (portable JDK)
+.tooling/
+.design-import/
+
+# Claude Code workspace config
+.claude/
+
+# The wrapper downloads its own Gradle distribution; a copy does not
+# belong in the repository.
+gradle-*-bin.zip

@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.dockeep.app.database.AppDatabase
 import com.dockeep.app.database.Document
 import com.dockeep.app.database.DocumentImage
+import com.dockeep.app.database.DocumentTag
 import com.dockeep.app.database.Person
+import com.dockeep.app.database.Tag
 import com.dockeep.app.repository.DocumentRepository
 import kotlinx.coroutines.launch
 
@@ -68,6 +70,10 @@ class DocumentViewModel(application: Application) : AndroidViewModel(application
         repository.insertImage(image)
     }
 
+    suspend fun updateDocumentSync(document: Document) = repository.updateDocument(document)
+
+    suspend fun deleteDocumentSync(document: Document) = repository.deleteDocument(document)
+
     fun updateDocument(document: Document) = viewModelScope.launch {
         repository.updateDocument(document)
     }
@@ -114,6 +120,36 @@ class DocumentViewModel(application: Application) : AndroidViewModel(application
     }
 
     suspend fun cleanupOrphanedImageEntriesSync() = repository.cleanupOrphanedImageEntries()
+
+    // ── Search and OCR ──────────────────────────────────────────────────
+
+    /** Matches names, notes and text read off scans. */
+    fun searchDocumentsFullText(query: String): LiveData<List<Document>> =
+        repository.searchDocumentsFullText(query)
+
+    /** Reads a batch of unread scans in the background. */
+    fun indexUnreadScans() = viewModelScope.launch {
+        runCatching { repository.indexUnreadScans() }
+    }
+
+    suspend fun readScanText(image: DocumentImage): String? = repository.readScanText(image)
+
+    suspend fun invalidateOcr(imageId: Long) = repository.invalidateOcr(imageId)
+
+    // ── Tags ────────────────────────────────────────────────────────────
+
+    fun getAllTags(): LiveData<List<Tag>> = repository.getAllTags()
+
+    suspend fun getAllTagsSync(): List<Tag> = repository.getAllTagsSync()
+
+    suspend fun getTagsForDocumentSync(documentId: Long): List<Tag> =
+        repository.getTagsForDocumentSync(documentId)
+
+    suspend fun getAllTagPairingsSync(): List<DocumentTag> = repository.getAllTagPairingsSync()
+
+    suspend fun addTag(documentId: Long, name: String): Tag? = repository.addTag(documentId, name)
+
+    suspend fun removeTag(documentId: Long, tagId: Long) = repository.removeTag(documentId, tagId)
 
     fun addImagesToDocument(documentId: Long, imageUris: List<Uri>) = viewModelScope.launch {
         repository.addImagesToDocument(documentId, imageUris)

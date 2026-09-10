@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A selected grid cell: the accent's lightest step, closed by a 2px accent
+    rule. Marking selection with colour rather than elevation keeps the grid
+    flat, as the rest of the design is.
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ledger_rule">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ledger_accent_100" />
+            <stroke android:width="2dp" android:color="@color/ledger_accent" />
+        </shape>
+    </item>
+</ripple>

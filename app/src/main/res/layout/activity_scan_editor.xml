@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Scan editor.
+
+    Tools for a scan already in a document: rotate, crop, a document filter,
+    and brightness / contrast. The preview applies everything live through a
+    colour matrix; the same matrix is baked into the full-resolution file only
+    when Save is pressed, so nothing is written until the user commits.
+
+    Laid out like every other Ledger screen: header, work area, tool rows
+    parted by 2px rules, and a split Cancel / Save bar at the foot.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ledger_bg"
+    android:orientation="vertical"
+    tools:context="com.dockeep.app.ScanEditorActivity">
+
+    <!-- ── Header ─────────────────────────────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_edit"
+                android:textAppearance="@style/TextAppearance.Ledger.KickerAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/ledger_edit_scan"
+                android:textAppearance="@style/TextAppearance.Ledger.Title"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/editorClose"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/ledger_box_outline"
+            android:contentDescription="@string/ledger_close"
+            android:padding="9dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close"
+            app:tint="@color/ledger_text" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule_strong" />
+
+    <!-- ── Preview ────────────────────────────────────────────────────── -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/ledger_surface">
+
+        <ImageView
+            android:id="@+id/editorPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/ledger_scan_thumbnail"
+            android:padding="16dp"
+            android:scaleType="fitCenter" />
+
+        <com.dockeep.app.ui.RedactionOverlay
+            android:id="@+id/redactionOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/editorProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/ledger_accent"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <!-- ── Geometry ───────────────────────────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ledger_rule"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/toolRotateLeft"
+            style="@style/Widget.Ledger.EditorTool"
+            android:layout_width="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_rotate_left"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                style="@style/Widget.Ledger.EditorToolLabel"
+                android:text="@string/ledger_rotate_left" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/toolRotateRight"
+            style="@style/Widget.Ledger.EditorTool"
+            android:layout_width="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_rotate_right"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                style="@style/Widget.Ledger.EditorToolLabel"
+                android:text="@string/ledger_rotate_right" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/toolCrop"
+            style="@style/Widget.Ledger.EditorTool"
+            android:layout_width="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_crop"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                style="@style/Widget.Ledger.EditorToolLabel"
+                android:text="@string/ledger_crop" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/toolRedact"
+            style="@style/Widget.Ledger.EditorTool"
+            android:layout_width="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/toolRedactIcon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_redact"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                android:id="@+id/toolRedactLabel"
+                style="@style/Widget.Ledger.EditorToolLabel"
+                android:text="@string/ledger_redact" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/toolReset"
+            style="@style/Widget.Ledger.EditorTool"
+            android:layout_width="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_reset"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                style="@style/Widget.Ledger.EditorToolLabel"
+                android:text="@string/ledger_reset" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <!-- ── Filters ────────────────────────────────────────────────────── -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:letterSpacing="0.14"
+        android:text="@string/ledger_filter"
+        android:textAppearance="@style/TextAppearance.Ledger.Kicker" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/filterChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="2dp"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterOriginal"
+                style="@style/Widget.Ledger.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/ledger_filter_original" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterGrey"
+                style="@style/Widget.Ledger.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_filter_grey" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterMono"
+                style="@style/Widget.Ledger.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_filter_mono" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filterEnhance"
+                style="@style/Widget.Ledger.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_filter_enhance" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+    <!-- ── Adjustments ────────────────────────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:letterSpacing="0.12"
+            android:text="@string/ledger_brightness"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            android:textSize="9.5sp" />
+
+        <SeekBar
+            android:id="@+id/brightnessSeek"
+            style="@style/Widget.Ledger.SeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="50" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:letterSpacing="0.12"
+            android:text="@string/ledger_contrast"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            android:textSize="9.5sp" />
+
+        <SeekBar
+            android:id="@+id/contrastSeek"
+            style="@style/Widget.Ledger.SeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="50" />
+
+    </LinearLayout>
+
+    <!-- ── Cancel / Save ──────────────────────────────────────────────── -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/ledger_rule"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/editorCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_cell"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.14"
+            android:paddingStart="20dp"
+            android:text="@string/cancel"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar"
+            android:textColor="@color/ledger_neutral_700" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/editorSave"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_action_bar"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="20dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_check"
+                app:tint="@color/ledger_on_accent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:text="@string/ledger_save"
+                android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
+import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dockeep.app.R
 import com.dockeep.app.database.DocumentImage
-import com.google.android.material.button.MaterialButton
 import java.io.File
+import java.util.Locale
 
 class ImageAdapter(
     private val images: MutableList<DocumentImage>,
@@ -23,23 +25,43 @@ class ImageAdapter(
     private val onShareClick: (DocumentImage) -> Unit,
     private val onDownloadClick: (DocumentImage) -> Unit,
     private val onDeleteClick: (DocumentImage) -> Unit,
-    private val onImageReordered: (List<DocumentImage>) -> Unit
+    private val onImageReordered: (List<DocumentImage>) -> Unit,
+    private val onEditClick: (DocumentImage) -> Unit = {},
+    private val onPdfClick: (DocumentImage) -> Unit = {},
+    private val onSharePdfClick: (DocumentImage) -> Unit = {},
+    private val onReadTextClick: (DocumentImage) -> Unit = {}
 ) : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val cardView: CardView = itemView as CardView
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        val shareButton: MaterialButton = itemView.findViewById(R.id.shareButton)
-        val downloadButton: MaterialButton = itemView.findViewById(R.id.downloadButton)
-        val deleteButton: MaterialButton = itemView.findViewById(R.id.deleteButton)
+        val cardView: View = itemView
+        val imageView: ImageView? = itemView.findViewById(R.id.imageView)
+        val textBody: TextView? = itemView.findViewById(R.id.textBlockBody)
+        val captionText: TextView = itemView.findViewById(R.id.captionText)
+        val overflowButton: ImageButton = itemView.findViewById(R.id.overflowButton)
     }
+
+    override fun getItemViewType(position: Int): Int =
+        if (images.getOrNull(position)?.isText == true) TYPE_TEXT else TYPE_IMAGE
     
     // Flag to prevent UI refresh during drag operations
     private var isDragging = false
 
+    private companion object {
+        const val TYPE_IMAGE = 0
+        const val TYPE_TEXT = 1
+
+        const val MENU_EDIT = 0
+        const val MENU_PDF = 4
+        const val MENU_SHARE_PDF = 5
+        const val MENU_READ_TEXT = 6
+        const val MENU_SHARE = 1
+        const val MENU_DOWNLOAD = 2
+        const val MENU_DELETE = 3
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_image, parent, false)
+        val layout = if (viewType == TYPE_TEXT) R.layout.item_text_block else R.layout.item_image
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ImageViewHolder(view)
     }
 
@@ -51,114 +73,70 @@ class ImageAdapter(
         
         val image = images[position]
         
-        // Load image with optimization
-        Glide.with(holder.imageView.context)
-            .load(File(image.imagePath))
-            .placeholder(R.drawable.ic_document_placeholder)
-            .error(R.drawable.ic_document_placeholder)
-            .override(400, 400) // Set a reasonable size to improve performance
-            .centerCrop()
-            .into(holder.imageView)
-        
-        // Add improved touch handling with better visual feedback
-        holder.cardView.setOnTouchListener { _, event ->  
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    // Immediate visual feedback on touch
-                    holder.cardView.animate()
-                        .scaleX(0.98f)
-                        .scaleY(0.98f)
-                        .setDuration(50)
-                        .setInterpolator(DecelerateInterpolator())
-                        .start()
-                    holder.cardView.cardElevation = 12f
-                }
-                MotionEvent.ACTION_UP, 
-                MotionEvent.ACTION_CANCEL -> {
-                    // Restore scale on touch release
-                    holder.cardView.animate()
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(100)
-                        .setInterpolator(OvershootInterpolator(1.2f))
-                        .start()
-                    holder.cardView.cardElevation = 6f
-                }
+        if (image.isText) {
+            holder.textBody?.text = image.text.orEmpty()
+        } else {
+            holder.imageView?.let { view ->
+                Glide.with(view.context)
+                    .load(File(image.imagePath))
+                    .placeholder(R.drawable.ic_document_placeholder)
+                    .error(R.drawable.ic_document_placeholder)
+                    .override(400, 400)
+                    // The file is rewritten in place after an edit, so the
+                    // path alone is not a safe cache key.
+                    .signature(
+                        com.bumptech.glide.signature.ObjectKey(
+                            File(image.imagePath).lastModified()
+                        )
+                    )
+                    .centerCrop()
+                    .into(view)
             }
-            false
         }
         
-        // Set click listeners with ultra-smooth animations
-        holder.cardView.setOnClickListener {
-            // Add an ultra-smooth click animation
-            holder.cardView.animate()
-                .translationZ(25f)
-                .setDuration(80)
-                .setInterpolator(OvershootInterpolator(1.2f))
-                .withEndAction {
-                    holder.cardView.animate()
-                        .translationZ(0f)
-                        .setDuration(120)
-                        .setInterpolator(OvershootInterpolator(1.1f))
-                        .start()
-                }
-                .start()
-            onImageClick(image)
+        // Caption: the block's ordinal, as the design numbers them.
+        val ordinal = String.format(Locale.getDefault(), "%03d", position + 1)
+        holder.captionText.text = if (image.isText) {
+            holder.itemView.context.getString(R.string.ledger_caption_note, ordinal)
+        } else {
+            ordinal
         }
-        
-        // Add long click listener for drag and drop with improved handling
-        holder.cardView.setOnLongClickListener {
-            // Add visual feedback for long press
-            holder.cardView.animate()
-                .scaleX(1.02f)
-                .scaleY(1.02f)
-                .setDuration(100)
-                .setInterpolator(OvershootInterpolator(1.1f))
-                .withEndAction {
-                    holder.cardView.animate()
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(100)
-                        .setInterpolator(OvershootInterpolator(1.1f))
-                        .start()
-                }
-                .start()
-            // Return false to indicate we're not consuming the event here
-            // The ItemTouchHelper will handle the drag operation
-            false
-        }
-        
-        holder.shareButton.setOnClickListener {
-            animateButtonPressUltraSmooth(it)
-            onShareClick(image)
-        }
-        
-        holder.downloadButton.setOnClickListener {
-            animateButtonPressUltraSmooth(it)
-            onDownloadClick(image)
-        }
-        
-        holder.deleteButton.setOnClickListener {
-            animateButtonPressUltraSmooth(it)
-            onDeleteClick(image)
-        }
-    }
 
-    private fun animateButtonPressUltraSmooth(view: View) {
-        view.animate()
-            .scaleX(0.8f)
-            .scaleY(0.8f)
-            .setDuration(80)
-            .setInterpolator(OvershootInterpolator(1.2f))
-            .withEndAction {
-                view.animate()
-                    .scaleX(1.0f)
-                    .scaleY(1.0f)
-                    .setDuration(120)
-                    .setInterpolator(OvershootInterpolator(1.1f))
-                    .start()
+        // Press feedback is the cell's ripple; the previous scale and
+        // translationZ animations raised a shadow this design does not use.
+        holder.cardView.setOnClickListener { onImageClick(image) }
+
+        // Long press starts the reorder drag.
+        holder.cardView.setOnLongClickListener { false }
+
+        // One overflow replaces the three buttons that used to sit on top of
+        // the thumbnail, so the scan itself is never covered.
+        holder.overflowButton.setOnClickListener { anchor ->
+            val context = anchor.context
+            val popup = PopupMenu(context, anchor)
+            popup.menu.add(0, MENU_EDIT, 0, context.getString(R.string.edit))
+            if (image.isImage) {
+                popup.menu.add(0, MENU_PDF, 1, context.getString(R.string.ledger_save_as_pdf))
+                popup.menu.add(0, MENU_SHARE_PDF, 2, context.getString(R.string.ledger_share_this_pdf))
+                popup.menu.add(0, MENU_SHARE, 3, context.getString(R.string.share))
+                popup.menu.add(0, MENU_DOWNLOAD, 4, context.getString(R.string.ledger_save_to_gallery))
+                popup.menu.add(0, MENU_READ_TEXT, 5, context.getString(R.string.ledger_ocr_action))
             }
-            .start()
+            popup.menu.add(0, MENU_DELETE, 6, context.getString(R.string.delete))
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    MENU_EDIT -> { onEditClick(image); true }
+                    MENU_PDF -> { onPdfClick(image); true }
+                    MENU_SHARE_PDF -> { onSharePdfClick(image); true }
+                    MENU_READ_TEXT -> { onReadTextClick(image); true }
+                    MENU_SHARE -> { onShareClick(image); true }
+                    MENU_DOWNLOAD -> { onDownloadClick(image); true }
+                    MENU_DELETE -> { onDeleteClick(image); true }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
     }
 
     override fun getItemCount() = images.size
@@ -192,11 +170,13 @@ class ImageAdapter(
         // Insert at the new position
         images.add(toPosition, item)
         
-        // Update order values for all affected items
-        for (i in minOf(fromPosition, toPosition)..maxOf(fromPosition, toPosition)) {
-            if (i < images.size) {
-                images[i] = images[i].copy(order = i)
-            }
+        // Renumber the whole list, not just the span that moved. Blocks are
+        // created with orders starting at 1 while this numbered from 0, so
+        // renumbering a range left the untouched blocks on a different scale
+        // and their orders could collide — which made a drag appear to land
+        // in the wrong place, or snap back.
+        for (i in images.indices) {
+            images[i] = images[i].copy(order = i)
         }
         
         // Notify adapter about the move

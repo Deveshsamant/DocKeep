@@ -1,72 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    People.
+
+    A peer of Home rather than a screen buried in the drawer, so it carries the
+    same header, the same grid and the same bottom bar — with People marked
+    active. Below the grid sits the Unassigned row: documents not yet filed
+    under anyone, with the one accent word on the screen inviting the fix.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:windowBackground"
+    android:background="@color/ledger_bg"
     tools:context="com.dockeep.app.FamilyFriendsActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:elevation="4dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface"
-            app:title="@string/family_friends"
-            app:titleTextColor="?attr/colorOnSurface"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="@dimen/spacing_xsmall"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_person"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/button_height"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/spacing_small"
-        android:contentDescription="@string/add_person"
-        android:text="@string/add_person"
-        app:icon="@drawable/ic_add"
-        app:iconTint="?attr/colorOnPrimary"
-        app:backgroundTint="?attr/colorPrimary"
-        app:cornerRadius="@dimen/button_corner_radius" />
-
     <LinearLayout
-        android:id="@+id/emptyStateLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- ── Header ─────────────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:gravity="center"
-            android:text="@string/no_people_added"
-            android:textSize="@dimen/text_size_regular"
-            android:textColor="?attr/colorOnBackground" />
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ledger_people"
+                        android:textAppearance="@style/TextAppearance.Ledger.Display" />
+
+                    <TextView
+                        android:id="@+id/peopleSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.Ledger.MetaWide" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ledger_box_outline"
+                    android:contentDescription="@string/ledger_back"
+                    android:padding="10dp"
+                    android:rotation="180"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/ledger_text" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/ledger_rule_strong" />
+
+        </LinearLayout>
+
+        <!-- ── Grid + unassigned ──────────────────────────────────────── -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/peopleScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/peopleRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_person" />
+
+                <!-- Unassigned -->
+                <LinearLayout
+                    android:id="@+id/unassignedSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="26dp"
+                    android:paddingEnd="20dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.14"
+                        android:paddingBottom="9dp"
+                        android:text="@string/ledger_unassigned"
+                        android:textAppearance="@style/TextAppearance.Ledger.Kicker" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/ledger_rule_strong" />
+
+                    <LinearLayout
+                        android:id="@+id/unassignedRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ledger_row"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/ledger_box_outline_static"
+                            android:gravity="center"
+                            android:text="@string/ledger_question_mark"
+                            android:textAppearance="@style/TextAppearance.Ledger.Tile"
+                            android:textColor="@color/ledger_neutral_500"
+                            android:textSize="19sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ledger_no_person_set"
+                                android:textAppearance="@style/TextAppearance.Ledger.CellTitle"
+                                android:textSize="13.5sp" />
+
+                            <TextView
+                                android:id="@+id/unassignedCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:letterSpacing="0.12"
+                                android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.12"
+                            android:text="@string/ledger_assign"
+                            android:textAppearance="@style/TextAppearance.Ledger.Kicker"
+                            android:textColor="@color/ledger_accent_700"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/ledger_rule" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+            <!-- ── Empty state ────────────────────────────────────────── -->
+            <include layout="@layout/partial_ledger_empty_people" />
+
+        </FrameLayout>
+
+        <!-- ── Primary action ─────────────────────────────────────────── -->
+        <LinearLayout
+            android:id="@+id/fab"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/ledger_action_bar"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_add"
+                app:tint="@color/ledger_on_accent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/ledger_add_person"
+                android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+        </LinearLayout>
+
+        <include layout="@layout/partial_ledger_bottom_nav" />
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

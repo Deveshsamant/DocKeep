@@ -7,7 +7,11 @@ import androidx.lifecycle.LiveData
 import com.dockeep.app.database.Document
 import com.dockeep.app.database.DocumentImage
 import com.dockeep.app.database.AppDatabase
+import com.dockeep.app.database.DocumentTag
 import com.dockeep.app.database.Person
+import com.dockeep.app.database.Tag
+import com.dockeep.app.utils.OcrReader
+import com.dockeep.app.utils.SearchQuery
 import com.dockeep.app.utils.FileUtils
 import java.io.File
 import java.util.Date
@@ -152,6 +156,9 @@ class DocumentRepository private constructor(private val database: AppDatabase, 
         val allImagesCopy = allImages.toList()
         // Check each image to see if its file exists
         for (image in allImagesCopy) {
+            // A text block has no file backing it; only scans can be orphaned.
+            if (!image.isImage) continue
+
             val imageFile = File(image.imagePath)
             if (!imageFile.exists()) {
                 // File doesn't exist, remove the database entry
@@ -159,6 +166,95 @@ class DocumentRepository private constructor(private val database: AppDatabase, 
                 Log.d("DocumentRepository", "Cleaned up orphaned image entry: ${image.imagePath}")
             }
         }
+    }
+
+    // ── OCR index ───────────────────────────────────────────────────────
+
+    fun searchDocumentsFullText(query: String) =
+        database.documentDao().searchDocumentsFullText(SearchQuery.containsPattern(query))
+
+    /**
+     * Reads any scans that have not been read yet and caches their text.
+     *
+     * Bounded per call so a vault with hundreds of pages does not block on a
+     * single pass; the next call picks up where this one stopped.
+     */
+    suspend fun indexUnreadScans(limit: Int = 12, maxBatches: Int = 5): Int {
+        var read = 0
+
+        repeat(maxBatches) {
+            val pending = database.documentDao().getUnreadScans(limit)
+            if (pending.isEmpty()) return read
+
+            for (scan in pending) {
+                val file = File(scan.imagePath)
+                if (!file.exists()) {
+                    // The row is an orphan; cleanupOrphanedImageEntries will
+                    // drop it. Skipping keeps it out of the way until then.
+                    continue
+                }
+
+                val text = OcrReader.read(file)
+
+                // Empty string is a real answer, and so is a failed read of a
+                // file that is present. Both are stored, because the query
+                // selects on ocrText IS NULL: leaving a page unset meant the
+                // same twelve rows came back on every pass and everything
+                // behind them was never indexed at all.
+                database.documentDao().setOcrText(scan.id, text.orEmpty())
+                if (text != null) read++
+            }
+
+            // A pass that only found unreadable rows would spin; stop unless
+            // the batch was full, which means there is more behind it.
+            if (pending.size < limit) return read
+        }
+        return read
+    }
+
+    /**
+     * Drops the text cached for a scan whose pixels have changed, so the next
+     * indexing pass re-reads it from what the image now actually shows.
+     */
+    suspend fun invalidateOcr(imageId: Long) {
+        database.documentDao().clearOcrText(imageId)
+    }
+
+    /** Reads one scan immediately, for the name suggestion on a fresh page. */
+    suspend fun readScanText(image: DocumentImage): String? {
+        val text = OcrReader.read(File(image.imagePath)) ?: return null
+        database.documentDao().setOcrText(image.id, text)
+        return text
+    }
+
+    // ── Tags ────────────────────────────────────────────────────────────
+
+    fun getAllTags() = database.tagDao().getAllTags()
+
+    suspend fun getAllTagsSync() = database.tagDao().getAllTagsSync()
+
+    suspend fun getTagsForDocumentSync(documentId: Long) =
+        database.tagDao().getTagsForDocumentSync(documentId)
+
+    suspend fun getAllTagPairingsSync() = database.tagDao().getAllPairingsSync()
+
+    /** Creates the tag if it is new, then binds it to the document. */
+    suspend fun addTag(documentId: Long, rawName: String): Tag? {
+        val name = rawName.trim()
+        if (name.isEmpty()) return null
+
+        val dao = database.tagDao()
+        dao.insertTag(Tag(name = name))
+        // insertTag ignores a duplicate, so look the row up either way.
+        val tag = dao.getTagByName(name) ?: return null
+        dao.addTagToDocument(DocumentTag(documentId = documentId, tagId = tag.id))
+        return tag
+    }
+
+    suspend fun removeTag(documentId: Long, tagId: Long) {
+        database.tagDao().removeTagFromDocument(documentId, tagId)
+        // A tag nobody uses should not linger in the picker.
+        database.tagDao().deleteUnusedTags()
     }
 
     suspend fun getPersonByIdSync(personId: Long): Person? = database.personDao().getPersonByIdSync(personId)

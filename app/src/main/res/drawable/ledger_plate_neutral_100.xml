@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A plate in the empty-state stack: flat fill, 2px rule, square corners. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/ledger_neutral_100" />
+    <stroke android:width="2dp" android:color="@color/ledger_rule_strong" />
+</shape>

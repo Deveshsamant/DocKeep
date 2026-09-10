@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Add tag sheet.
+
+    Offers the tags already in use above the field, because the value of a tag
+    is that the same label is reused; free typing alone produces three spellings
+    of the same idea.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ledger_sheet_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_tag_kicker"
+                android:textAppearance="@style/TextAppearance.Ledger.KickerAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/ledger_tag_title"
+                android:textAppearance="@style/TextAppearance.Ledger.Title" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/sheetClose"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/ledger_box_outline"
+            android:contentDescription="@string/ledger_close"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close"
+            app:tint="@color/ledger_text" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ledger_input">
+
+        <EditText
+            android:id="@+id/tagField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/ledger_tag_hint"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="textCapWords"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.Ledger.Input" />
+
+    </FrameLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="18dp"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/existingTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/sheetSave"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/ledger_action_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp">
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_check"
+            app:tint="@color/ledger_on_accent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/ledger_save"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Empty people state.
+
+    The same plate stack as the empty documents screen, marked with a "?"
+    instead of "A?" — nobody is on the shelf yet.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/emptyStateLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ledger_bg"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp">
+
+        <FrameLayout
+            android:layout_width="170dp"
+            android:layout_height="146dp"
+            android:layout_gravity="center_horizontal">
+
+            <View
+                android:layout_width="126dp"
+                android:layout_height="118dp"
+                android:layout_gravity="center_horizontal|top"
+                android:background="@drawable/ledger_plate_bg" />
+
+            <View
+                android:layout_width="142dp"
+                android:layout_height="118dp"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ledger_plate_neutral_100" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/ledger_plate_neutral_200">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:letterSpacing="-0.04"
+                    android:text="@string/ledger_question_mark"
+                    android:textAppearance="@style/TextAppearance.Ledger.Tile"
+                    android:textColor="@color/ledger_accent"
+                    android:textSize="46sp" />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="66dp"
+                android:layout_height="16dp"
+                android:layout_gravity="start|top"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ledger_plate_accent" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/ledger_rule_strong" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:lineSpacingMultiplier="0.96"
+            android:text="@string/ledger_empty_people_title"
+            android:textAppearance="@style/TextAppearance.Ledger.Headline"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:lineSpacingMultiplier="1.6"
+            android:text="@string/ledger_empty_people_body"
+            android:textAppearance="@style/TextAppearance.Ledger.Body"
+            android:textColor="@color/ledger_neutral_800"
+            android:textSize="13.5sp" />
+
+    </LinearLayout>
+
+</FrameLayout>

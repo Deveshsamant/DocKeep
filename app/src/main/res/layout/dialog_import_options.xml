@@ -1,132 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Import sheet. Mirrors export: read a whole archive back, or only the
+    part that belongs to the owner.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/spacing_large">
+    android:background="@drawable/ledger_sheet_background"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Import Options"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="?attr/colorOnSurface"
-        android:gravity="center"
-        android:layout_marginBottom="@dimen/spacing_medium" />
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp">
 
-    <com.google.android.material.card.MaterialCardView
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sheetKicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ledger_import_documents"
+                android:textAppearance="@style/TextAppearance.Ledger.KickerAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/ledger_sheet_import"
+                android:textAppearance="@style/TextAppearance.Ledger.Title" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/sheetClose"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/ledger_box_outline"
+            android:contentDescription="@string/ledger_close"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close"
+            app:tint="@color/ledger_text" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule_strong" />
+
+    <LinearLayout
         android:id="@+id/importAllOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="?attr/colorPrimary">
+        android:background="@drawable/ledger_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/import_icon"
+            app:tint="@color/ledger_text" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing_medium"
-            android:background="?attr/selectableItemBackground">
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/import_icon"
-                android:contentDescription="Import All" />
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/spacing_medium">
+                android:text="@string/ledger_option_import_all"
+                android:textAppearance="@style/TextAppearance.Ledger.RowTitle" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Import Everything"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorOnSurface" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="All documents including family &amp; friends"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurfaceSecondary" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/ledger_option_import_all_sub"
+                android:textAppearance="@style/TextAppearance.Ledger.RowSubtitle" />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@color/ledger_neutral_500" />
 
-    <com.google.android.material.card.MaterialCardView
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <LinearLayout
         android:id="@+id/importPersonalOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="?attr/colorPrimary">
+        android:background="@drawable/ledger_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_person"
+            app:tint="@color/ledger_text" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing_medium"
-            android:background="?attr/selectableItemBackground">
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/import_icon"
-                android:contentDescription="Import Personal" />
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/spacing_medium">
+                android:text="@string/ledger_option_import_mine"
+                android:textAppearance="@style/TextAppearance.Ledger.RowTitle" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Import Personal Only"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorOnSurface" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="My documents only"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurfaceSecondary" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/ledger_option_import_mine_sub"
+                android:textAppearance="@style/TextAppearance.Ledger.RowSubtitle" />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@color/ledger_neutral_500" />
 
-    <com.google.android.material.button.MaterialButton
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <TextView
         android:id="@+id/cancelButton"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/spacing_medium" />
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/ledger_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:letterSpacing="0.14"
+        android:paddingStart="20dp"
+        android:text="@string/cancel"
+        android:textAppearance="@style/TextAppearance.Ledger.ActionBar"
+        android:textColor="@color/ledger_neutral_700" />
 
 </LinearLayout>

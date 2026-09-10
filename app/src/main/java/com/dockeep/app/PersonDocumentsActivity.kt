@@ -13,7 +13,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -22,13 +25,14 @@ import com.dockeep.app.adapter.DocumentAutocompleteAdapter
 import com.dockeep.app.adapter.DocumentItemTouchHelperCallback
 import com.dockeep.app.adapter.DragDropDocumentAdapter
 import com.dockeep.app.database.Document
+import com.dockeep.app.database.DocumentImage
 import com.dockeep.app.database.Person
 import com.dockeep.app.viewmodel.DocumentViewModel
 import com.dockeep.app.viewmodel.PersonViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.dockeep.app.ui.LedgerGridDecoration
+import com.dockeep.app.utils.ColorUtils
 
 class PersonDocumentsActivity : AppCompatActivity() {
     companion object {
@@ -39,13 +43,22 @@ class PersonDocumentsActivity : AppCompatActivity() {
     private lateinit var documentViewModel: DocumentViewModel
     private lateinit var personViewModel: PersonViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var fab: ExtendedFloatingActionButton
-    private lateinit var deleteFab: FloatingActionButton
+    private lateinit var fab: View
+    private lateinit var deleteFab: View
     private lateinit var emptyStateLayout: View
+    private lateinit var backButton: View
+    private lateinit var renameButton: View
+    private lateinit var personTile: TextView
+    private lateinit var personNameView: TextView
+    private lateinit var personMeta: TextView
     
     private var documents: MutableList<Document> = mutableListOf()
     private val imageMap = mutableMapOf<Long, String?>()
     private val imageCountMap = mutableMapOf<Long, Int>()
+
+    /** Per-document image observers, tracked so they can be detached. */
+    private val imageObservers =
+        mutableListOf<Pair<LiveData<List<DocumentImage>>, Observer<List<DocumentImage>>>>()
     private var dragDropAdapter: DragDropDocumentAdapter? = null
     
     private var personId: Long = -1
@@ -79,9 +92,13 @@ class PersonDocumentsActivity : AppCompatActivity() {
         fab = findViewById(R.id.fab)
         deleteFab = findViewById(R.id.deleteFab)
         emptyStateLayout = findViewById(R.id.emptyStateLayout)
-        
-        setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        backButton = findViewById(R.id.backButton)
+        renameButton = findViewById(R.id.renameButton)
+        personTile = findViewById(R.id.personTile)
+        personNameView = findViewById(R.id.personName)
+        personMeta = findViewById(R.id.personMeta)
+
+        backButton.setOnClickListener { finish() }
     }
 
     private fun setupRecyclerView() {
@@ -89,7 +106,8 @@ class PersonDocumentsActivity : AppCompatActivity() {
         val spanCount = if (resources.configuration.smallestScreenWidthDp >= 600) 3 else 2
         val layoutManager = GridLayoutManager(this, spanCount)
         recyclerView.layoutManager = layoutManager
-        
+        recyclerView.addItemDecoration(LedgerGridDecoration(this, spanCount))
+
         // Optimize RecyclerView for better long-distance dragging
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(30)
@@ -131,46 +149,33 @@ class PersonDocumentsActivity : AppCompatActivity() {
         deleteFab.setOnClickListener {
             showDeleteAllConfirmationDialog()
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_person_documents, menu)
-        updateThemeMenuItem(menu)
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.let { updateThemeMenuItem(it) }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                true
-            }
-            R.id.action_theme -> {
-                toggleTheme()
-                true
-            }
-            R.id.action_about_developer -> {
-                startActivity(Intent(this, DeveloperDetailsActivity::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        renameButton.setOnClickListener {
+            showRenamePersonDialog()
         }
     }
 
-    private fun updateThemeMenuItem(menu: Menu) {
-        val themeItem = menu.findItem(R.id.action_theme)
-        if (isDarkTheme) {
-            themeItem.setIcon(R.drawable.dark)
-            themeItem.setTitle(R.string.dark_theme)
-        } else {
-            themeItem.setIcon(R.drawable.light)
-            themeItem.setTitle(R.string.light_theme)
-        }
+    /** Renames the shelf. The tile colour follows the new name. */
+    private fun showRenamePersonDialog() {
+        val current = person ?: return
+        val dialogLayout = layoutInflater.inflate(R.layout.dialog_create_person, null)
+        val field = dialogLayout.findViewById<android.widget.EditText>(R.id.personNameEditText)
+        field.setText(current.name)
+        field.setSelection(field.text.length)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogLayout)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                val newName = field.text.toString().trim()
+                if (newName.isEmpty()) {
+                    Toast.makeText(this, R.string.person_name_required, Toast.LENGTH_SHORT).show()
+                } else {
+                    personViewModel.updatePerson(current.copy(name = newName))
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .create()
+        dialog.show()
     }
 
     private fun loadThemePreference() {
@@ -199,8 +204,28 @@ class PersonDocumentsActivity : AppCompatActivity() {
     private fun loadPerson() {
         personViewModel.getPersonById(personId).observe(this) { personData ->
             person = personData
-            supportActionBar?.title = personData?.name?.let { "$it's Documents" } ?: "Person Documents"
+            bindPersonHeader()
         }
+    }
+
+    /** Paints the person tile and the counts line above the grid. */
+    private fun bindPersonHeader() {
+        val name = person?.name ?: return
+        personNameView.text = name.uppercase()
+
+        val letter = name.trim().firstOrNull()?.uppercaseChar()?.toString()
+            ?: getString(R.string.placeholder_default_letter)
+        personTile.text = letter
+        val colors = ColorUtils.getPlaceholderColorScheme(this, name)
+        personTile.background?.mutate()?.setColorFilter(
+            colors.backgroundColor,
+            android.graphics.PorterDuff.Mode.SRC_IN
+        )
+        personTile.setTextColor(colors.textColor)
+
+        val docCount = documents.size
+        val scanCount = imageCountMap.values.sum()
+        personMeta.text = getString(R.string.ledger_shelf_meta, docCount, scanCount)
     }
 
     private fun loadDocuments() {
@@ -219,15 +244,30 @@ class PersonDocumentsActivity : AppCompatActivity() {
     }
 
     private fun loadDocumentImages(docs: List<Document>) {
+        // Detach the previous set first. This runs from inside the document
+        // observer, so without it every change to the shelf stacked another
+        // observer per document and each later edit fired the whole pile.
+        imageObservers.forEach { (liveData, observer) -> liveData.removeObserver(observer) }
+        imageObservers.clear()
+
         imageMap.clear()
         imageCountMap.clear()
 
         docs.forEach { document ->
-            documentViewModel.getImagesForDocument(document.id).observe(this) { images ->
-                imageCountMap[document.id] = images.size
-                imageMap[document.id] = images.firstOrNull()?.imagePath
-                updateUI()
+            val liveData = documentViewModel.getImagesForDocument(document.id)
+            val observer = Observer<List<DocumentImage>> { images ->
+                imageCountMap[document.id] = images.count { it.isImage }
+                imageMap[document.id] = images.firstOrNull { it.isImage }?.imagePath
+
+                // The adapter copies the counts at construction, when they are
+                // still empty, so they have to be pushed in as they arrive —
+                // otherwise the cells on a person's shelf never showed a scan
+                // count at all.
+                dragDropAdapter?.setImageCounts(imageCountMap)
+                bindPersonHeader()
             }
+            liveData.observe(this, observer)
+            imageObservers.add(liveData to observer)
         }
     }
 
@@ -348,4 +388,13 @@ class PersonDocumentsActivity : AppCompatActivity() {
         onBackPressedDispatcher.onBackPressed()
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Coming back from recents can land directly on this screen, which
+        // would show its contents without the vault ever being unlocked.
+        // Finishing returns to the gated home screen, which does the asking.
+        if (AppLock.shouldChallenge(this)) finish()
+    }
+
 }

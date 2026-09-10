@@ -1,89 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    First run.
+
+    One step, one promise, one field. The vault illustration carries the whole
+    pitch — papers shut inside something that never leaves the phone — so the
+    copy underneath stays to three short lines and the only control above the
+    call to action is the name field.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:windowBackground"
+    android:background="@color/ledger_bg"
+    android:orientation="vertical"
     tools:context="com.dockeep.app.OnboardingActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:elevation="4dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface"
-            app:title="Welcome to DocKeep"
-            app:titleTextColor="?attr/colorOnSurface" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
+    <!-- ── Step indicator ─────────────────────────────────────────────── -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_large"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
-            android:src="@mipmap/ic_launcher_round"
-            android:contentDescription="@string/app_name" />
+        android:paddingStart="24dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:text="Welcome to DocKeep"
-            android:textSize="@dimen/text_size_headline"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface" />
+            android:letterSpacing="0.2"
+            android:text="@string/ledger_step_1_of_1"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
-            android:text="Please enter your name to get started"
-            android:textSize="@dimen/text_size_regular"
-            android:textColor="?attr/colorOnSurfaceSecondary" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/userNameInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- Track with the accent showing the single step complete -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:hint="Your Name"
-            app:boxStrokeColor="?attr/colorPrimary"
-            app:hintTextColor="?attr/colorPrimary">
+            android:layout_height="2dp"
+            android:layout_marginTop="9dp"
+            android:background="@color/ledger_rule">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/userNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName|textCapWords"
-                android:textColor="?attr/colorOnSurface" />
+            <View
+                android:layout_width="64dp"
+                android:layout_height="2dp"
+                android:background="@color/ledger_accent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/continueButton"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:text="Continue"
-            android:textAllCaps="false"
-            android:textSize="@dimen/text_size_regular"
-            android:textColor="?attr/colorOnPrimary"
-            app:cornerRadius="@dimen/button_corner_radius" />
+        </FrameLayout>
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ── Vault ──────────────────────────────────────────────── -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <com.dockeep.app.ui.VaultView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/ledger_rule_strong" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:letterSpacing="-0.035"
+                    android:lineSpacingMultiplier="0.94"
+                    android:text="@string/ledger_onboarding_headline"
+                    android:textAppearance="@style/TextAppearance.Ledger.Display"
+                    android:textSize="38sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:lineSpacingMultiplier="1.6"
+                    android:text="@string/ledger_onboarding_body"
+                    android:textAppearance="@style/TextAppearance.Ledger.Body"
+                    android:textColor="@color/ledger_neutral_800" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="9dp"
+                    android:letterSpacing="0.16"
+                    android:text="@string/ledger_call_you"
+                    android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                    android:textColor="@color/ledger_neutral_700" />
+
+                <FrameLayout
+                    android:id="@+id/userNameInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/ledger_input">
+
+                    <EditText
+                        android:id="@+id/userNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="@string/ledger_your_name"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:inputType="textPersonName|textCapWords"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.Ledger.Input" />
+
+                </FrameLayout>
+
+                <!-- ── Permission note ────────────────────────────────── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_shield"
+                        app:tint="@color/ledger_text_secondary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="9dp"
+                        android:layout_weight="1"
+                        android:letterSpacing="0.06"
+                        android:text="@string/ledger_permission_note"
+                        android:textAppearance="@style/TextAppearance.Ledger.Meta" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- ── Call to action ─────────────────────────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/ledger_action_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.16"
+            android:text="@string/ledger_open_vault"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="12dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@color/ledger_on_accent" />
+
+    </LinearLayout>
+
+</LinearLayout>

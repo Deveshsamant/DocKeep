@@ -49,12 +49,6 @@
     <string name="date_unavailable">Date Unavailable</string>
     <string name="document_title_placeholder">DOCUMENT TITLE</string>
     <string name="document_initial_placeholder">A</string>
-    <string name="about_developer">About Developer</string>
-    <string name="developer_name">Devesh Samant</string>
-    <string name="developer_title">Computer Science Student</string>
-    <string name="developer_description">Passionate about technology and innovation</string>
-    <string name="view_portfolio">View Portfolio</string>
-    <string name="connect_with_me">Connect with me</string>
     <string name="family_friends">Family &amp; Friends</string>
     <string name="add_person">Add Person</string>
     <string name="person_name_hint">Enter person\'s name</string>
@@ -563,4 +557,280 @@
         <item>Personal Notes Summary</item>
         <item>DocKeep App Settings Backup</item>
     </string-array>
+
+    <!-- ══ Ledger design ══════════════════════════════════════════════ -->
+
+    <!-- Header -->
+    <string name="ledger_on_device">%1$s · %2$s · on device</string>
+    <string name="ledger_nothing_filed">%1$s · nothing filed yet</string>
+    <string name="ledger_documents_count">%1$d documents</string>
+    <string name="ledger_document_count_one">1 document</string>
+    <string name="ledger_clear_search">Clear search</string>
+    <string name="ledger_close">Close</string>
+
+    <!-- Filter tabs -->
+    <string name="ledger_tab_all">All</string>
+    <string name="ledger_tab_all_count">All %1$d</string>
+    <string name="ledger_tab_recent">Recent</string>
+    <string name="ledger_tab_by_person">By person</string>
+    <string name="ledger_tab_alpha">A–Z</string>
+
+    <!-- Bottom navigation -->
+    <string name="ledger_nav_docs">Docs</string>
+    <string name="ledger_nav_people">People</string>
+    <string name="ledger_nav_you">You</string>
+
+    <!-- Primary actions -->
+    <string name="ledger_new_document">New document</string>
+    <string name="ledger_add_scans">Add scans</string>
+    <string name="ledger_add_person">Add person</string>
+    <string name="ledger_scan_first">Scan my first document</string>
+
+    <!-- Settings drawer -->
+    <string name="ledger_settings">Settings</string>
+    <string name="ledger_appearance">Appearance</string>
+    <string name="ledger_theme_light">Light</string>
+    <string name="ledger_theme_dark">Dark</string>
+    <string name="ledger_export_all">Export all as ZIP</string>
+    <string name="ledger_import_documents">Import documents</string>
+
+    <!-- Empty states -->
+    <string name="ledger_empty_mark">A?</string>
+    <string name="ledger_empty_documents_title">Nothing filed
+yet</string>
+    <string name="ledger_empty_documents_body">Photograph your Aadhaar, your PAN card, a bill — anything you would panic about losing. It stays on this phone.</string>
+    <string name="ledger_empty_people_title">No one
+filed under</string>
+    <string name="ledger_empty_people_body">Add the people whose documents you keep. Each one gets their own shelf, and every scan stays on this phone.</string>
+
+    <!-- Quick-start suggestions -->
+    <string name="ledger_suggest_aadhaar">Aadhaar Card</string>
+    <string name="ledger_suggest_pan">PAN Card</string>
+    <string name="ledger_suggest_passport">Passport</string>
+    <string name="ledger_suggest_license">Driving License</string>
+
+    <string name="ledger_meta_scans">%1$d scans</string>
+    <string name="ledger_meta_scan_one">1 scan</string>
+
+    <!-- Document detail -->
+    <string name="ledger_scans_label">Scans</string>
+    <string name="ledger_on_disk">On disk</string>
+    <string name="ledger_updated">Updated</string>
+    <string name="ledger_action_scan">Scan</string>
+    <string name="ledger_action_pdf">PDF</string>
+    <string name="ledger_action_share">Share</string>
+    <string name="ledger_action_delete">Delete</string>
+    <string name="ledger_scan_caption">%1$03d</string>
+
+    <string name="ledger_back">Back</string>
+    <string name="ledger_no_scans_title">No scans yet</string>
+    <string name="ledger_no_scans_body">Add a photo of this document and it stays on this phone.</string>
+
+    <string name="ledger_scan_thumbnail">Scan</string>
+
+    <string name="ledger_question_mark">?</string>
+
+    <string name="ledger_plus_n">+%1$d</string>
+
+    <string name="ledger_name_required">Enter a display name</string>
+
+    <string name="ledger_vault_letter">D</string>
+    <string name="ledger_on_device_short">On device</string>
+    <string name="ledger_step_1_of_1">Step 1 of 1</string>
+    <string name="ledger_onboarding_headline">Your papers.
+Your phone.
+Nowhere else.</string>
+    <string name="ledger_onboarding_body">Every scan stays on this device. No account, no upload, no sync.</string>
+    <string name="ledger_call_you">What should we call you?</string>
+    <string name="ledger_permission_note">Camera and storage access only</string>
+    <string name="ledger_open_vault">Open my vault</string>
+
+    <string name="ledger_your_name">Your name</string>
+
+    <string name="ledger_document_exists">A document with that name already exists</string>
+    <string name="ledger_pick_or_type">Pick a known name, or type your own</string>
+
+    <!-- Sheets -->
+    <string name="ledger_sheet_name_it">Name it</string>
+    <string name="ledger_sheet_known_names">%1$d of %2$d known names match</string>
+    <string name="ledger_sheet_use_new_name">Use “%1$s” as a new name</string>
+    <string name="ledger_sheet_file_under">File under</string>
+    <string name="ledger_sheet_create">Create %1$s</string>
+    <string name="ledger_sheet_take_it">Take it with you</string>
+    <string name="ledger_sheet_add_scans">Add scans</string>
+    <string name="ledger_sheet_delete_title">Delete %1$s?</string>
+
+    <!-- Profile -->
+    <string name="ledger_you">You</string>
+    <string name="ledger_display_name">Display name</string>
+    <string name="ledger_stat_documents">Documents</string>
+    <string name="ledger_stat_scans">Scans</string>
+    <string name="ledger_storage_by_person">Storage by person</string>
+    <string name="ledger_save">Save</string>
+
+    <!-- People -->
+    <string name="ledger_people">People</string>
+    <string name="ledger_people_summary">%1$d people · %2$d documents filed</string>
+    <string name="ledger_unassigned">Unassigned</string>
+    <string name="ledger_no_person_set">No person set</string>
+    <string name="ledger_documents_to_file">%1$d documents to file</string>
+    <string name="ledger_assign">Assign</string>
+    <string name="ledger_you_suffix">You</string>
+
+    <string name="ledger_sheet_who">Who is it for?</string>
+    <string name="ledger_working">Working</string>
+
+    <string name="ledger_shelf_meta">%1$d documents · %2$d scans</string>
+    <string name="ledger_shelf_empty_title">Nothing here yet</string>
+    <string name="ledger_shelf_empty_body">Add the first document to this shelf.</string>
+
+
+    <string name="ledger_photo_error">Could not read that image</string>
+
+    <!-- Scanning, editing, notes -->
+    <string name="ledger_scanner_unavailable">Scanner unavailable, using the camera instead</string>
+    <string name="ledger_scan_missing">That scan is no longer on this device</string>
+    <string name="ledger_edit_scan">Edit scan</string>
+    <string name="ledger_scan_updated">Scan updated</string>
+    <string name="ledger_scan_edit_failed">Could not save the edited scan</string>
+    <string name="ledger_save_as_pdf">Save as PDF</string>
+    <string name="ledger_pdf_failed">Could not create the PDF</string>
+    <string name="ledger_note">Note</string>
+    <string name="ledger_note_title">Add a note</string>
+    <string name="ledger_note_sub">A reference number, where the original is kept</string>
+    <string name="ledger_note_hint">Anything worth remembering about this document</string>
+    <string name="ledger_note_empty">Write something first</string>
+    <string name="ledger_caption_note">%1$s · Note</string>
+
+    <!-- Scan editor -->
+    <string name="ledger_edit">Edit</string>
+    <string name="ledger_rotate_left">Left</string>
+    <string name="ledger_rotate_right">Right</string>
+    <string name="ledger_crop">Crop</string>
+    <string name="ledger_reset">Reset</string>
+    <string name="ledger_filter">Filter</string>
+    <string name="ledger_filter_original">Original</string>
+    <string name="ledger_filter_grey">Greyscale</string>
+    <string name="ledger_filter_mono">Black &amp; white</string>
+    <string name="ledger_filter_enhance">Enhance</string>
+    <string name="ledger_brightness">Brightness</string>
+    <string name="ledger_contrast">Contrast</string>
+
+    <!-- App lock -->
+    <string name="ledger_lock">Lock with biometrics</string>
+    <string name="ledger_unlock_title">Unlock DocKeep</string>
+    <string name="ledger_unlock_subtitle">Your documents are locked on this device</string>
+    <string name="ledger_lock_unavailable">Set up a fingerprint, face unlock or a screen lock first</string>
+    <string name="ledger_lock_on">Vault locked</string>
+    <string name="ledger_lock_off">Vault unlocked</string>
+
+    <!-- Multi-select -->
+    <string name="ledger_move">File under</string>
+    <string name="ledger_selected">%1$d selected</string>
+    <string name="ledger_select_none">Nothing selected</string>
+    <string name="ledger_bulk_delete_title">Delete %1$d documents?</string>
+    <string name="ledger_bulk_delete_body">Their scans are removed from this device. This cannot be undone.</string>
+    <string name="ledger_moved">Filed under %1$s</string>
+    <string name="ledger_move_to_me">Me</string>
+    <string name="ledger_no_people_yet">Add someone on the People tab first</string>
+
+    <string name="ledger_nothing_to_share">Nothing to share in those documents</string>
+
+    <!-- Tags -->
+    <string name="ledger_add_tag">+ Tag</string>
+    <string name="ledger_tag_title">Add a tag</string>
+    <string name="ledger_tag_kicker">Tag</string>
+    <string name="ledger_tag_hint">Tax 2024, Vehicle, Medical…</string>
+    <string name="ledger_tag_remove">Remove tag %1$s?</string>
+
+    <string name="ledger_rename_suggest_title">Name it from the scan?</string>
+    <string name="ledger_rename_suggest_body">This page looks like “%1$s”. Rename the document to match?</string>
+
+    <string name="ledger_redact">Redact</string>
+    <string name="ledger_redact_on">Drag</string>
+    <string name="ledger_redact_count">%1$d boxes</string>
+    <string name="ledger_redact_hint">Drag across anything that should not be readable</string>
+    <string name="ledger_redact_cleared">Redactions cleared</string>
+
+    <string name="ledger_unlock_action">Unlock</string>
+
+    <!-- Share variants -->
+    <string name="ledger_share_pdf_notes">PDF with notes</string>
+    <string name="ledger_share_pdf_notes_sub">Scans and your written notes, in order</string>
+    <string name="ledger_share_pdf_scans_sub">Scans only — notes are left out</string>
+    <string name="ledger_share_this_pdf">Share as PDF</string>
+    <string name="ledger_pdf_no_scans">No scans to put in a PDF</string>
+
+    <!-- Recognised text -->
+    <string name="ledger_ocr_kicker">Recognised</string>
+    <string name="ledger_ocr_title">Text on this scan</string>
+    <string name="ledger_ocr_action">Read text</string>
+    <string name="ledger_ocr_copy">Copy</string>
+    <string name="ledger_ocr_save_note">Keep as note</string>
+    <string name="ledger_ocr_copied">Text copied</string>
+    <string name="ledger_ocr_empty">No text found on this scan</string>
+    <string name="ledger_ocr_saved">Saved as a note</string>
+
+    <!-- Export -->
+    <string name="ledger_export_in_progress">An export is already running</string>
+    <string name="ledger_export_failed">Could not build the export</string>
+    <string name="ledger_export_nothing">Nothing to export yet</string>
+    <string name="ledger_export_via">Export documents via</string>
+    <string name="ledger_export_no_app">No app on this phone can receive a ZIP</string>
+
+    <!-- PDF page picker -->
+    <string name="ledger_pdf_pick_title">Choose pages</string>
+    <string name="ledger_pdf_pick_all">All</string>
+    <string name="ledger_pdf_pick_scans">Scans only</string>
+    <string name="ledger_pdf_pick_none">None</string>
+    <string name="ledger_pdf_pick_nothing">Pick at least one page</string>
+    <string name="ledger_pdf_scan_n">Scan %1$d</string>
+    <string name="ledger_pdf_save_n">Save %1$d pages</string>
+    <string name="ledger_pdf_share_n">Share %1$d pages</string>
+
+    <!-- Saving to the gallery -->
+    <string name="ledger_save_image">Save</string>
+    <string name="ledger_saved_to_gallery">Saved to your gallery</string>
+    <string name="ledger_save_failed">Could not save that scan</string>
+    <string name="ledger_save_needs_permission">Storage access is needed to save into your gallery</string>
+
+    <string name="ledger_saved_n_to_gallery">%1$d scans saved to your gallery</string>
+    <string name="ledger_saved_n_with_failures">%1$d saved, %2$d could not be saved</string>
+
+    <string name="ledger_save_to_gallery">Save to gallery</string>
+
+    <string name="ledger_pdf_saved">PDF saved to Documents/DocKeep</string>
+    <string name="ledger_pdf_save_failed">Could not save the PDF</string>
+
+    <!-- Feedback -->
+    <string name="ledger_feedback">Report an issue</string>
+    <string name="ledger_issues_url">https://github.com/Deveshsamant/DocKeep/issues/new</string>
+    <string name="ledger_no_browser">No browser on this phone to open the page</string>
+
+    <!-- Sheet option rows -->
+    <string name="ledger_sheet_export">Export everything</string>
+    <string name="ledger_sheet_import">Bring it back</string>
+
+    <string name="ledger_option_pdf">One PDF</string>
+    <string name="ledger_option_pdf_sub">A4 pages, saved to Documents/DocKeep</string>
+    <string name="ledger_option_gallery">Images to gallery</string>
+    <string name="ledger_option_gallery_sub">Full resolution, unmodified</string>
+
+    <string name="ledger_option_share_pdf">Share as PDF</string>
+    <string name="ledger_option_share_pdf_sub">Scans only — notes are left out</string>
+    <string name="ledger_option_share_images">Share the scans</string>
+    <string name="ledger_option_share_images_sub">Original images, via the Android share sheet</string>
+
+    <string name="ledger_option_export_all">Everything</string>
+    <string name="ledger_option_export_all_sub">Your documents and every person on this phone</string>
+    <string name="ledger_option_export_mine">Only mine</string>
+    <string name="ledger_option_export_mine_sub">Leaves other people\u2019s documents out</string>
+
+    <string name="ledger_option_import_all">Whole archive</string>
+    <string name="ledger_option_import_all_sub">Restores documents and the people they were filed under</string>
+    <string name="ledger_option_import_mine">Only mine</string>
+    <string name="ledger_option_import_mine_sub">Files everything under your own name</string>
+
+    <string name="ledger_export_warning">Anything you export leaves DocKeep\u2019s private folder. Delete it from Downloads when you are done.</string>
+
 </resources>

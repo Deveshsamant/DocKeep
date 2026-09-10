@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Bottom navigation.
+
+    The design moved navigation out of the drawer and into this bar, leaving
+    the drawer for settings alone. Tabs are separated by 2px rules rather than
+    by spacing, and the active tab is marked by a short accent underline.
+
+    Each host activity marks its own tab active in onCreate.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomNav"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:background="@color/ledger_bg"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule_strong" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- Docs -->
+        <FrameLayout
+            android:id="@+id/navDocs"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp">
+
+                <ImageView
+                    android:id="@+id/navDocsIcon"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_document_placeholder"
+                    app:tint="@color/ledger_text" />
+
+                <TextView
+                    android:id="@+id/navDocsLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:text="@string/ledger_nav_docs"
+                    android:textAppearance="@style/TextAppearance.Ledger.TabActive" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/navDocsUnderline"
+                android:layout_width="38dp"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="9dp"
+                android:background="@color/ledger_accent" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/ledger_rule" />
+
+        <!-- People -->
+        <FrameLayout
+            android:id="@+id/navPeople"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp">
+
+                <ImageView
+                    android:id="@+id/navPeopleIcon"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_family_friends"
+                    app:tint="@color/ledger_text_secondary" />
+
+                <TextView
+                    android:id="@+id/navPeopleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:text="@string/ledger_nav_people"
+                    android:textAppearance="@style/TextAppearance.Ledger.Tab" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/navPeopleUnderline"
+                android:layout_width="38dp"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="9dp"
+                android:background="@color/ledger_accent"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/ledger_rule" />
+
+        <!-- You -->
+        <FrameLayout
+            android:id="@+id/navYou"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp">
+
+                <ImageView
+                    android:id="@+id/navYouIcon"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_person"
+                    app:tint="@color/ledger_text_secondary" />
+
+                <TextView
+                    android:id="@+id/navYouLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:text="@string/ledger_nav_you"
+                    android:textAppearance="@style/TextAppearance.Ledger.Tab" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/navYouUnderline"
+                android:layout_width="38dp"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="9dp"
+                android:background="@color/ledger_accent"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

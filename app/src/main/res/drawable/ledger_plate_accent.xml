@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The folder tab — the one saturated element in the empty-state stack. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/ledger_accent" />
+    <stroke android:width="2dp" android:color="@color/ledger_rule_strong" />
+</shape>

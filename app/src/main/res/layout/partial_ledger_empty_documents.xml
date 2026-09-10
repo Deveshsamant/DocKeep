@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Empty documents state.
+
+    The illustration is the onboarding vault seen again as a folder: four
+    plates stacked with a small offset so the inner sheets peek above the front
+    one, plus the accent tab. Flat plates with 2px rules stand in for the
+    design's CSS-3D box; the silhouette is the same.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/emptyStateLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ledger_bg"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp">
+
+        <!-- ── Stacked plates ─────────────────────────────────────────── -->
+        <FrameLayout
+            android:layout_width="170dp"
+            android:layout_height="146dp"
+            android:layout_gravity="center_horizontal">
+
+            <!-- Innermost sheet, peeking 16dp above the front plate -->
+            <View
+                android:layout_width="126dp"
+                android:layout_height="118dp"
+                android:layout_gravity="center_horizontal|top"
+                android:background="@drawable/ledger_plate_bg" />
+
+            <!-- Middle sheet, peeking 8dp -->
+            <View
+                android:layout_width="142dp"
+                android:layout_height="118dp"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ledger_plate_neutral_100" />
+
+            <!-- Front plate carrying the mark -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/ledger_plate_neutral_200">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:letterSpacing="-0.04"
+                    android:text="@string/ledger_empty_mark"
+                    android:textAppearance="@style/TextAppearance.Ledger.Tile"
+                    android:textColor="@color/ledger_accent"
+                    android:textSize="46sp" />
+
+            </FrameLayout>
+
+            <!-- Folder tab -->
+            <View
+                android:layout_width="66dp"
+                android:layout_height="16dp"
+                android:layout_gravity="start|top"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ledger_plate_accent" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/ledger_rule_strong" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:lineSpacingMultiplier="0.96"
+            android:text="@string/ledger_empty_documents_title"
+            android:textAppearance="@style/TextAppearance.Ledger.Headline"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:lineSpacingMultiplier="1.6"
+            android:text="@string/ledger_empty_documents_body"
+            android:textAppearance="@style/TextAppearance.Ledger.Body"
+            android:textColor="@color/ledger_neutral_800"
+            android:textSize="13.5sp" />
+
+        <!--
+            Quick starts. Plain bordered boxes rather than Material chips: the
+            design's chip is a 2px rule with no fill, and Chip's own single-line
+            ellipsizing was blanking the longer labels outright.
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/quickStartAadhaar"
+                    style="@style/Widget.Ledger.QuickChip"
+                    android:text="@string/ledger_suggest_aadhaar" />
+
+                <TextView
+                    android:id="@+id/quickStartPan"
+                    style="@style/Widget.Ledger.QuickChip"
+                    android:layout_marginStart="2dp"
+                    android:text="@string/ledger_suggest_pan" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/quickStartPassport"
+                    style="@style/Widget.Ledger.QuickChip"
+                    android:text="@string/ledger_suggest_passport" />
+
+                <TextView
+                    android:id="@+id/quickStartLicense"
+                    style="@style/Widget.Ledger.QuickChip"
+                    android:layout_marginStart="2dp"
+                    android:text="@string/ledger_suggest_license" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

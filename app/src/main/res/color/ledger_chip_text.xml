@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chip label: inverts when the chip is selected, accents while pressed. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/ledger_accent_700" android:state_pressed="true" />
+    <item android:color="@color/ledger_inverse_text" android:state_selected="true" />
+    <item android:color="@color/ledger_text" />
+</selector>

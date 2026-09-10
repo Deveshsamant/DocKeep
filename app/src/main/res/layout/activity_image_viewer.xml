@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Image viewer.
+
+    The one screen that stays dark on both themes: a scan is being read here,
+    so everything except the scan itself recedes. The chrome keeps the Ledger
+    vocabulary — tracked micro-caps, a square outlined close, a 2px rule under
+    the bar — rendered on ink instead of paper.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#111010"
+    tools:context="com.dockeep.app.ImageViewerActivity">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -14,37 +25,206 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical"
-        android:background="#80000000">
+        android:background="#CC111010"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/documentName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Document Name"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
 
-        <TextView
-            android:id="@+id/imageCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1/10"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/closeButton"
-            android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/documentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.Ledger.CellTitle"
+                    android:textColor="#F8F4F4"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/imageCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:letterSpacing="0.14"
+                    android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                    android:textColor="#9B9797" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/closeButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ledger_box_outline_light"
+                android:contentDescription="@string/ledger_close"
+                android:padding="9dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_close"
+                app:tint="#F8F4F4" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#47F3F2F2" />
+
+    </LinearLayout>
+
+    <!--
+        Action bar. The viewer is where you actually look at a scan closely,
+        so it is where you notice it needs straightening or a number blacking
+        out. Same four-up construction as the document screen, rendered on ink
+        because this screen stays dark on both themes.
+    -->
+    <LinearLayout
+        android:id="@+id/viewerActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#CC111010"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#47F3F2F2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_close"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="16dp"
-            android:tint="#FFFFFF" />
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/viewerEdit"
+                style="@style/Widget.Ledger.ViewerTool"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_edit"
+                    app:tint="#F8F4F4" />
+
+                <TextView
+                    style="@style/Widget.Ledger.ViewerToolLabel"
+                    android:text="@string/edit" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#47F3F2F2" />
+
+            <LinearLayout
+                android:id="@+id/viewerShare"
+                style="@style/Widget.Ledger.ViewerTool"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_share"
+                    app:tint="#F8F4F4" />
+
+                <TextView
+                    style="@style/Widget.Ledger.ViewerToolLabel"
+                    android:text="@string/share" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#47F3F2F2" />
+
+            <LinearLayout
+                android:id="@+id/viewerSave"
+                style="@style/Widget.Ledger.ViewerTool"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_download"
+                    app:tint="#F8F4F4" />
+
+                <TextView
+                    style="@style/Widget.Ledger.ViewerToolLabel"
+                    android:text="@string/ledger_save_image" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#47F3F2F2" />
+
+            <LinearLayout
+                android:id="@+id/viewerPdf"
+                style="@style/Widget.Ledger.ViewerTool"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_pdf"
+                    app:tint="#F8F4F4" />
+
+                <TextView
+                    style="@style/Widget.Ledger.ViewerToolLabel"
+                    android:text="@string/ledger_action_pdf" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#47F3F2F2" />
+
+            <LinearLayout
+                android:id="@+id/viewerText"
+                style="@style/Widget.Ledger.ViewerTool"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_note"
+                    app:tint="#F8F4F4" />
+
+                <TextView
+                    style="@style/Widget.Ledger.ViewerToolLabel"
+                    android:text="@string/ledger_ocr_action" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

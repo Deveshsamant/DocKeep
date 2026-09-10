@@ -19,7 +19,7 @@ android {
         minSdk 21
         targetSdk 34
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,7 +39,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            // Only sign when a keystore is actually configured. Assigning the
+            // config unconditionally made assembleRelease fail outright with
+            // "missing required property storeFile" on any machine without
+            // app/keystore.properties — which is every fresh clone. Without
+            // one the build now produces an unsigned APK instead.
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {
@@ -84,8 +91,25 @@ dependencies {
     // Zip utility
     implementation 'org.apache.commons:commons-compress:1.24.0'
     
-    // PDF generation - Corrected dependency
-    implementation 'com.itextpdf:itext7-core:7.2.5'
+    // PDF generation uses android.graphics.pdf.PdfDocument from the
+    // platform. iText 7 was the desktop JVM build and is not supported on
+    // Android; see utils/LedgerPdf.kt.
+
+    // Document scanning: live edge detection, perspective correction and the
+    // enhance filters. Delivered as a Play Services module, downloaded on
+    // first use, so the APK does not carry the model itself.
+    implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1'
+
+    // Crop / rotate / straighten for scans already in a document.
+    implementation 'com.vanniktech:android-image-cropper:4.6.0'
+
+    // On-device OCR. Bundled rather than the Play Services variant so text
+    // extraction still works where the scanner had to fall back to the
+    // plain camera.
+    implementation 'com.google.mlkit:text-recognition:16.0.1'
+
+    // Biometric / device-credential lock for the vault.
+    implementation 'androidx.biometric:biometric:1.1.0'
     
     // Testing
     testImplementation 'junit:junit:4.13.2'

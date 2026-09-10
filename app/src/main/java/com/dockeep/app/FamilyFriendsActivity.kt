@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.dockeep.app.utils.AppLock
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,7 +18,10 @@ import com.dockeep.app.adapter.DragDropPersonAdapter
 import com.dockeep.app.adapter.PersonItemTouchHelperCallback
 import com.dockeep.app.database.Person
 import com.dockeep.app.viewmodel.PersonViewModel
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import android.widget.TextView
+import com.dockeep.app.ui.LedgerGridDecoration
+import com.dockeep.app.ui.LedgerNav
+import com.dockeep.app.viewmodel.DocumentViewModel
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.Toast
 
@@ -28,9 +32,18 @@ class FamilyFriendsActivity : AppCompatActivity() {
     }
     
     private lateinit var viewModel: PersonViewModel
+    private lateinit var documentViewModel: DocumentViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var fab: ExtendedFloatingActionButton
+    private lateinit var fab: View
     private lateinit var emptyStateLayout: View
+    private lateinit var backButton: View
+    private lateinit var peopleSubtitle: TextView
+    private lateinit var unassignedSection: View
+    private lateinit var unassignedRow: View
+    private lateinit var unassignedCount: TextView
+    private lateinit var navDocs: View
+    private lateinit var navPeople: View
+    private lateinit var navYou: View
     
     private var people: MutableList<Person> = mutableListOf()
     private var dragDropAdapter: DragDropPersonAdapter? = null
@@ -61,13 +74,20 @@ class FamilyFriendsActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.peopleRecyclerView)
         fab = findViewById(R.id.fab)
         emptyStateLayout = findViewById(R.id.emptyStateLayout)
-        
-        // Setup toolbar
-        setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        backButton = findViewById(R.id.backButton)
+        peopleSubtitle = findViewById(R.id.peopleSubtitle)
+        unassignedSection = findViewById(R.id.unassignedSection)
+        unassignedRow = findViewById(R.id.unassignedRow)
+        unassignedCount = findViewById(R.id.unassignedCount)
+        navDocs = findViewById(R.id.navDocs)
+        navPeople = findViewById(R.id.navPeople)
+        navYou = findViewById(R.id.navYou)
+
+        // This screen owns the People tab in the shared bottom bar.
+        LedgerNav.markActive(this, LedgerNav.Tab.PEOPLE)
     }
 
     private fun setupRecyclerView() {
@@ -75,9 +95,12 @@ class FamilyFriendsActivity : AppCompatActivity() {
         val spanCount = 2
         val layoutManager = GridLayoutManager(this, spanCount)
         recyclerView.layoutManager = layoutManager
-        
+        recyclerView.addItemDecoration(LedgerGridDecoration(this, spanCount))
+
         // Optimize RecyclerView for better long-distance dragging
-        recyclerView.setHasFixedSize(true)
+        // The grid is wrap_content inside a ScrollView, so its height does
+        // change with its contents; claiming otherwise mismeasures it.
+        recyclerView.setHasFixedSize(false)
         recyclerView.setItemViewCacheSize(30)
         recyclerView.setRecycledViewPool(RecyclerView.RecycledViewPool())
         recyclerView.recycledViewPool.setMaxRecycledViews(0, 20)
@@ -104,54 +127,54 @@ class FamilyFriendsActivity : AppCompatActivity() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this, PersonViewModel.Factory(application))
             .get(PersonViewModel::class.java)
+        documentViewModel = ViewModelProvider(this, DocumentViewModel.Factory(application))
+            .get(DocumentViewModel::class.java)
     }
 
     private fun setupClickListeners() {
         fab.setOnClickListener {
             showAddPersonDialog()
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_family_friends, menu)
-        // Update theme icon based on current theme
-        updateThemeMenuItem(menu)
-        return true
-    }
+        backButton.setOnClickListener { finish() }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.let { updateThemeMenuItem(it) }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                true
-            }
-            R.id.action_theme -> {
-                toggleTheme()
-                true
-            }
-            R.id.action_about_developer -> {
-                // Navigate to developer details
-                val intent = Intent(this, DeveloperDetailsActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        // Docs and You are other destinations; People is this screen.
+        navDocs.setOnClickListener { finish() }
+        navPeople.setOnClickListener { /* already here */ }
+        navYou.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
+
+        // Tapping Unassigned opens the main user's shelf, which is where
+        // documents with no person live.
+        unassignedRow.setOnClickListener { finish() }
     }
 
-    private fun updateThemeMenuItem(menu: Menu) {
-        val themeItem = menu.findItem(R.id.action_theme)
-        if (isDarkTheme) {
-            themeItem.setIcon(R.drawable.dark)
-            themeItem.setTitle(R.string.dark_theme)
-        } else {
-            themeItem.setIcon(R.drawable.light)
-            themeItem.setTitle(R.string.light_theme)
+    /**
+     * Header line and the Unassigned row both need document counts, which live
+     * in the document store rather than the person store.
+     */
+    private fun bindCounts() {
+        documentViewModel.getAllDocuments().observe(this) { docs ->
+            val filed = docs.count { it.personId != null }
+            peopleSubtitle.text = getString(
+                R.string.ledger_people_summary,
+                people.size,
+                filed
+            )
+
+            // Feed the cells their per-person document colours and counts.
+            dragDropAdapter?.setDocumentsByPerson(
+                docs.filter { it.personId != null }.groupBy { it.personId!! }
+            )
+
+            val unfiled = docs.count { it.personId == null }
+            if (unfiled == 0) {
+                unassignedSection.visibility = View.GONE
+            } else {
+                unassignedSection.visibility = View.VISIBLE
+                unassignedCount.text = getString(R.string.ledger_documents_to_file, unfiled)
+            }
         }
     }
 
@@ -186,9 +209,6 @@ class FamilyFriendsActivity : AppCompatActivity() {
         // Apply the theme
         updateTheme()
         
-        // Update the theme menu item
-        invalidateOptionsMenu()
-        
         // Recreate the activity to apply the theme change
         recreate()
     }
@@ -199,6 +219,7 @@ class FamilyFriendsActivity : AppCompatActivity() {
             people.addAll(peopleList)
             updateUI()
         }
+        bindCounts()
     }
 
     private fun updateUI() {
@@ -279,8 +300,13 @@ class FamilyFriendsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
+
+    override fun onResume() {
+        super.onResume()
+        // Coming back from recents can land directly on this screen, which
+        // would show its contents without the vault ever being unlocked.
+        // Finishing returns to the gated home screen, which does the asking.
+        if (AppLock.shouldChallenge(this)) finish()
     }
+
 }

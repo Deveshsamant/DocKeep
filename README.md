@@ -7,14 +7,20 @@ DocKeep is a modern Android application for storing and organizing personal docu
 
 ## Features
 
-- **Local Storage**: All documents are stored locally on your device
-- **Document Organization**: Create and organize documents in a clean card-based interface
-- **Image Management**: Add multiple images to each document from camera or gallery
-- **Sharing**: Share individual images or entire documents with other apps
-- **Export**: Export documents as ZIP files
-- **Dark/Light Theme**: Toggle between light and dark themes
-- **Search**: Quickly find documents by name
-- **Responsive Design**: Works on both phones and tablets
+- **Local storage** — every document stays on the device. There is no account, no sync and no server.
+- **Document scanning** — edge detection and perspective correction, so a photo of a page comes out looking like a scan.
+- **Scan editor** — rotate, crop, brightness, contrast, filters, and a black-box redaction tool for covering numbers before sharing.
+- **Text blocks** — write notes alongside the scans in the same document.
+- **OCR** — read the text off any scan, copy it, keep it as a note, or let it suggest the document's name.
+- **Search** — by document name, by person, by tag, and through the text OCR has read inside the scans.
+- **Tags** — labels that cut across people, so "expiring 2026" can span the whole vault.
+- **People** — group documents by family member or friend.
+- **PDF export** — build a PDF from a whole document or a single page, choosing exactly which blocks go in.
+- **Save and share** — scans to the gallery, PDFs to Documents, or straight out to another app.
+- **Bulk actions** — select several documents to share, delete, or move to a person at once.
+- **App lock** — fingerprint, face or device PIN in front of the vault.
+- **Backup** — export the whole vault as a ZIP and import it back.
+- **Light and dark** — both themes, following the system by default.
 
 ## File Organization
 
@@ -37,20 +43,28 @@ Pictures/Dockeep/
 
 The project uses the following libraries:
 
-- AndroidX AppCompat
-- Material Components
-- Room Database
-- Glide (for image loading)
-- Lottie (for animations)
-- Apache Commons Compress (for ZIP functionality)
+- AndroidX AppCompat and Material Components
+- Room (local database)
+- Glide (image loading)
+- Lottie (animations)
+- Apache Commons Compress (ZIP backup)
+- ML Kit Document Scanner (edge detection and perspective correction)
+- ML Kit Text Recognition (on-device OCR)
+- android-image-cropper (crop and straighten)
+- AndroidX Biometric (app lock)
+
+PDFs are written with the platform's own `android.graphics.pdf.PdfDocument` —
+no third-party PDF library is involved.
 
 ## Building and Running
 
 ### Prerequisites
 
-- Android Studio Flamingo or later
+- JDK 17
 - Android SDK API 34 (Android 14)
-- Kotlin 1.9.0 or later
+- Android Studio is optional — the Gradle wrapper builds the app on its own
+
+Minimum supported device: Android 5.0 (API 21).
 
 ### Gradle Commands
 
@@ -93,11 +107,15 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 The app requires the following permissions:
 
-- **CAMERA**: To capture new images
-- **READ_EXTERNAL_STORAGE**: To access existing images in gallery
-- **WRITE_EXTERNAL_STORAGE**: To save documents (Android 10 and below)
-- **READ_MEDIA_IMAGES**: To access images (Android 13+)
-- **MANAGE_EXTERNAL_STORAGE**: For broader storage access (Android 11+)
+- **CAMERA** — capturing and scanning pages
+- **USE_BIOMETRIC** — the app lock
+- **VIBRATE** — the haptic tick when a document is dragged into a new position
+- **INTERNET** — downloading the document-scanner module from Play Services on first use
+- **READ_EXTERNAL_STORAGE** (Android 12 and below) and **WRITE_EXTERNAL_STORAGE** (Android 10 and below) — saving scans to the gallery on older releases
+
+No broad storage permission is requested. Images arrive through the system
+photo picker, which grants access to only the file you choose, and saved scans
+and PDFs go out through MediaStore.
 
 ## Architecture
 
@@ -108,6 +126,15 @@ The app follows a modern Android architecture pattern:
 - **Repository**: Handles data operations
 - **Room Database**: Local data persistence
 - **Utils**: Helper classes for file operations and utilities
+
+## Issues and feedback
+
+Found a bug, or want to suggest a feature? Open an issue:
+
+**https://github.com/Deveshsamant/DocKeep/issues**
+
+The same link is in the app, under **Settings → Report an issue**, next to the
+version number — please include that version in the report.
 
 ## Contributing
 

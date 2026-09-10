@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ledger typography.
+
+    Each style points at a concrete Archivo weight file rather than at the
+    @font/archivo family plus `textFontWeight`, because weight selection from a
+    family only works from API 28 and this app ships to API 21. Sizes and
+    tracking are taken straight from the design; the design's px values map 1:1
+    to sp at the 412dp reference width.
+-->
+<resources>
+
+    <!-- Display: the DOCKEEP wordmark and screen titles (PEOPLE, YOU). -->
+    <style name="TextAppearance.Ledger.Display" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_black</item>
+        <item name="fontFamily">@font/archivo_black</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Sheet and dialog titles: NAME IT, TAKE IT WITH YOU. -->
+    <style name="TextAppearance.Ledger.Title" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_black</item>
+        <item name="fontFamily">@font/archivo_black</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Headline used by empty states ("NOTHING FILED YET"). -->
+    <style name="TextAppearance.Ledger.Headline" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_black</item>
+        <item name="fontFamily">@font/archivo_black</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:letterSpacing">-0.025</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Grid-cell and list-row titles. -->
+    <style name="TextAppearance.Ledger.CellTitle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- The tracked uppercase micro-caps carrying every piece of metadata. -->
+    <style name="TextAppearance.Ledger.Meta" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_medium</item>
+        <item name="fontFamily">@font/archivo_medium</item>
+        <item name="android:textSize">10.5sp</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:textColor">@color/ledger_text_secondary</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Wider tracking, used directly under the wordmark. -->
+    <style name="TextAppearance.Ledger.MetaWide" parent="TextAppearance.Ledger.Meta">
+        <item name="android:letterSpacing">0.14</item>
+    </style>
+
+    <!-- Section kickers: STORAGE BY PERSON, UNASSIGNED, FILE UNDER. -->
+    <style name="TextAppearance.Ledger.Kicker" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Accent kicker above sheet titles ("NEW DOCUMENT"). -->
+    <style name="TextAppearance.Ledger.KickerAccent" parent="TextAppearance.Ledger.Kicker">
+        <item name="android:textColor">@color/ledger_accent</item>
+    </style>
+
+    <!-- Tab labels — inactive. The active tab swaps to Bold via a selector. -->
+    <style name="TextAppearance.Ledger.Tab" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_medium</item>
+        <item name="fontFamily">@font/archivo_medium</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/ledger_text_secondary</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextAppearance.Ledger.TabActive" parent="TextAppearance.Ledger.Tab">
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/ledger_text</item>
+    </style>
+
+    <!-- The label inside the full-bleed accent action bars. -->
+    <style name="TextAppearance.Ledger.ActionBar" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.14</item>
+        <item name="android:textColor">@color/ledger_on_accent</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Letter tile glyph. Size is overridden per tile scale in the layouts. -->
+    <style name="TextAppearance.Ledger.Tile" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_black</item>
+        <item name="fontFamily">@font/archivo_black</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Running prose. The only style in the system that is not uppercase. -->
+    <style name="TextAppearance.Ledger.Body" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_regular</item>
+        <item name="fontFamily">@font/archivo_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
+        <item name="android:textColor">@color/ledger_text_secondary</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Row titles inside sheets: ONE PDF, 4 PAGES. -->
+    <style name="TextAppearance.Ledger.RowTitle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextAppearance.Ledger.RowSubtitle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_regular</item>
+        <item name="fontFamily">@font/archivo_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/ledger_text_secondary</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- The big figures on the profile stat strip. -->
+    <style name="TextAppearance.Ledger.Stat" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_black</item>
+        <item name="fontFamily">@font/archivo_black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Editable text. Kept sentence-case: it holds user-entered names. -->
+    <style name="TextAppearance.Ledger.Input" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/archivo_semibold</item>
+        <item name="fontFamily">@font/archivo_semibold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/ledger_text</item>
+    </style>
+
+</resources>

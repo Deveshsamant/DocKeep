@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ledger design tokens — light theme.
+
+    Mirrors the Modernist design-system tokens from the DocKeep Ledger design:
+    no radii, no shadows. Depth is carried entirely by 2px rules, so every
+    surface here is flat and separation comes from `ledger_rule`.
+-->
+<resources>
+    <color name="ledger_bg">#F3F2F2</color>
+    <color name="ledger_surface">#EAE9E9</color>
+    <color name="ledger_text">#201E1D</color>
+
+    <!-- Rules. `ledger_rule` is the 40% hairline used between cells; the
+         solid text colour is used for the heavier structural rules. -->
+    <color name="ledger_rule">#66201E1D</color>
+    <color name="ledger_rule_strong">#201E1D</color>
+
+    <!-- Neutral ramp (shared lightness scale with the accent ramp). -->
+    <color name="ledger_neutral_100">#F8F4F4</color>
+    <color name="ledger_neutral_200">#EAE7E7</color>
+    <color name="ledger_neutral_300">#D7D3D3</color>
+    <color name="ledger_neutral_400">#BAB6B6</color>
+    <color name="ledger_neutral_500">#9B9797</color>
+    <color name="ledger_neutral_600">#7D7979</color>
+    <color name="ledger_neutral_700">#605D5D</color>
+    <color name="ledger_neutral_800">#444141</color>
+    <color name="ledger_neutral_900">#2D2B2B</color>
+
+    <color name="ledger_text_secondary">#7D7979</color>
+    <color name="ledger_text_tertiary">#9B9797</color>
+
+    <!-- Accent — the single saturated UI colour. Letter tiles keep their own
+         hues from colors.xml; nothing else in the chrome is coloured. -->
+    <color name="ledger_accent">#EC3013</color>
+    <color name="ledger_accent_100">#FFF2EF</color>
+    <color name="ledger_accent_200">#FFE0D9</color>
+    <color name="ledger_accent_600">#DD2B0F</color>
+    <color name="ledger_accent_700">#AE1800</color>
+    <color name="ledger_on_accent">#FFFFFF</color>
+
+    <!-- Scrim behind drawers and bottom sheets. -->
+    <color name="ledger_scrim">#992D2B2B</color>
+
+    <!-- Fixed tile hues used by the illustrations, which must not follow the
+         theme: they stand for real documents. -->
+    <color name="doc_tile_purple">#9C27B0</color>
+    <color name="doc_tile_yellow">#FFEB3B</color>
+    <color name="doc_tile_red">#F44336</color>
+
+    <!-- Inverse pair, used by selected chips and the toggle knob. -->
+    <color name="ledger_inverse_bg">#201E1D</color>
+    <color name="ledger_inverse_text">#F3F2F2</color>
+</resources>

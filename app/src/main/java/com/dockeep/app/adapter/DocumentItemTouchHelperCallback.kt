@@ -61,8 +61,10 @@ class DocumentItemTouchHelperCallback(
     }
 
     override fun isLongPressDragEnabled(): Boolean {
-        // Enable long press to start drag
-        return true
+        // The adapter owns the long press: it starts a selection, or begins a
+        // drag itself via startDrag when a selected cell is held. Letting the
+        // touch helper also claim the gesture would make the two race.
+        return false
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
@@ -76,15 +78,12 @@ class DocumentItemTouchHelperCallback(
             adapter.setDragging(true)
             
             if (viewHolder is DragDropDocumentAdapter.DocumentViewHolder) {
-                // Apply smooth lift animation with enhanced effects
+                // The dragged cell dims rather than lifting: this design has
+                // no elevation to raise it into.
                 viewHolder.cardView.apply {
                     animate()
-                        .alpha(0.85f) // Slightly higher opacity for better visibility
-                        .scaleX(1.06f) // Slightly reduced scale for more natural feel
-                        .scaleY(1.06f)
-                        .translationZ(48f) // Increased elevation for better depth perception
+                        .alpha(0.7f)
                         .setDuration(120)
-                        .setInterpolator(OvershootInterpolator(1.3f))
                         .start()
                 }
                 
@@ -101,15 +100,10 @@ class DocumentItemTouchHelperCallback(
     ) {
         super.clearView(recyclerView, viewHolder)
         if (viewHolder is DragDropDocumentAdapter.DocumentViewHolder) {
-            // Apply spring-back effect with enhanced animation
             viewHolder.cardView.apply {
                 animate()
                     .alpha(1.0f)
-                    .scaleX(1.0f)
-                    .scaleY(1.0f)
-                    .translationZ(8f) // Restore original elevation
-                    .setDuration(180)
-                    .setInterpolator(OvershootInterpolator(1.2f))
+                    .setDuration(160)
                     .start()
             }
             

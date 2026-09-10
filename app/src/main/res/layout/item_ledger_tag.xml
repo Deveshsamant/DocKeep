@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One tag box. Same 2px outline as every other chip in the design. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="2dp"
+    android:background="@drawable/ledger_chip_outline"
+    android:clickable="true"
+    android:focusable="true"
+    android:fontFamily="@font/archivo_semibold"
+    android:gravity="center"
+    android:letterSpacing="0.1"
+    android:paddingStart="10dp"
+    android:paddingTop="7dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="7dp"
+    android:textAllCaps="true"
+    android:textColor="@color/ledger_text"
+    android:textSize="9.5sp" />

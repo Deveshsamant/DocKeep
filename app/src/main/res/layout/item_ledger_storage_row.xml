@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    One row of the storage-by-person breakdown: colour chip, name, a bar whose
+    fill is a solid rule, and the size. Closed by a 2px rule like every other
+    list row in the design.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <View
+            android:id="@+id/storageSwatch"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/ledger_tile" />
+
+        <TextView
+            android:id="@+id/storageName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/archivo_semibold"
+            android:maxLines="1"
+            android:textColor="@color/ledger_text"
+            android:textSize="12.5sp" />
+
+        <!-- Bar. The fill's width is set at bind time. -->
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ledger_progress_track">
+
+            <View
+                android:id="@+id/storageFill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ledger_progress_fill" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/storageSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:minWidth="46dp"
+            android:gravity="end"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+</LinearLayout>

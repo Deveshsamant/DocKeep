@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Padlock shackle: a 2px stapled arch, open at the bottom. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp"
+    android:height="9dp"
+    android:viewportWidth="22"
+    android:viewportHeight="9">
+    <path
+        android:pathData="M2,9 L2,4 A5,5 0 0 1 20,4 L20,9"
+        android:strokeColor="@color/ledger_rule_strong"
+        android:strokeWidth="2" />
+</vector>

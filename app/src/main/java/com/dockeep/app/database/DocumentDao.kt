@@ -15,6 +15,46 @@ interface DocumentDao {
     @Query("SELECT * FROM documents WHERE name LIKE :searchQuery AND personId IS NULL ORDER BY `order` ASC, updatedAt DESC")
     fun searchDocuments(searchQuery: String): LiveData<List<Document>>
 
+    /**
+     * Full-text search: matches the document's name, the text of any note
+     * inside it, and any text OCR read off its scans.
+     *
+     * DISTINCT because a query hitting several blocks of one document must
+     * still return that document once.
+     */
+    @Query(
+        "SELECT DISTINCT d.* FROM documents d " +
+            "LEFT JOIN document_images i ON i.documentId = d.id " +
+            "WHERE d.personId IS NULL AND (" +
+            "  d.name LIKE :q ESCAPE '\\' " +
+            "  OR i.text LIKE :q ESCAPE '\\' " +
+            "  OR i.ocrText LIKE :q ESCAPE '\\'" +
+            ") " +
+            "ORDER BY d.`order` ASC, d.updatedAt DESC"
+    )
+    fun searchDocumentsFullText(q: String): LiveData<List<Document>>
+
+    /** Scans that have not been read yet, oldest first. */
+    @Query(
+        "SELECT * FROM document_images " +
+            "WHERE blockType = 'IMAGE' AND ocrText IS NULL " +
+            "ORDER BY createdAt ASC LIMIT :limit"
+    )
+    suspend fun getUnreadScans(limit: Int): List<DocumentImage>
+
+    @Query("UPDATE document_images SET ocrText = :text WHERE id = :imageId")
+    suspend fun setOcrText(imageId: Long, text: String)
+
+    /**
+     * Forgets the text cached for a scan, so the indexer reads it again.
+     *
+     * Needed after the pixels change: a redacted number is gone from the
+     * image, but the text recognised before the edit still holds it, and that
+     * copy is what search and "Read text" work from.
+     */
+    @Query("UPDATE document_images SET ocrText = NULL WHERE id = :imageId")
+    suspend fun clearOcrText(imageId: Long)
+
     @Query("SELECT * FROM documents WHERE id = :id")
     fun getDocumentById(id: Long): LiveData<Document>
 

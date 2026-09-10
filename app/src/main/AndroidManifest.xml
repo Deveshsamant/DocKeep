@@ -4,22 +4,40 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--
+         Declared optional. Without this, Play treats the CAMERA permission as
+         an implicit hardware requirement and hides the app from devices with
+         no camera — including most tablets — even though scanning from the
+         gallery works perfectly well there.
+    -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
-    
-    <!-- For Android 11+ scoped storage -->
-    <!-- 
-         F-Droid note: This permission is needed for accessing images in shared storage
-         on Android 11+. The app only accesses image files in the Pictures/Dockeep directory
-         and does not access other user data. This is the minimum permission set required
-         for the app's core functionality of document management with images.
+
+    <!--
+         The drag-to-reorder haptics call Vibrator.vibrate, which
+         throws SecurityException without this. It is a normal
+         permission, granted at install with no prompt.
     -->
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!--
+         No broad storage permission is declared, and none is needed. Images
+         arrive through the photo picker, which grants read access to the one
+         URI it returns; saved scans and PDFs go out through MediaStore, which
+         needs no permission on Android 10 and up. MANAGE_EXTERNAL_STORAGE used
+         to be declared here and was never requested in code — dead weight that
+         Play would have rejected on its own.
+    -->
 
     <application
         android:allowBackup="true"
@@ -54,10 +72,6 @@
             android:exported="false" />
             
         <activity
-            android:name=".DeveloperDetailsActivity"
-            android:exported="false" />
-            
-        <activity
             android:name=".FamilyFriendsActivity"
             android:exported="false" />
             
@@ -67,6 +81,10 @@
             
         <activity
             android:name=".ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ScanEditorActivity"
             android:exported="false" />
             
         <!-- FileProvider for sharing files -->

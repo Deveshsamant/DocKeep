@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A tappable list row sitting directly on the page background. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ledger_rule">
+    <item android:drawable="@android:color/transparent" />
+</ripple>

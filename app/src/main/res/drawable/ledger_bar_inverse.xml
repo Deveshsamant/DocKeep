@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ink action bar. Used for actions that leave the app, so the accent stays
+    reserved for the ones that stay inside it; turns accent on press.
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33FFFFFF">
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/ledger_accent" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/ledger_inverse_bg" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

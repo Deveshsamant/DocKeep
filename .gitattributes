@@ -1,0 +1,13 @@
+# Normalise text, and keep the shell wrapper LF-only: a gradlew checked out
+# with CRLF fails on Linux and macOS with "bad interpreter".
+* text=auto
+gradlew text eol=lf
+*.sh   text eol=lf
+gradlew.bat text eol=crlf
+
+# Never touch binaries.
+*.png binary
+*.jpg binary
+*.ttf binary
+*.jar binary
+*.zip binary

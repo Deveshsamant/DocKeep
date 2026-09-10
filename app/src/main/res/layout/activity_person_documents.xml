@@ -1,94 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    One person's shelf.
+
+    The document grid scoped to a person: their letter tile and name stand in
+    for the wordmark, the meta line counts what is filed here, and the grid
+    below is the same cell used on Home.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:windowBackground"
+    android:background="@color/ledger_bg"
+    android:orientation="vertical"
     tools:context="com.dockeep.app.PersonDocumentsActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:elevation="4dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface"
-            app:title="@string/family_friends"
-            app:titleTextColor="?attr/colorOnSurface"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="@dimen/spacing_xsmall"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_document"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/button_height"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/spacing_small"
-        android:contentDescription="@string/create_document"
-        android:text="@string/create"
-        app:icon="@drawable/ic_add"
-        app:iconTint="?attr/colorOnPrimary"
-        app:backgroundTint="?attr/colorPrimary"
-        app:cornerRadius="@dimen/button_corner_radius" />
-
-    <!-- Delete FAB button in bottom left corner -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/deleteFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/spacing_small"
-        android:contentDescription="@string/delete"
-        app:srcCompat="@drawable/bin"
-        app:tint="?attr/colorOnPrimary"
-        app:backgroundTint="?attr/colorError"
-        android:visibility="gone" />
-
     <LinearLayout
-        android:id="@+id/emptyStateLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:paddingStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="20dp">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/emptyStateAnimation"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginBottom="@dimen/spacing_small"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/empty_state_animation" />
+        <!-- ── Navigation row ─────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/ledger_box_outline"
+                android:contentDescription="@string/ledger_back"
+                android:padding="10dp"
+                android:rotation="180"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="@color/ledger_text" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/renameButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/ledger_box_outline_soft"
+                android:contentDescription="@string/rename"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/ledger_text" />
+
+            <ImageButton
+                android:id="@+id/deleteFab"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="2dp"
+                android:background="@drawable/ledger_box_outline_soft"
+                android:contentDescription="@string/delete"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_delete"
+                app:tint="@color/ledger_accent_700" />
+
+        </LinearLayout>
+
+        <!-- ── Person ─────────────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/personTile"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ledger_tile"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.Ledger.Tile"
+                android:textSize="36sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="3dp">
+
+                <TextView
+                    android:id="@+id/personName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:letterSpacing="-0.03"
+                    android:lineSpacingMultiplier="0.96"
+                    android:maxLines="2"
+                    android:textAppearance="@style/TextAppearance.Ledger.Display"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/personMeta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.Ledger.MetaWide" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/ledger_rule_strong" />
+
+    </LinearLayout>
+
+    <!-- ── Grid ───────────────────────────────────────────────────────── -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_document" />
+
+        <LinearLayout
+            android:id="@+id/emptyStateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ledger_shelf_empty_title"
+                android:textAppearance="@style/TextAppearance.Ledger.Headline"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/ledger_shelf_empty_body"
+                android:textAppearance="@style/TextAppearance.Ledger.Body"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- ── Primary action ─────────────────────────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/ledger_action_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:tint="@color/ledger_on_accent" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:gravity="center"
-            android:text="@string/no_documents_yet"
-            android:textSize="@dimen/text_size_regular"
-            android:textColor="?attr/colorOnBackground" />
+            android:layout_marginStart="10dp"
+            android:text="@string/ledger_new_document"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

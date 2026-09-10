@@ -1,84 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    Scan cell.
+
+    The design replaces the three translucent buttons that used to float over
+    every thumbnail with a caption bar: the scan's index on the left and one
+    overflow on the right. The thumbnail is left unobstructed.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="6dp"
-    app:cardMaxElevation="10dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="?attr/colorOnSurfaceDisabled">
+    android:layout_height="wrap_content"
+    android:background="@drawable/ledger_cell"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="180dp"
+        android:background="@color/ledger_neutral_200"
+        android:contentDescription="@string/ledger_scan_thumbnail"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_document_placeholder" />
 
-        <ImageView
-            android:id="@+id/imageView"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/captionText"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_document_placeholder"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:letterSpacing="0.12"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            android:textColor="@color/ledger_neutral_700"
+            android:textSize="9.5sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/shareButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:contentDescription="@string/share"
-            app:icon="@drawable/ic_share"
-            app:iconTint="?attr/colorOnPrimary"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:backgroundTint="#80000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:elevation="4dp"
-            app:strokeWidth="0dp" />
+        <ImageButton
+            android:id="@+id/overflowButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/more"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_more_vert"
+            app:tint="@color/ledger_neutral_500" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/downloadButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:contentDescription="@string/download"
-            app:icon="@drawable/ic_download"
-            app:iconTint="?attr/colorOnPrimary"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:backgroundTint="#80000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:elevation="4dp"
-            app:strokeWidth="0dp" />
+    </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/deleteButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginBottom="12dp"
-            android:contentDescription="@string/delete"
-            app:icon="@drawable/ic_delete"
-            app:iconTint="?attr/colorOnPrimary"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:backgroundTint="#80FF0000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:elevation="4dp"
-            app:strokeWidth="0dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

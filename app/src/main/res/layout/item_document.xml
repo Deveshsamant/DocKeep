@@ -1,76 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    Ledger grid cell.
+
+    A cell, not a card: no radius, no elevation, no stroke. The 2px rules that
+    separate cells are drawn by LedgerGridDecoration on the RecyclerView, so
+    this layout is flush to its bounds and paints only its own background.
+
+    The letter tile is the one saturated element; its fill and glyph colour
+    come from ColorUtils at bind time.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/card_margin"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/card_elevation"
-    app:cardMaxElevation="@dimen/card_elevation_hover"
-    app:strokeWidth="@dimen/card_stroke_width"
-    app:strokeColor="?attr/colorOnSurfaceDisabled">
+    android:background="@drawable/ledger_cell"
+    android:clickable="true"
+    android:focusable="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_small">
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="14dp">
 
-        <!-- Container for placeholder with enhanced styling -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageContainerCard"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="6dp"
-            app:cardMaxElevation="10dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@android:color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id="@+id/placeholderCircle"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ledger_tile"
+            android:gravity="center"
+            android:text="A"
+            android:textAppearance="@style/TextAppearance.Ledger.Tile"
+            tools:ignore="HardcodedText" />
 
-            <FrameLayout
-                android:id="@+id/imageContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!-- Placeholder circle with first letter -->
-                <TextView
-                    android:id="@+id/placeholderCircle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="A"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-            </FrameLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Document title under placeholder -->
         <TextView
             android:id="@+id/titleText"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginTop="13dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="DOCUMENT TITLE"
-            android:textSize="@dimen/text_size_regular"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:textColor="?attr/colorOnSurface"
-            android:gravity="center"
-            android:paddingStart="@dimen/spacing_xsmall"
-            android:paddingEnd="@dimen/spacing_xsmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageContainerCard"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:text="Document title"
+            android:textAppearance="@style/TextAppearance.Ledger.CellTitle"
+            tools:ignore="HardcodedText" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/metaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="4 scans"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            tools:ignore="HardcodedText" />
 
-</com.google.android.material.card.MaterialCardView>
+        <!-- Tags carried by this document, if any. -->
+        <TextView
+            android:id="@+id/tagText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:letterSpacing="0.08"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            android:textColor="@color/ledger_accent_700"
+            android:textSize="9.5sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <!--
+        Selection marker. A filled accent square in the corner rather than a
+        floating checkbox: it is the same square vocabulary as the letter tile.
+    -->
+    <ImageView
+        android:id="@+id/selectionCheck"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="14dp"
+        android:background="@color/ledger_accent"
+        android:contentDescription="@null"
+        android:padding="5dp"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
+        app:tint="@color/ledger_on_accent" />
+
+</FrameLayout>

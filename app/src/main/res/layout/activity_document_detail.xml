@@ -1,62 +1,469 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    Document detail.
+
+    The toolbar and its overflow menu are gone: the design puts the four verbs
+    (Scan / PDF / Share / Delete) in a four-up row of cells under the title, so
+    they are all visible at once instead of hiding behind a kebab. Delete is
+    the only one tinted, and only in the accent's darkest step.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:windowBackground"
+    android:background="@color/ledger_bg"
+    android:orientation="vertical"
     tools:context="com.dockeep.app.DocumentDetailActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:elevation="8dp">
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="20dp">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <!-- ── Navigation row ─────────────────────────────────────────── -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface"
-            app:popupTheme="@style/Theme.DocKeep"
-            app:title="Document Name"
-            app:titleTextColor="?attr/colorOnSurface" />
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/ledger_box_outline"
+                android:contentDescription="@string/ledger_back"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_right"
+                android:rotation="180"
+                app:tint="@color/ledger_text" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/imagesRecyclerView"
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/editButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/ledger_box_outline_soft"
+                android:contentDescription="@string/edit"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/ledger_text" />
+
+            <ImageButton
+                android:id="@+id/moreButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="2dp"
+                android:background="@drawable/ledger_box_outline_soft"
+                android:contentDescription="@string/more"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_more_vert"
+                app:tint="@color/ledger_text" />
+
+        </LinearLayout>
+
+        <!-- ── Title ──────────────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/docTile"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ledger_tile"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.Ledger.Tile"
+                android:textSize="36sp" />
+
+            <TextView
+                android:id="@+id/docTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="0.96"
+                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.Ledger.Title"
+                android:textSize="26sp" />
+
+        </LinearLayout>
+
+        <!-- ── Stats ──────────────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/statScans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Ledger.Stat"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:letterSpacing="0.14"
+                    android:text="@string/ledger_scans_label"
+                    android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                    android:textSize="9.5sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/statSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Ledger.Stat"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:letterSpacing="0.14"
+                    android:text="@string/ledger_on_disk"
+                    android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                    android:textSize="9.5sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/statUpdated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Ledger.Stat"
+                    android:textColor="@color/ledger_accent_700"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:letterSpacing="0.14"
+                    android:text="@string/ledger_updated"
+                    android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                    android:textSize="9.5sp" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/personChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ledger_chip_outline"
+                android:letterSpacing="0.12"
+                android:paddingStart="8dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="5dp"
+                android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                android:textColor="@color/ledger_neutral_700"
+                android:textSize="9.5sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule_strong" />
+
+
+    <!--
+        Tags. Cut across people: a document filed under Papa can still be
+        TAX 2024. Rendered as the same 2px boxes used everywhere else.
+    -->
+    <HorizontalScrollView
+        android:id="@+id/tagRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:padding="12dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_image" />
+        android:paddingStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp"
+        android:scrollbars="none">
 
-    <!-- Delete FAB button in bottom left corner -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/deleteFab"
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/tagContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <!-- ── Four-up action row ─────────────────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/delete"
-        android:src="@drawable/bin"
-        app:tint="?attr/colorOnPrimary"
-        app:backgroundTint="?attr/colorError" />
+        android:background="@color/ledger_rule"
+        android:orientation="horizontal">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <LinearLayout
+            android:id="@+id/actionScan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_cell"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:paddingStart="12dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_camera"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/ledger_action_scan"
+                android:textAppearance="@style/TextAppearance.Ledger.Kicker"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/actionPdf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_cell"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:paddingStart="12dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_download"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/ledger_action_pdf"
+                android:textAppearance="@style/TextAppearance.Ledger.Kicker"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/actionShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_cell"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:paddingStart="12dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_share"
+                app:tint="@color/ledger_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/ledger_action_share"
+                android:textAppearance="@style/TextAppearance.Ledger.Kicker"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/deleteFab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ledger_cell"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:paddingStart="12dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_delete"
+                app:tint="@color/ledger_accent_700" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/ledger_action_delete"
+                android:textAppearance="@style/TextAppearance.Ledger.Kicker"
+                android:textColor="@color/ledger_accent_700"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/ledger_rule" />
+
+    <!-- ── Scans ──────────────────────────────────────────────────────── -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imagesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_image" />
+
+        <LinearLayout
+            android:id="@+id/detailEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ledger_no_scans_title"
+                android:textAppearance="@style/TextAppearance.Ledger.Headline"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/ledger_no_scans_body"
+                android:textAppearance="@style/TextAppearance.Ledger.Body"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- ── Primary action ─────────────────────────────────────────────── -->
+    <LinearLayout
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/add_images"
-        android:src="@drawable/ic_add"
-        app:tint="?attr/colorOnPrimary"
-        app:backgroundTint="?attr/colorPrimary" />
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/ledger_action_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:tint="@color/ledger_on_accent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/ledger_add_scans"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+    </LinearLayout>
+
+</LinearLayout>

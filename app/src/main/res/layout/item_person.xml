@@ -1,71 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!--
+    Person cell.
+
+    Same construction as the document cell, with one addition: a row of small
+    squares showing the letter-tile colours of the documents filed under this
+    person, then "+N" for the rest. It gives each shelf a recognisable
+    signature without a thumbnail.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_xsmall"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/card_elevation"
-    app:strokeWidth="0dp">
+    android:background="@drawable/ledger_cell"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/personInitialTextView"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/ledger_tile"
+        android:gravity="center"
+        android:text="@string/document_initial_placeholder"
+        android:textAppearance="@style/TextAppearance.Ledger.Tile" />
+
+    <TextView
+        android:id="@+id/personNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_small">
+        android:layout_marginTop="13dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Person"
+        android:textAppearance="@style/TextAppearance.Ledger.CellTitle"
+        tools:ignore="HardcodedText" />
 
-        <!-- Container for placeholder -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageContainerCard"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="4dp"
-            app:cardMaxElevation="6dp"
-            app:strokeWidth="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+    <TextView
+        android:id="@+id/personMetaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Ledger.Meta" />
 
-            <FrameLayout
-                android:id="@+id/imageContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    <!-- Colour signature of the documents on this shelf. -->
+    <LinearLayout
+        android:id="@+id/personSwatchRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-                <!-- Placeholder circle with first letter -->
-                <TextView
-                    android:id="@+id/personInitialTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/document_initial_placeholder"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+        <View
+            android:id="@+id/swatch1"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/ledger_tile" />
 
-            </FrameLayout>
+        <View
+            android:id="@+id/swatch2"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/ledger_tile" />
 
-        </com.google.android.material.card.MaterialCardView>
+        <View
+            android:id="@+id/swatch3"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/ledger_tile" />
 
-        <!-- Person name under placeholder -->
+        <View
+            android:id="@+id/swatch4"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/ledger_tile" />
+
         <TextView
-            android:id="@+id/personNameTextView"
-            android:layout_width="0dp"
+            android:id="@+id/swatchOverflow"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/document_title_placeholder"
-            android:textSize="@dimen/text_size_regular"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:textColor="?attr/colorOnSurface"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageContainerCard"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginStart="6dp"
+            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+            android:textSize="9.5sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

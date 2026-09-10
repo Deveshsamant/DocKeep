@@ -31,6 +31,10 @@ class ImageViewerAdapter(
         if (imageFile.exists()) {
             Glide.with(holder.imageView.context)
                 .load(imageFile)
+                // The editor rewrites the file in place, so the path alone is
+                // not a safe cache key; without this the viewer would keep
+                // showing the pre-edit image.
+                .signature(com.bumptech.glide.signature.ObjectKey(imageFile.lastModified()))
                 .fitCenter()
                 .into(holder.imageView)
         } else {

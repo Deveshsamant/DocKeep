@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A grid cell. The 2px gap between cells is the parent's rule colour
+     showing through, so the cell itself is a plain background + ripple. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ledger_rule">
+    <item android:drawable="@color/ledger_bg" />
+</ripple>

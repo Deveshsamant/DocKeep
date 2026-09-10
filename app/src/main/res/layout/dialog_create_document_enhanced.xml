@@ -1,106 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    New document sheet.
+
+    A bottom sheet, not a floating card: full-bleed, square, closed at the top
+    by a 2px rule. The dialog's own buttons are gone — the sheet carries its
+    own square close and its own full-bleed accent Create bar, so the primary
+    action has the same weight here as everywhere else in the app.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@drawable/dialog_background">
+    android:background="@drawable/ledger_sheet_background"
+    android:orientation="vertical">
 
-    <TextView
+    <!-- ── Header ─────────────────────────────────────────────────────── -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/enter_document_name"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="?attr/colorPrimary"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:fontFamily="sans-serif-medium" />
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="16dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="?attr/colorPrimary"
-        android:layout_marginBottom="16dp">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_document_name"
-            app:boxStrokeColor="?attr/colorPrimary"
-            app:hintTextColor="?attr/colorPrimary"
-            app:endIconMode="clear_text"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_margin="8dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <AutoCompleteTextView
-                android:id="@+id/documentNameEditText"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:maxLines="1"
-                android:completionThreshold="1"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="16dp"
-                android:textSize="16sp"
-                android:background="@null" />
+                android:text="@string/ledger_new_document"
+                android:textAppearance="@style/TextAppearance.Ledger.KickerAccent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/ledger_sheet_name_it"
+                android:textAppearance="@style/TextAppearance.Ledger.Title" />
 
-    </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/sheetClose"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/ledger_box_outline"
+            android:contentDescription="@string/ledger_close"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close"
+            app:tint="@color/ledger_text" />
+
+    </LinearLayout>
+
+    <!-- ── Name field ─────────────────────────────────────────────────── -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ledger_input">
+
+        <AutoCompleteTextView
+            android:id="@+id/documentNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:completionThreshold="1"
+            android:dropDownVerticalOffset="4dp"
+            android:hint="@string/enter_document_name"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="textCapWords"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.Ledger.Input" />
+
+    </FrameLayout>
 
     <TextView
+        android:id="@+id/noSuggestionsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quick Select:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="?attr/colorPrimary"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-medium" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/ledger_pick_or_type"
+        android:textAppearance="@style/TextAppearance.Ledger.Meta"
+        android:visibility="visible" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tap on a document type below to quickly select it"
-        android:textSize="14sp"
-        android:textColor="?attr/colorOnSurfaceSecondary"
-        android:layout_marginBottom="12dp"
-        android:fontFamily="sans-serif" />
-
+    <!-- ── Known-name suggestions ─────────────────────────────────────── -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:scrollbars="none"
-        android:background="@drawable/chip_group_background"
-        android:padding="12dp">
-        
-        <!-- Replaced ChipGroup with larger buttons -->
+        android:layout_marginTop="14dp"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:scrollbars="none">
+
         <LinearLayout
             android:id="@+id/suggestionsButtonContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
-            
+
     </HorizontalScrollView>
-        
+
+    <!-- ── File under ─────────────────────────────────────────────────── -->
     <TextView
-        android:id="@+id/noSuggestionsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No matching documents found. You can create a new document with this name."
-        android:textSize="14sp"
-        android:textColor="?attr/colorOnSurfaceSecondary"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        android:gravity="center"
-        android:fontFamily="sans-serif" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="20dp"
+        android:letterSpacing="0.14"
+        android:text="@string/ledger_sheet_file_under"
+        android:textAppearance="@style/TextAppearance.Ledger.Kicker" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/fileUnderChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="2dp"
+            app:singleLine="true"
+            app:singleSelection="true" />
+
+    </HorizontalScrollView>
+
+    <!-- ── Create ─────────────────────────────────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/sheetCreate"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/ledger_action_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_add"
+            app:tint="@color/ledger_on_accent" />
+
+        <TextView
+            android:id="@+id/sheetCreateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/create_document"
+            android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+    </LinearLayout>
 
 </LinearLayout>

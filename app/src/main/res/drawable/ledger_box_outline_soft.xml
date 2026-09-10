@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Secondary square button: same 2px outline as ledger_box_outline but drawn
+    in the hairline rule colour, so it reads one step quieter than the primary
+    (back) button sitting beside it.
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ledger_rule">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ledger_text" />
+        </shape>
+    </item>
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke android:width="2dp" android:color="@color/ledger_rule_strong" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                    <stroke android:width="2dp" android:color="@color/ledger_rule" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

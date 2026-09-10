@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Non-interactive square outline, e.g. the "?" tile on the Unassigned row. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+    <stroke android:width="2dp" android:color="@color/ledger_rule" />
+</shape>

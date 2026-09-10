@@ -1,51 +1,110 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!--
+        Theme.DocKeep — the Ledger theme (light).
+
+        The design has no radii and no shadows, so the Material defaults for
+        both are zeroed here rather than fought layout by layout. Archivo is
+        installed as the default typeface via the widget styles at the bottom.
+    -->
     <style name="Theme.DocKeep" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item> <!-- Using our new color reference -->
-        <item name="colorPrimaryVariant">@color/document_blue</item> <!-- Using document_blue as variant -->
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Surface colors -->
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
-        <item name="colorOnBackground">@color/black</item>
-        <!-- Customize your theme here. -->
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
-        
-        <!-- Additional styling -->
-        <item name="colorOnSurfaceSecondary">@color/color_on_surface_secondary</item>
-        <item name="colorOnSurfaceDisabled">#61000000</item>
-        <item name="colorSurfaceVariant">@color/white</item>
+        <!-- Accent: the one saturated colour in the chrome. -->
+        <item name="colorPrimary">@color/ledger_accent</item>
+        <item name="colorPrimaryVariant">@color/ledger_accent_600</item>
+        <item name="colorOnPrimary">@color/ledger_on_accent</item>
+        <item name="colorSecondary">@color/ledger_accent</item>
+        <item name="colorSecondaryVariant">@color/ledger_accent_600</item>
+        <item name="colorOnSecondary">@color/ledger_on_accent</item>
+        <item name="colorAccent">@color/ledger_accent</item>
+
+        <!-- Ground. Surface and background are the same flat paper. -->
+        <item name="android:windowBackground">@color/ledger_bg</item>
+        <item name="colorSurface">@color/ledger_bg</item>
+        <item name="colorOnSurface">@color/ledger_text</item>
+        <item name="colorOnBackground">@color/ledger_text</item>
+        <item name="colorSurfaceVariant">@color/ledger_surface</item>
+
+        <item name="android:textColorPrimary">@color/ledger_text</item>
+        <item name="android:textColorSecondary">@color/ledger_text_secondary</item>
+        <item name="android:textColorTertiary">@color/ledger_text_tertiary</item>
+        <item name="android:textColorHint">@color/ledger_text_tertiary</item>
+
+        <!-- System bars sit on the page, not above it. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/ledger_bg</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/ledger_bg</item>
+
+        <!-- Legacy attrs still referenced by the older layouts. -->
+        <item name="colorOnSurfaceSecondary">@color/ledger_text_secondary</item>
+        <item name="colorOnSurfaceDisabled">@color/ledger_text_tertiary</item>
+
+        <!-- No radius anywhere. -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Ledger.None</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Ledger.None</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Ledger.None</item>
+
+        <!-- Archivo everywhere by default. -->
+        <item name="android:textViewStyle">@style/Widget.Ledger.TextView</item>
+        <item name="android:editTextStyle">@style/Widget.Ledger.EditText</item>
+        <item name="materialButtonStyle">@style/Widget.Ledger.Button</item>
+        <item name="chipStyle">@style/Widget.Ledger.Chip</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.Ledger.BottomSheetDialog</item>
+        <item name="alertDialogTheme">@style/Theme.Ledger.AlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/Theme.Ledger.AlertDialog</item>
     </style>
 
-    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif</item>
+    <style name="Widget.Ledger.TextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/archivo_regular</item>
+        <item name="android:textColor">@color/ledger_text</item>
     </style>
 
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
-        <item name="android:fontFamily">sans-serif</item>
+    <style name="Widget.Ledger.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/archivo_semibold</item>
+        <item name="android:textColor">@color/ledger_text</item>
+        <item name="android:textColorHint">@color/ledger_text_tertiary</item>
     </style>
-    
-    <!-- Custom Chip Style -->
-    <style name="CustomChipChoice" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="chipBackgroundColor">@color/chip_background_color</item>
-        <item name="android:textColor">@color/chip_text_color</item>
-        <item name="chipStrokeColor">@color/chip_stroke_color</item>
-        <item name="chipStrokeWidth">1dp</item>
-        <item name="rippleColor">@color/chip_ripple_color</item>
+
+    <!-- Flat accent button; the design uses full-bleed bars, so no insets. -->
+    <style name="Widget.Ledger.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:letterSpacing">0.14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="backgroundTint">@color/ledger_accent</item>
+        <item name="android:textColor">@color/ledger_on_accent</item>
+        <item name="rippleColor">#33FFFFFF</item>
     </style>
-    
-    <!-- Custom Dialog Theme -->
+
+    <style name="Widget.Ledger.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">0dp</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeColor">@color/ledger_rule_strong</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:letterSpacing">0.14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/ledger_text</item>
+    </style>
+
+    <style name="Theme.Ledger.AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Ledger.None</item>
+        <item name="android:background">@color/ledger_bg</item>
+        <item name="colorPrimary">@color/ledger_accent</item>
+        <item name="android:textColorPrimary">@color/ledger_text</item>
+    </style>
+
+    <!-- Kept: still referenced by the older person / developer layouts. -->
+    <style name="CustomChipChoice" parent="@style/Widget.Ledger.Chip" />
+
     <style name="CustomDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
+
 </resources>

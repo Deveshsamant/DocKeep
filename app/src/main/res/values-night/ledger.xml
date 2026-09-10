@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ledger design tokens — dark theme.
+
+    The design inverts cleanly because it was never built on shadows: the same
+    2px rules simply switch to 28% white. Only the neutrals move; the accent
+    and the A–Z letter-tile hues are identical on both themes.
+-->
+<resources>
+    <color name="ledger_bg">#2D2B2B</color>
+    <color name="ledger_surface">#444141</color>
+    <color name="ledger_text">#F8F4F4</color>
+
+    <color name="ledger_rule">#47F3F2F2</color>
+    <color name="ledger_rule_strong">#F8F4F4</color>
+
+    <!-- Ramp is flipped so the same step name keeps the same visual role. -->
+    <color name="ledger_neutral_100">#2D2B2B</color>
+    <color name="ledger_neutral_200">#444141</color>
+    <color name="ledger_neutral_300">#605D5D</color>
+    <color name="ledger_neutral_400">#7D7979</color>
+    <color name="ledger_neutral_500">#9B9797</color>
+    <color name="ledger_neutral_600">#BAB6B6</color>
+    <color name="ledger_neutral_700">#D7D3D3</color>
+    <color name="ledger_neutral_800">#EAE7E7</color>
+    <color name="ledger_neutral_900">#F8F4F4</color>
+
+    <color name="ledger_text_secondary">#9B9797</color>
+    <color name="ledger_text_tertiary">#7D7979</color>
+
+    <color name="ledger_accent">#EC3013</color>
+    <color name="ledger_accent_100">#3A1D18</color>
+    <color name="ledger_accent_200">#4D170E</color>
+    <color name="ledger_accent_600">#FF563C</color>
+    <color name="ledger_accent_700">#FF9783</color>
+    <color name="ledger_on_accent">#FFFFFF</color>
+
+    <color name="ledger_scrim">#B3141313</color>
+
+    <color name="ledger_inverse_bg">#F8F4F4</color>
+    <color name="ledger_inverse_text">#2D2B2B</color>
+</resources>

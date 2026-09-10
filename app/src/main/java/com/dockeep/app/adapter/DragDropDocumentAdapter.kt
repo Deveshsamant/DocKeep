@@ -12,15 +12,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dockeep.app.R
 import com.dockeep.app.database.Document
 import com.dockeep.app.utils.ColorUtils
-import com.google.android.material.card.MaterialCardView
+import java.text.SimpleDateFormat
 import java.util.Collections
+import java.util.Locale
 
 class DragDropDocumentAdapter(
     private var documents: MutableList<Document>,
     private val imageMap: Map<Long, String?>? = null,
     private val imageCountMap: Map<Long, Int>? = null,
     private val onDocumentClick: (Document) -> Unit,
-    private val onDocumentMoved: (List<Document>) -> Unit
+    private val onDocumentMoved: (List<Document>) -> Unit,
+    /** Raised when a long press starts a selection, or a tap changes one. */
+    private val onSelectionChanged: (Set<Long>) -> Unit = {},
+    /** Begins a reorder drag for the given holder. */
+    private val onStartDrag: (RecyclerView.ViewHolder) -> Unit = {}
 ) : RecyclerView.Adapter<DragDropDocumentAdapter.DocumentViewHolder>() {
 
     // Add debounce mechanism to prevent multiple rapid clicks
@@ -30,11 +35,67 @@ class DragDropDocumentAdapter(
     // Flag to prevent UI refresh during drag operations
     private var isDragging = false
 
+    // Only the manual ordering may be dragged; see setReorderEnabled.
+    private var reorderEnabled = true
+
+    // Scan counts for the meta line, filled in once the images are queried.
+    private var imageCounts: Map<Long, Int> = imageCountMap.orEmpty()
+
+    // "12 Nov" — the design's short, tracked date on the cell meta line.
+    private val dateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
+
     class DocumentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView = itemView.findViewById(R.id.cardView)
+        val cardView: View = itemView.findViewById(R.id.cardView)
         val placeholderCircle: TextView = itemView.findViewById(R.id.placeholderCircle)
         val titleText: TextView = itemView.findViewById(R.id.titleText)
-        val imageContainerCard: MaterialCardView = itemView.findViewById(R.id.imageContainerCard)
+        val metaText: TextView = itemView.findViewById(R.id.metaText)
+        val tagText: TextView = itemView.findViewById(R.id.tagText)
+        val selectionCheck: View = itemView.findViewById(R.id.selectionCheck)
+    }
+
+    // ── Selection ───────────────────────────────────────────────────────
+
+    private var selectionMode = false
+    private val selected = mutableSetOf<Long>()
+
+    /** Tag names per document, for the chip line on each cell. */
+    private var tagsByDocument: Map<Long, List<String>> = emptyMap()
+
+    fun isSelectionMode(): Boolean = selectionMode
+
+    fun selectedIds(): Set<Long> = selected.toSet()
+
+    fun selectedDocuments(): List<Document> = documents.filter { it.id in selected }
+
+    /** Leaves selection mode and clears the marks. */
+    fun clearSelection() {
+        if (!selectionMode && selected.isEmpty()) return
+        selectionMode = false
+        selected.clear()
+        notifyDataSetChanged()
+        onSelectionChanged(emptySet())
+    }
+
+    fun selectAll() {
+        selectionMode = true
+        selected.clear()
+        selected.addAll(documents.map { it.id })
+        notifyDataSetChanged()
+        onSelectionChanged(selectedIds())
+    }
+
+    private fun toggle(document: Document) {
+        if (!selected.add(document.id)) selected.remove(document.id)
+        if (selected.isEmpty()) {
+            selectionMode = false
+        }
+        notifyDataSetChanged()
+        onSelectionChanged(selectedIds())
+    }
+
+    fun setTagsByDocument(tags: Map<Long, List<String>>) {
+        tagsByDocument = tags
+        if (!isDragging) notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentViewHolder {
@@ -62,79 +123,71 @@ class DragDropDocumentAdapter(
         }
         holder.placeholderCircle.text = firstLetter
         
-        // Set consistent background and text color for placeholder based on document name
+        // The letter tile is the one saturated element on the cell. Tint the
+        // square background directly rather than through a card.
         val colorScheme = ColorUtils.getPlaceholderColorScheme(holder.itemView.context, document.name)
-        holder.imageContainerCard.setCardBackgroundColor(colorScheme.backgroundColor)
+        holder.placeholderCircle.background?.mutate()?.setColorFilter(
+            colorScheme.backgroundColor,
+            android.graphics.PorterDuff.Mode.SRC_IN
+        )
         holder.placeholderCircle.setTextColor(colorScheme.textColor)
-        
-        // Set touch listener for better touch handling
-        holder.cardView.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    // Immediate visual feedback on touch
-                    holder.cardView.animate()
-                        .scaleX(0.98f)
-                        .scaleY(0.98f)
-                        .setDuration(50)
-                        .setInterpolator(DecelerateInterpolator())
-                        .start()
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    // Restore scale on touch release
-                    holder.cardView.animate()
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(100)
-                        .setInterpolator(OvershootInterpolator(1.2f))
-                        .start()
-                }
-            }
-            false // Don't consume the touch event
+
+        // Meta line: "4 scans · 12 Nov".
+        val context = holder.itemView.context
+        val scanCount = imageCounts[document.id]
+        val scans = when (scanCount) {
+            null -> null
+            1 -> context.getString(R.string.ledger_meta_scan_one)
+            else -> context.getString(R.string.ledger_meta_scans, scanCount)
         }
+        val updated = dateFormat.format(document.updatedAt)
+        holder.metaText.text = if (scans == null) updated else "$scans · $updated"
         
-        // Set click listeners with ultra-smooth animations
+        // Tags, when the document carries any.
+        val tags = tagsByDocument[document.id].orEmpty()
+        if (tags.isEmpty()) {
+            holder.tagText.visibility = View.GONE
+        } else {
+            holder.tagText.visibility = View.VISIBLE
+            holder.tagText.text = tags.joinToString("  ") { "#" + it.uppercase() }
+        }
+
+        // Selection marker.
+        val isSelected = document.id in selected
+        holder.selectionCheck.visibility = if (isSelected) View.VISIBLE else View.GONE
+        holder.cardView.setBackgroundResource(
+            if (isSelected) R.drawable.ledger_cell_selected else R.drawable.ledger_cell
+        )
+
+        // Press feedback is the cell's own ripple. The previous scale and
+        // translationZ animations cast a real elevation shadow, which is the
+        // one thing this design does not have.
         holder.cardView.setOnClickListener {
-            // Debounce clicks to prevent multiple rapid openings
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastClickTime > CLICK_DELAY) {
-                lastClickTime = currentTime
-                
-                // Add an ultra-smooth click animation
-                ObjectAnimator.ofFloat(holder.cardView, "translationZ", 45f).apply {
-                    duration = 80
-                    interpolator = OvershootInterpolator(1.2f)
-                    start()
-                }
-                ObjectAnimator.ofFloat(holder.cardView, "translationZ", 0f).apply {
-                    duration = 120
-                    interpolator = OvershootInterpolator(1.1f)
-                    startDelay = 80
-                    start()
-                }
+            if (selectionMode) {
+                toggle(document)
+                return@setOnClickListener
+            }
+            // Debounce so a double tap cannot open the document twice.
+            val now = System.currentTimeMillis()
+            if (now - lastClickTime > CLICK_DELAY) {
+                lastClickTime = now
                 onDocumentClick(document)
             }
         }
-        
-        // Set long click listener for drag and drop with improved handling
+
+        // Long press has two jobs, and selection state decides which:
+        //   - out of selection mode it starts one, which is the gesture users
+        //     reach for first;
+        //   - inside it, holding an already-selected cell begins the reorder
+        //     drag, so manual ordering is still reachable.
         holder.cardView.setOnLongClickListener {
-            // Add visual feedback for long press
-            holder.cardView.animate()
-                .scaleX(1.02f)
-                .scaleY(1.02f)
-                .setDuration(100)
-                .setInterpolator(OvershootInterpolator(1.1f))
-                .withEndAction {
-                    holder.cardView.animate()
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(100)
-                        .setInterpolator(OvershootInterpolator(1.1f))
-                        .start()
-                }
-                .start()
-            // Return false to indicate we're not consuming the event here
-            // The ItemTouchHelper will handle the drag operation
-            false
+            if (!selectionMode) {
+                selectionMode = true
+                toggle(document)
+            } else if (document.id in selected && reorderEnabled) {
+                onStartDrag(holder)
+            }
+            true
         }
     }
 
@@ -199,5 +252,28 @@ class DragDropDocumentAdapter(
     // Methods to control drag state
     fun setDragging(dragging: Boolean) {
         isDragging = dragging
+    }
+
+    /**
+     * Drag-to-reorder is only meaningful while the grid shows the manual
+     * order. The derived orderings behind the Recent / By person / A–Z tabs
+     * would fight any move the user made, so the callback consults this.
+     */
+    fun setReorderEnabled(enabled: Boolean) {
+        reorderEnabled = enabled
+    }
+
+    fun isReorderEnabled(): Boolean = reorderEnabled
+
+    /**
+     * Supplies the per-document scan counts shown on the cell's meta line.
+     * Counts arrive asynchronously, after the documents themselves, so this
+     * refreshes the visible rows when they land.
+     */
+    fun setImageCounts(counts: Map<Long, Int>) {
+        imageCounts = counts.toMap()
+        if (!isDragging) {
+            notifyDataSetChanged()
+        }
     }
 }

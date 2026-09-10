@@ -11,8 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.dockeep.app.R
 import com.dockeep.app.database.Person
+import com.dockeep.app.database.Document
 import com.dockeep.app.utils.ColorUtils
-import com.google.android.material.card.MaterialCardView
 import java.util.Collections
 
 class DragDropPersonAdapter(
@@ -30,10 +30,34 @@ class DragDropPersonAdapter(
     private var isDragging = false
 
     class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val cardView: MaterialCardView = itemView.findViewById(R.id.cardView)
+        val cardView: View = itemView.findViewById(R.id.cardView)
         val personInitialTextView: TextView = itemView.findViewById(R.id.personInitialTextView)
         val personNameTextView: TextView = itemView.findViewById(R.id.personNameTextView)
-        val imageContainerCard: MaterialCardView = itemView.findViewById(R.id.imageContainerCard)
+        val personMetaTextView: TextView = itemView.findViewById(R.id.personMetaTextView)
+        val swatchRow: View = itemView.findViewById(R.id.personSwatchRow)
+        val swatches: List<View> = listOf(
+            itemView.findViewById(R.id.swatch1),
+            itemView.findViewById(R.id.swatch2),
+            itemView.findViewById(R.id.swatch3),
+            itemView.findViewById(R.id.swatch4)
+        )
+        val swatchOverflow: TextView = itemView.findViewById(R.id.swatchOverflow)
+    }
+
+    /**
+     * Documents grouped by person, used for the meta line and the colour
+     * signature. Supplied by the activity once the document list loads.
+     */
+    private var documentsByPerson: Map<Long, List<Document>> = emptyMap()
+
+    /** The id of the person who is the phone's owner, labelled "· you". */
+    private var selfPersonId: Long? = null
+
+    fun setDocumentsByPerson(grouped: Map<Long, List<Document>>) {
+        documentsByPerson = grouped
+        if (!isDragging) {
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
@@ -62,9 +86,48 @@ class DragDropPersonAdapter(
         holder.personInitialTextView.text = initial
         
         // Set consistent background and text color for placeholder based on person name
-        val colorScheme = ColorUtils.getPlaceholderColorScheme(holder.itemView.context, person.name)
-        holder.imageContainerCard.setCardBackgroundColor(colorScheme.backgroundColor)
+        val context = holder.itemView.context
+        val colorScheme = ColorUtils.getPlaceholderColorScheme(context, person.name)
+        holder.personInitialTextView.background?.mutate()?.setColorFilter(
+            colorScheme.backgroundColor,
+            android.graphics.PorterDuff.Mode.SRC_IN
+        )
         holder.personInitialTextView.setTextColor(colorScheme.textColor)
+
+        // Meta: how many documents sit on this shelf.
+        val docs = documentsByPerson[person.id].orEmpty()
+        holder.personMetaTextView.text = when {
+            docs.size == 1 -> context.getString(R.string.ledger_document_count_one)
+            else -> context.getString(R.string.ledger_documents_count, docs.size)
+        }
+
+        // Colour signature: the letter-tile hue of the first four documents,
+        // then "+N" for the remainder.
+        if (docs.isEmpty()) {
+            holder.swatchRow.visibility = View.GONE
+        } else {
+            holder.swatchRow.visibility = View.VISIBLE
+            holder.swatches.forEachIndexed { index, swatch ->
+                val doc = docs.getOrNull(index)
+                if (doc == null) {
+                    swatch.visibility = View.GONE
+                } else {
+                    swatch.visibility = View.VISIBLE
+                    val hue = ColorUtils.getPlaceholderColorScheme(context, doc.name)
+                    swatch.background?.mutate()?.setColorFilter(
+                        hue.backgroundColor,
+                        android.graphics.PorterDuff.Mode.SRC_IN
+                    )
+                }
+            }
+            val remaining = docs.size - holder.swatches.size
+            if (remaining > 0) {
+                holder.swatchOverflow.visibility = View.VISIBLE
+                holder.swatchOverflow.text = context.getString(R.string.ledger_plus_n, remaining)
+            } else {
+                holder.swatchOverflow.visibility = View.GONE
+            }
+        }
         
         // Set click listeners with ultra-smooth animations
         holder.cardView.setOnClickListener {
@@ -73,18 +136,8 @@ class DragDropPersonAdapter(
             if (currentTime - lastClickTime > CLICK_DELAY) {
                 lastClickTime = currentTime
                 
-                // Add an ultra-smooth click animation
-                ObjectAnimator.ofFloat(holder.cardView, "translationZ", 45f).apply {
-                    duration = 80
-                    interpolator = OvershootInterpolator(1.2f)
-                    start()
-                }
-                ObjectAnimator.ofFloat(holder.cardView, "translationZ", 0f).apply {
-                    duration = 120
-                    interpolator = OvershootInterpolator(1.1f)
-                    startDelay = 80
-                    start()
-                }
+                // Press feedback is the cell's ripple; this design has no
+                // elevation for a card to rise into.
                 onPersonClick(person)
             }
         }

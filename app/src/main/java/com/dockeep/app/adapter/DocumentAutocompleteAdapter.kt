@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.dockeep.app.database.Document
 
 class DocumentAutocompleteAdapter(
@@ -52,10 +53,10 @@ class DocumentAutocompleteAdapter(
             // Highlight items that start with the search term
             val constraint = (context as? androidx.appcompat.app.AppCompatActivity)?.findViewById<androidx.appcompat.widget.AppCompatAutoCompleteTextView>(com.dockeep.app.R.id.documentNameEditText)?.text?.toString()
             if (!constraint.isNullOrEmpty() && item.lowercase().startsWith(constraint.lowercase())) {
-                textView.setTextColor(context.getColor(com.dockeep.app.R.color.colorPrimary))
+                textView.setTextColor(ContextCompat.getColor(context, com.dockeep.app.R.color.ledger_accent))
                 textView.setAllCaps(false)
             } else {
-                textView.setTextColor(context.getColor(android.R.color.black))
+                textView.setTextColor(ContextCompat.getColor(context, com.dockeep.app.R.color.ledger_text))
                 textView.setAllCaps(false)
             }
         }

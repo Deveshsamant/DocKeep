@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Autocomplete row for the document-name field.
+
+    The old version hard-coded black text, which vanished against the dark
+    theme's popup; these are theme tokens, so it reads on both.
+-->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="48dp"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:gravity="center_vertical"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
     android:background="?android:attr/selectableItemBackground"
-    android:textColor="@color/black"
-    android:textSize="16sp"
-    android:fontFamily="sans-serif" />
+    android:fontFamily="@font/archivo_semibold"
+    android:gravity="center_vertical"
+    android:letterSpacing="0.02"
+    android:minHeight="46dp"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="12dp"
+    android:textAllCaps="true"
+    android:textColor="@color/ledger_text"
+    android:textSize="14sp" />

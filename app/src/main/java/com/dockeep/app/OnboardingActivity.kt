@@ -6,16 +6,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Button
+import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dockeep.app.utils.OnboardingManager
-import com.google.android.material.textfield.TextInputLayout
 
 class OnboardingActivity : AppCompatActivity() {
     private lateinit var userNameEditText: EditText
-    private lateinit var userNameInputLayout: TextInputLayout
-    private lateinit var continueButton: Button
+    private lateinit var userNameInputLayout: View
+    private lateinit var continueButton: View
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +78,10 @@ class OnboardingActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                userNameInputLayout.error = "Please enter your name"
+                // The field carries no label to hang an error on, so the
+                // message is surfaced directly and focus returns to the input.
+                Toast.makeText(this, R.string.ledger_name_required, Toast.LENGTH_SHORT).show()
+                userNameEditText.requestFocus()
             }
         }
     }

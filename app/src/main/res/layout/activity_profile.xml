@@ -1,113 +1,363 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    You.
+
+    An 88dp avatar tile with the camera badge notched into its corner, the
+    display-name field beside it, then a three-figure stat strip and the
+    storage-by-person breakdown. Cancel and Save split one full-bleed bar, so
+    the accent lands only on the affirmative half.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:windowBackground"
+    android:background="@color/ledger_bg"
     tools:context="com.dockeep.app.ProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_large">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
-            android:text="Profile"
-            android:textSize="@dimen/text_size_headline"
-            android:textStyle="bold"
-            android:textColor="?attr/colorPrimary" />
-
-        <!-- Profile Photo Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/spacing_large"
-            app:cardCornerRadius="60dp"
-            app:cardElevation="8dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="?attr/colorPrimary">
-
-            <ImageView
-                android:id="@+id/profileImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_person"
-                android:contentDescription="Profile Photo" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/changePhotoButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/spacing_xlarge"
-            android:text="Change Photo"
-            app:icon="@drawable/ic_edit" />
-
-        <!-- Username Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small"
-            android:text="Username"
-            android:textSize="@dimen/text_size_regular"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/usernameInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_large"
-            app:boxStrokeColor="?attr/colorPrimary"
-            app:hintTextColor="?attr/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usernameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName|textCapWords"
-                android:textColor="?attr/colorOnSurface" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Action Buttons -->
+        <!-- ── Header ─────────────────────────────────────────────────── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="20dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancelButton"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_medium"
-                android:text="Cancel" />
+                android:text="@string/ledger_you"
+                android:textAppearance="@style/TextAppearance.Ledger.Display" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveButton"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save"
-                app:backgroundTint="?attr/colorPrimary"
-                app:cornerRadius="@dimen/button_corner_radius" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/ledger_rule_strong" />
 
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- ── Avatar + name ──────────────────────────────────── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp">
+
+                    <FrameLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp">
+
+                        <TextView
+                            android:id="@+id/profileInitial"
+                            android:layout_width="88dp"
+                            android:layout_height="88dp"
+                            android:background="@drawable/ledger_tile"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.Ledger.Tile"
+                            android:textSize="50sp" />
+
+                        <ImageView
+                            android:id="@+id/profileImageView"
+                            android:layout_width="88dp"
+                            android:layout_height="88dp"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+
+                        <!-- Camera badge, notched into the tile's corner -->
+                        <ImageButton
+                            android:id="@+id/changePhotoButton"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_gravity="end|bottom"
+                            android:background="@drawable/ledger_badge_inverse"
+                            android:contentDescription="@string/take_photo"
+                            android:padding="7dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_camera"
+                            app:tint="@color/ledger_inverse_text" />
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingBottom="4dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:letterSpacing="0.16"
+                            android:text="@string/ledger_display_name"
+                            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                            android:textColor="@color/ledger_neutral_700"
+                            android:textSize="10sp" />
+
+                        <FrameLayout
+                            android:id="@+id/usernameInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:background="@drawable/ledger_input">
+
+                            <EditText
+                                android:id="@+id/usernameEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:hint="@string/ledger_display_name"
+                                android:importantForAutofill="no"
+                                android:inputType="textPersonName|textCapWords"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:singleLine="true"
+                                android:textAppearance="@style/TextAppearance.Ledger.Input"
+                                android:textSize="16sp" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- ── Stat strip ─────────────────────────────────────── -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/ledger_rule" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/ledger_rule"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/ledger_bg"
+                        android:orientation="vertical"
+                        android:paddingStart="20dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:id="@+id/statDocuments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Ledger.Stat"
+                            android:textSize="26sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:letterSpacing="0.14"
+                            android:text="@string/ledger_stat_documents"
+                            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                            android:textSize="9.5sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/ledger_bg"
+                        android:orientation="vertical"
+                        android:paddingStart="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:id="@+id/statScansTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Ledger.Stat"
+                            android:textSize="26sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:letterSpacing="0.14"
+                            android:text="@string/ledger_stat_scans"
+                            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                            android:textSize="9.5sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/ledger_bg"
+                        android:orientation="vertical"
+                        android:paddingStart="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="14dp">
+
+                        <TextView
+                            android:id="@+id/statOnDisk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Ledger.Stat"
+                            android:textColor="@color/ledger_accent_700"
+                            android:textSize="26sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:letterSpacing="0.14"
+                            android:text="@string/ledger_on_disk"
+                            android:textAppearance="@style/TextAppearance.Ledger.Meta"
+                            android:textSize="9.5sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/ledger_rule" />
+
+                <!-- ── Storage by person ──────────────────────────────── -->
+                <LinearLayout
+                    android:id="@+id/storageSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="24dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.14"
+                        android:paddingBottom="10dp"
+                        android:text="@string/ledger_storage_by_person"
+                        android:textAppearance="@style/TextAppearance.Ledger.Kicker" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/ledger_rule_strong" />
+
+                    <!-- Rows are added at runtime, one per person. -->
+                    <LinearLayout
+                        android:id="@+id/storageRows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- ── Cancel / Save ──────────────────────────────────────────── -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/ledger_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/ledger_rule"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cancelButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ledger_cell"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.14"
+                android:paddingStart="20dp"
+                android:text="@string/cancel"
+                android:textAppearance="@style/TextAppearance.Ledger.ActionBar"
+                android:textColor="@color/ledger_neutral_700" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ledger_action_bar"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp">
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check"
+                    app:tint="@color/ledger_on_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:text="@string/ledger_save"
+                    android:textAppearance="@style/TextAppearance.Ledger.ActionBar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <include layout="@layout/partial_ledger_bottom_nav" />
+
     </LinearLayout>
 
-</ScrollView>
+</FrameLayout>

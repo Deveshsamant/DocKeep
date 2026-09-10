@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Working panel. A determinate-looking bar would be a lie here, so this is
+    the indeterminate one, tinted accent, over a single tracked line.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="20dp">
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:background="@drawable/ledger_sheet_background"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingTop="22dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="22dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="20dp"
-        android:text="Please wait..." />
+        android:text="@string/ledger_working"
+        android:textAppearance="@style/TextAppearance.Ledger.Kicker" />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/ledger_accent"
+        android:indeterminateTintMode="src_in"
+        style="?android:attr/progressBarStyleHorizontal" />
 
 </LinearLayout>
